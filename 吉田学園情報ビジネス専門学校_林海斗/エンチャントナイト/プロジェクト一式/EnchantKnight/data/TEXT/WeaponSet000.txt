@@ -1,0 +1,22 @@
+
+	
+	//“–‚½‚è”»’è—p
+	COLLISIONSET
+		PARENT = 0
+		POS = 0.0 53.0 0.6
+		ROT = -1.5 0.0 -0.0
+	END_COLLISIONSET
+
+	EFFECTSET
+		PARENT = 1
+		POS = 0.0 113.0 0.0
+		ROT = -1.5 0.0 -0.0
+	END_EFFECTSET
+	
+	EFFECTSET
+		PARENT = 1
+		POS = 0.0 16.0 0.0
+		ROT = -1.5 0.0 -0.0
+	END_EFFECTSET
+
+END_SCRIPTS
