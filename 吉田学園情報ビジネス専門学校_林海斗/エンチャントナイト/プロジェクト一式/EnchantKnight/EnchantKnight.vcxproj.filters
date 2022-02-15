@@ -1,0 +1,474 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ソース ファイル\モード">
+      <UniqueIdentifier>{d0a8dfe6-e6ed-40ab-9890-7b6b113da662}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\モード">
+      <UniqueIdentifier>{1514394f-a48c-4377-b666-51a69ef5963f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\当たり判定">
+      <UniqueIdentifier>{3c35827a-6d68-4fac-b83a-84c0a05b418a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\モデル">
+      <UniqueIdentifier>{fbf0a938-268b-4ec0-abaa-2335b5bf84ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="キャラクター">
+      <UniqueIdentifier>{2079ed0d-d049-41c8-91f5-d803ea29b3c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="キャラクター\プレイヤー">
+      <UniqueIdentifier>{a5d6ca9b-05cd-4fd1-b938-2551cc00077b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\カメラ">
+      <UniqueIdentifier>{202a3f6d-2a2b-45e5-8ad1-3abb2aebb020}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="入力">
+      <UniqueIdentifier>{2602249f-ba38-4afe-86e0-972db32dbf06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="入力\キーボード">
+      <UniqueIdentifier>{92a079b0-f401-4ad5-80d6-c9a4df7a9731}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="入力\ゲームパッド">
+      <UniqueIdentifier>{62d87b8e-ac9e-4342-95c4-b6aed6ef74f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ビルボード">
+      <UniqueIdentifier>{ed655333-6a59-433a-ac4f-27f5b521cc48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\マップ">
+      <UniqueIdentifier>{b77be659-68b5-4aa9-ade8-4237dc1adefe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Xファイルロード">
+      <UniqueIdentifier>{43be2591-6bd6-4ffc-8d91-3a0dd53e104f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="エフェクト">
+      <UniqueIdentifier>{61c7e630-c7fc-4b65-98e1-64463a2bf3d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ゲームUI">
+      <UniqueIdentifier>{7c80d2dd-0b95-4fdd-8c70-a5bba0c98fad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\シーン">
+      <UniqueIdentifier>{9d78ad03-f168-425c-85d5-07eef0f05ca7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="キャラクター\敵">
+      <UniqueIdentifier>{1b464bad-c141-4c01-b86b-60d115a111cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="キャラクター\モーション">
+      <UniqueIdentifier>{3416964b-a128-48ea-878f-465363f0ef1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ゲージ関係">
+      <UniqueIdentifier>{9d7ad13f-9608-4b3c-a3bc-5fe4b9e8f57e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="キャラクター\プレイヤー\魔法">
+      <UniqueIdentifier>{38e87f36-0f6b-403e-9d31-02961b3a06cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\壁・床">
+      <UniqueIdentifier>{29a5be17-e6b3-4051-bb7e-4207da980116}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ポーズ">
+      <UniqueIdentifier>{c3d846fa-1022-4bc6-a2c5-efa1691bb975}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\失敗画面">
+      <UniqueIdentifier>{c28f0b61-6371-4a41-995a-445a346c477d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="result.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="score.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="shadow.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sound.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="stage.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="texture.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="deleteItem.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="effect_sphere.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="fade.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="layer_structure.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="meshsphere.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="mouse.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Polygon.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="bg.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>ソース ファイル\モード</Filter>
+    </ClInclude>
+    <ClInclude Include="manager.h">
+      <Filter>ソース ファイル\モード</Filter>
+    </ClInclude>
+    <ClInclude Include="title.h">
+      <Filter>ソース ファイル\モード</Filter>
+    </ClInclude>
+    <ClInclude Include="collision.h">
+      <Filter>ソース ファイル\当たり判定</Filter>
+    </ClInclude>
+    <ClInclude Include="xload.h">
+      <Filter>Xファイルロード</Filter>
+    </ClInclude>
+    <ClInclude Include="model_spawner.h">
+      <Filter>ソース ファイル\モデル</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>ソース ファイル\モデル</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>キャラクター\プレイヤー</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>ソース ファイル\カメラ</Filter>
+    </ClInclude>
+    <ClInclude Include="XInput.h">
+      <Filter>入力\ゲームパッド</Filter>
+    </ClInclude>
+    <ClInclude Include="directinput.h">
+      <Filter>入力\ゲームパッド</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>入力\キーボード</Filter>
+    </ClInclude>
+    <ClInclude Include="keyboard.h">
+      <Filter>入力\キーボード</Filter>
+    </ClInclude>
+    <ClInclude Include="player_controller.h">
+      <Filter>キャラクター\プレイヤー</Filter>
+    </ClInclude>
+    <ClInclude Include="effect.h">
+      <Filter>エフェクト</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>ソース ファイル\モード</Filter>
+    </ClInclude>
+    <ClInclude Include="billboard.h">
+      <Filter>ソース ファイル\ビルボード</Filter>
+    </ClInclude>
+    <ClInclude Include="map_polygon.h">
+      <Filter>ソース ファイル\マップ</Filter>
+    </ClInclude>
+    <ClInclude Include="MyAllocateHierarchy.h">
+      <Filter>ソース ファイル\モデル</Filter>
+    </ClInclude>
+    <ClInclude Include="HierarchyData.h">
+      <Filter>ソース ファイル\モデル</Filter>
+    </ClInclude>
+    <ClInclude Include="goal.h">
+      <Filter>ソース ファイル\マップ</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>エフェクト</Filter>
+    </ClInclude>
+    <ClInclude Include="motion.h">
+      <Filter>キャラクター\モーション</Filter>
+    </ClInclude>
+    <ClInclude Include="swordeffect.h">
+      <Filter>エフェクト</Filter>
+    </ClInclude>
+    <ClInclude Include="commandUI.h">
+      <Filter>ソース ファイル\ゲームUI</Filter>
+    </ClInclude>
+    <ClInclude Include="scene.h">
+      <Filter>ソース ファイル\シーン</Filter>
+    </ClInclude>
+    <ClInclude Include="scene2D.h">
+      <Filter>ソース ファイル\シーン</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene3D.h">
+      <Filter>ソース ファイル\シーン</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>キャラクター\敵</Filter>
+    </ClInclude>
+    <ClInclude Include="magic.h">
+      <Filter>キャラクター\プレイヤー\魔法</Filter>
+    </ClInclude>
+    <ClInclude Include="magic_fire.h">
+      <Filter>キャラクター\プレイヤー\魔法</Filter>
+    </ClInclude>
+    <ClInclude Include="magic_ice.h">
+      <Filter>キャラクター\プレイヤー\魔法</Filter>
+    </ClInclude>
+    <ClInclude Include="magic_heel.h">
+      <Filter>キャラクター\プレイヤー\魔法</Filter>
+    </ClInclude>
+    <ClInclude Include="bumper.h">
+      <Filter>キャラクター\敵</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy_poyo.h">
+      <Filter>キャラクター\敵</Filter>
+    </ClInclude>
+    <ClInclude Include="gauge.h">
+      <Filter>ソース ファイル\ゲージ関係</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle_HeelEffect.h">
+      <Filter>エフェクト</Filter>
+    </ClInclude>
+    <ClInclude Include="effectring.h">
+      <Filter>エフェクト</Filter>
+    </ClInclude>
+    <ClInclude Include="MagicCircle.h">
+      <Filter>エフェクト</Filter>
+    </ClInclude>
+    <ClInclude Include="magic_skill01.h">
+      <Filter>キャラクター\プレイヤー\魔法</Filter>
+    </ClInclude>
+    <ClInclude Include="magic_big_Ice.h">
+      <Filter>キャラクター\プレイヤー\魔法</Filter>
+    </ClInclude>
+    <ClInclude Include="magic_skill02.h">
+      <Filter>キャラクター\プレイヤー\魔法</Filter>
+    </ClInclude>
+    <ClInclude Include="wall.h">
+      <Filter>ソース ファイル\壁・床</Filter>
+    </ClInclude>
+    <ClInclude Include="field.h">
+      <Filter>ソース ファイル\壁・床</Filter>
+    </ClInclude>
+    <ClInclude Include="magicUI.h">
+      <Filter>ソース ファイル\ゲームUI</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyspawner.h">
+      <Filter>キャラクター\敵</Filter>
+    </ClInclude>
+    <ClInclude Include="pause.h">
+      <Filter>ソース ファイル\ポーズ</Filter>
+    </ClInclude>
+    <ClInclude Include="miss.h">
+      <Filter>ソース ファイル\失敗画面</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="texture.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="deleteItem.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="effect_sphere.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="fade.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="layer_structure.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="light.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="meshsphere.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="mouse.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="polygon.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="score.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="shadow.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sound.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="stage.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="manager.cpp">
+      <Filter>ソース ファイル\モード</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>ソース ファイル\モード</Filter>
+    </ClCompile>
+    <ClCompile Include="result.cpp">
+      <Filter>ソース ファイル\モード</Filter>
+    </ClCompile>
+    <ClCompile Include="title.cpp">
+      <Filter>ソース ファイル\モード</Filter>
+    </ClCompile>
+    <ClCompile Include="bg.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="collision.cpp">
+      <Filter>ソース ファイル\当たり判定</Filter>
+    </ClCompile>
+    <ClCompile Include="xload.cpp">
+      <Filter>Xファイルロード</Filter>
+    </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>ソース ファイル\モデル</Filter>
+    </ClCompile>
+    <ClCompile Include="model_spawner.cpp">
+      <Filter>ソース ファイル\モデル</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>キャラクター\プレイヤー</Filter>
+    </ClCompile>
+    <ClCompile Include="player_controller.cpp">
+      <Filter>キャラクター\プレイヤー</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>ソース ファイル\カメラ</Filter>
+    </ClCompile>
+    <ClCompile Include="XInput.cpp">
+      <Filter>入力\ゲームパッド</Filter>
+    </ClCompile>
+    <ClCompile Include="directinput.cpp">
+      <Filter>入力\ゲームパッド</Filter>
+    </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>入力\キーボード</Filter>
+    </ClCompile>
+    <ClCompile Include="keyboard.cpp">
+      <Filter>入力\キーボード</Filter>
+    </ClCompile>
+    <ClCompile Include="effect.cpp">
+      <Filter>エフェクト</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>ソース ファイル\モード</Filter>
+    </ClCompile>
+    <ClCompile Include="billboard.cpp">
+      <Filter>ソース ファイル\ビルボード</Filter>
+    </ClCompile>
+    <ClCompile Include="map_polygon.cpp">
+      <Filter>ソース ファイル\マップ</Filter>
+    </ClCompile>
+    <ClCompile Include="MyAllocateHierarchy.cpp">
+      <Filter>ソース ファイル\モデル</Filter>
+    </ClCompile>
+    <ClCompile Include="HirarchData.cpp">
+      <Filter>ソース ファイル\モデル</Filter>
+    </ClCompile>
+    <ClCompile Include="goal.cpp">
+      <Filter>ソース ファイル\マップ</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>エフェクト</Filter>
+    </ClCompile>
+    <ClCompile Include="motion.cpp">
+      <Filter>キャラクター\モーション</Filter>
+    </ClCompile>
+    <ClCompile Include="swordeffect.cpp">
+      <Filter>エフェクト</Filter>
+    </ClCompile>
+    <ClCompile Include="commandUI.cpp">
+      <Filter>ソース ファイル\ゲームUI</Filter>
+    </ClCompile>
+    <ClCompile Include="scene.cpp">
+      <Filter>ソース ファイル\シーン</Filter>
+    </ClCompile>
+    <ClCompile Include="scene2D.cpp">
+      <Filter>ソース ファイル\シーン</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene3D.cpp">
+      <Filter>ソース ファイル\シーン</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>キャラクター\敵</Filter>
+    </ClCompile>
+    <ClCompile Include="magic.cpp">
+      <Filter>キャラクター\プレイヤー\魔法</Filter>
+    </ClCompile>
+    <ClCompile Include="magic_fire.cpp">
+      <Filter>キャラクター\プレイヤー\魔法</Filter>
+    </ClCompile>
+    <ClCompile Include="magic_ice.cpp">
+      <Filter>キャラクター\プレイヤー\魔法</Filter>
+    </ClCompile>
+    <ClCompile Include="magic_heel.cpp">
+      <Filter>キャラクター\プレイヤー\魔法</Filter>
+    </ClCompile>
+    <ClCompile Include="bumper.cpp">
+      <Filter>キャラクター\敵</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy_Poyo.cpp">
+      <Filter>キャラクター\敵</Filter>
+    </ClCompile>
+    <ClCompile Include="gauge.cpp">
+      <Filter>ソース ファイル\ゲージ関係</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle_HeelEffect.cpp">
+      <Filter>エフェクト</Filter>
+    </ClCompile>
+    <ClCompile Include="effect_ring.cpp">
+      <Filter>エフェクト</Filter>
+    </ClCompile>
+    <ClCompile Include="MagicCircle.cpp">
+      <Filter>エフェクト</Filter>
+    </ClCompile>
+    <ClCompile Include="magic_skill01.cpp">
+      <Filter>キャラクター\プレイヤー\魔法</Filter>
+    </ClCompile>
+    <ClCompile Include="magic_big_Ice.cpp">
+      <Filter>キャラクター\プレイヤー\魔法</Filter>
+    </ClCompile>
+    <ClCompile Include="magic_skill02.cpp">
+      <Filter>キャラクター\プレイヤー\魔法</Filter>
+    </ClCompile>
+    <ClCompile Include="wall.cpp">
+      <Filter>ソース ファイル\壁・床</Filter>
+    </ClCompile>
+    <ClCompile Include="field.cpp">
+      <Filter>ソース ファイル\壁・床</Filter>
+    </ClCompile>
+    <ClCompile Include="magicUI.cpp">
+      <Filter>ソース ファイル\ゲームUI</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyspawner.cpp">
+      <Filter>キャラクター\敵</Filter>
+    </ClCompile>
+    <ClCompile Include="pause.cpp">
+      <Filter>ソース ファイル\ポーズ</Filter>
+    </ClCompile>
+    <ClCompile Include="miss.cpp">
+      <Filter>ソース ファイル\失敗画面</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

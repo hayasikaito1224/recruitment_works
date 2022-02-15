@@ -1,0 +1,22 @@
+﻿  Enemy.cpp
+c:\users\student\documents\visual studio 2015\projects\enchantknight\gauge.h(34): warning C4244: 'return': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\student\documents\visual studio 2015\projects\enchantknight\gauge.h(35): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
+c:\users\student\documents\visual studio 2015\projects\enchantknight\enemy.cpp(96): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\student\documents\visual studio 2015\projects\enchantknight\enemy.cpp(104): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\student\documents\visual studio 2015\projects\enchantknight\enemy.cpp(169): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+c:\users\student\documents\visual studio 2015\projects\enchantknight\enemy.cpp(175): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\student\documents\visual studio 2015\projects\enchantknight\enemy.cpp(287): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\student\documents\visual studio 2015\projects\enchantknight\enemy.cpp(295): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\student\documents\visual studio 2015\projects\enchantknight\enemy.cpp(312): warning C4244: '初期化中': 'int' から 'float' への変換です。データが失われる可能性があります。
+c:\users\student\documents\visual studio 2015\projects\enchantknight\enemy.cpp(313): warning C4244: '+=': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\student\documents\visual studio 2015\projects\enchantknight\enemy.cpp(329): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
+c:\users\student\documents\visual studio 2015\projects\enchantknight\enemy.cpp(333): warning C4244: '+=': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\student\documents\visual studio 2015\projects\enchantknight\enemy.cpp(380): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\student\documents\visual studio 2015\projects\enchantknight\enemy.cpp(381): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\student\documents\visual studio 2015\projects\enchantknight\enemy.cpp(427): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\student\documents\visual studio 2015\projects\enchantknight\enemy.cpp(428): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\student\documents\visual studio 2015\projects\enchantknight\enemy.cpp(488): warning C4305: '+=': 'double' から 'float' へ切り詰めます。
+c:\users\student\documents\visual studio 2015\projects\enchantknight\enemy.cpp(492): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\student\documents\visual studio 2015\projects\enchantknight\enemy.cpp(493): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+  EnchantKnight.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\EnchantKnight\EnchantKnight.exe
+  EnchantKnight.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\EnchantKnight\EnchantKnight.pdb (Full PDB)
