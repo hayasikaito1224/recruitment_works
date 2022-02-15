@@ -1,0 +1,34 @@
+
+#------------------------------------------------------------------------------
+# モデルファイル名
+#------------------------------------------------------------------------------
+//プレイヤーのパーツ
+PLAYERMODEL_FILENAME = data/MODEL/KNIGHT/Body000.x	# [00]体
+PLAYERMODEL_FILENAME = data/MODEL/KNIGHT/waist.x		# [01]腰
+PLAYERMODEL_FILENAME = data/MODEL/KNIGHT/head.x		# [02]頭
+PLAYERMODEL_FILENAME = data/MODEL/KNIGHT/arm_R.x		# [03]右腕
+PLAYERMODEL_FILENAME = data/MODEL/KNIGHT/forearm_R.x	# [04]右前腕
+PLAYERMODEL_FILENAME = data/MODEL/KNIGHT/hand_R.x		# [05]右手
+PLAYERMODEL_FILENAME = data/MODEL/KNIGHT/arm_L.x		# [06]左腕
+PLAYERMODEL_FILENAME = data/MODEL/KNIGHT/forearm_L.x	# [07]左前腕
+PLAYERMODEL_FILENAME = data/MODEL/KNIGHT/hand_L.x		# [08]左手
+PLAYERMODEL_FILENAME = data/MODEL/KNIGHT/thigh_R.x	# [09]右太もも
+PLAYERMODEL_FILENAME = data/MODEL/KNIGHT/shin_R.x		# [10]右すね
+PLAYERMODEL_FILENAME = data/MODEL/KNIGHT/leg_R.x		# [11]右足
+PLAYERMODEL_FILENAME = data/MODEL/KNIGHT/thigh_L.x	# [12]左太もも
+PLAYERMODEL_FILENAME = data/MODEL/KNIGHT/shin_L.x		# [13]左すね
+PLAYERMODEL_FILENAME = data/MODEL/KNIGHT/leg_L.x		# [14]左足
+PLAYERMODEL_FILENAME = data/MODEL/KNIGHT/sword001.x	# [15]左足
+//敵のモデル01
+ENEMY01MODEL_FILENAME = data/MODEL/Enemy000/Enemy000_body.x		# [0]体
+ENEMY01MODEL_FILENAME = data/MODEL/Enemy000/Enemy000_LEar.x		# [1]左耳
+ENEMY01MODEL_FILENAME = data/MODEL/Enemy000/Enemy000_REar.x		# [2]右耳
+ENEMY01MODEL_FILENAME = data/MODEL/Enemy000/Enemy000_Tail.x		# [3]しっぽ
+
+//ステージに配置するモデル
+OBJECTMODEL_FILENAME = data/MODEL/Block000.x			# [0]箱
+OBJECTMODEL_FILENAME = data/MODEL/Bumper.x			# [1]箱
+OBJECTMODEL_FILENAME = data/MODEL/ice000.x			# [2]箱
+OBJECTMODEL_FILENAME = data/MODEL/FireBoll.x		# [3]箱
+
+END_SCRIPT

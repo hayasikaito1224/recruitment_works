@@ -1,0 +1,154 @@
+#------------------------------------------------------------------------------
+# モデル数
+#------------------------------------------------------------------------------
+NUM_MODEL = 16
+
+#------------------------------------------------------------------------------
+# モデルファイル名
+#------------------------------------------------------------------------------
+MODEL_FILENAME = data/MODEL/KNIGHT/Body000.x	# [00]体
+MODEL_FILENAME = data/MODEL/KNIGHT/waist.x		# [01]腰
+MODEL_FILENAME = data/MODEL/KNIGHT/head.x		# [02]頭
+MODEL_FILENAME = data/MODEL/KNIGHT/arm_R.x		# [03]右腕
+MODEL_FILENAME = data/MODEL/KNIGHT/forearm_R.x	# [04]右前腕
+MODEL_FILENAME = data/MODEL/KNIGHT/hand_R.x		# [05]右手
+MODEL_FILENAME = data/MODEL/KNIGHT/arm_L.x		# [06]左腕
+MODEL_FILENAME = data/MODEL/KNIGHT/forearm_L.x	# [07]左前腕
+MODEL_FILENAME = data/MODEL/KNIGHT/hand_L.x		# [08]左手
+MODEL_FILENAME = data/MODEL/KNIGHT/thigh_R.x	# [09]右太もも
+MODEL_FILENAME = data/MODEL/KNIGHT/shin_R.x		# [10]右すね
+MODEL_FILENAME = data/MODEL/KNIGHT/leg_R.x		# [11]右足
+MODEL_FILENAME = data/MODEL/KNIGHT/thigh_L.x	# [12]左太もも
+MODEL_FILENAME = data/MODEL/KNIGHT/shin_L.x		# [13]左すね
+MODEL_FILENAME = data/MODEL/KNIGHT/leg_L.x		# [14]左足
+MODEL_FILENAME = data/MODEL/KNIGHT/sword001.x	# [15]左足
+
+#------------------------------------------------------------------------------
+# キャラクター情報
+#------------------------------------------------------------------------------
+CHARACTERSET
+	NUM_PARTS = 16					# パーツ数
+	MOVE = 2.0						# 移動量
+	JUMP = 8.65						# ジャンプ量
+	*******************************************************
+	|			ここからペースト↓↓↓↓↓↓↓			  *
+	*******************************************************
+	PARTSSET
+		INDEX = 0
+		PARENT = -1
+		POS = 0.0 72.4 -4.0
+		ROT = 0.0 0.0 -0.0
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 1
+		PARENT = 0
+		POS = -0.2 0.7 1.1
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 2
+		PARENT = 0
+		POS = 0.0 22.7 -0.0
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 3
+		PARENT = 0
+		POS = -10.0 17.1 0.0
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 4
+		PARENT = 3
+		POS = -22.2 0.1 0.2
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 5
+		PARENT = 4
+		POS = -17.6 -0.6 0.1
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 6
+		PARENT = 0
+		POS = 10.3 17.0 0.0
+		ROT = 0.0 0.0 -0.0
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 7
+		PARENT = 6
+		POS = 22.1 0.1 0.0
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 8
+		PARENT = 7
+		POS = 18.8 0.0 -0.0
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 9
+		PARENT = 1
+		POS = -4.9 -13.9 0.0
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 10
+		PARENT = 9
+		POS = -0.0 -32.6 -0.0
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 11
+		PARENT = 10
+		POS = -0.4 -23.5 0.0
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 12
+		PARENT = 1
+		POS = 4.9 -13.9 -0.0
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 13
+		PARENT = 12
+		POS = -0.0 -32.8 0.0
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 14
+		PARENT = 13
+		POS = -0.4 -23.5 0.7
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+	
+	PARTSSET
+		INDEX = 15
+		PARENT = 5
+		POS = -7.0 0.0 -0.0
+		ROT = -1.5 0.0 -0.0
+	END_PARTSSET
+
+	*******************************************************
+	|			ここまでペースト↑↑↑↑↑↑↑			  *
+	*******************************************************
+
+END_CHARACTERSET
+
+END_SCRIPT

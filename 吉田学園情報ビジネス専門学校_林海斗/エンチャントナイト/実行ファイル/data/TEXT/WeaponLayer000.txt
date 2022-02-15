@@ -1,0 +1,23 @@
+MODEL_FILENAME = data/MODEL/KNIGHT/Block001.x	# [16]“–‚½‚è”»’è‚Ì” 
+
+	
+	PARTSSET
+		INDEX = 16
+		PARENT = 15
+		POS = 1.3 53.0 10.6
+		ROT = -1.5 0.0 -0.0
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 17
+		PARENT = 15
+		POS = -1.0 113.0 11.0
+		ROT = -1.5 0.0 -0.0
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 18
+		PARENT = 15
+		POS = -6.0 16.0 12.0
+		ROT = -1.5 0.0 -0.0
+	END_PARTSSET

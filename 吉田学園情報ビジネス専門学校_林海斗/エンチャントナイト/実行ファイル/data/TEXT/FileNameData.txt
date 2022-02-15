@@ -1,0 +1,6 @@
+//階層構造ファイルのパス
+PARTS_FILENAME = data/TEXT/PlayerParts000.txt
+//モーションファイルのパス
+MOTION_FILENAME = data/TEXT/motion000.txt
+
+END_SCRIPT !!絶対消さないで!!

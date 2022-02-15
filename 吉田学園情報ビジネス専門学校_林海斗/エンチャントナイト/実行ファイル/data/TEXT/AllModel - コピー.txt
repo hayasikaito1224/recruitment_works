@@ -1,0 +1,32 @@
+#------------------------------------------------------------------------------
+# モデル数
+#------------------------------------------------------------------------------
+NUM_PLAYERPARTS_MODEL = 10
+NUM_OBJECTMODEL = 8
+
+#------------------------------------------------------------------------------
+# モデルファイル名
+#------------------------------------------------------------------------------
+//プレイヤーのパーツ
+PLAYERMODEL_FILENAME = data/MODEL/00_KANAKO_body.x		# [0]体
+PLAYERMODEL_FILENAME = data/MODEL/01_KANAKO_head.x		# [1]頭
+PLAYERMODEL_FILENAME = data/MODEL/UDE00-.x				# [2]右腕_00
+PLAYERMODEL_FILENAME = data/MODEL/UDE01-.x				# [3]右腕_01
+PLAYERMODEL_FILENAME = data/MODEL/UDE00+.x				# [4]左腕_00
+PLAYERMODEL_FILENAME = data/MODEL/UDE01+.x				# [5]左腕_01
+PLAYERMODEL_FILENAME = data/MODEL/asi00.x					# [6]右足_00
+PLAYERMODEL_FILENAME = data/MODEL/asi01.x					# [7]左足_01
+PLAYERMODEL_FILENAME = data/MODEL/asi00.x					# [8]右足_00
+PLAYERMODEL_FILENAME = data/MODEL/asi01.x					# [9]左足_01
+
+//ステージに配置するモデル
+OBJECTMODEL_FILENAME = data/MODEL/stage.x					# [0]クッキーの床
+OBJECTMODEL_FILENAME = data/MODEL/Cheese_tart.x			# [1]チーズタルトの床
+OBJECTMODEL_FILENAME = data/MODEL/fence.x					# [2]お菓子の柵
+OBJECTMODEL_FILENAME = data/MODEL/kinokonoyama.x			# [3]きのこの山
+OBJECTMODEL_FILENAME = data/MODEL/Big_kinokonoyama.x		# [4]きのこの山(大)
+OBJECTMODEL_FILENAME = data/MODEL/Big_Candy.x				# [5]キャンディー
+OBJECTMODEL_FILENAME = data/MODEL/Watermelon_Ice.x		# [6]アイススイカver
+OBJECTMODEL_FILENAME = data/MODEL/garigarikun.x			# [7]ガリガリ君
+
+END_SCRIPT
