@@ -169,6 +169,10 @@ void CTexture::Init(void)
 	D3DXCreateTextureFromFile(pDevice,
 		"data/TEXTURE/BUTTON/L_button.png",//Aボタン
 		&m_pTexture[L_BUTTON]);
+	//テクスチャの読み込み
+	D3DXCreateTextureFromFile(pDevice,
+		"data/TEXTURE/BUTTON/SkillGauge000.png",//ゲージ
+		&m_pTexture[SKILLGAUGE]);
 
 	//============================================================
 	//タイトル
@@ -230,6 +234,10 @@ void CTexture::Init(void)
 	D3DXCreateTextureFromFile(pDevice,
 		"data/TEXTURE/stagecursor.png",//ロックオン用
 		&m_pTexture[RockOn]);
+	//テクスチャの読み込み
+	D3DXCreateTextureFromFile(pDevice,
+		"data/TEXTURE/SkillOK000.png",//ロックオン用
+		&m_pTexture[SkillOk]);
 
 }
 

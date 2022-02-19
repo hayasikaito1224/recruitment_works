@@ -49,6 +49,7 @@ CMagicCircle * CMagicCircle::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, float fsiz
 	{
 		//‰æ‘œ“Ç‚Ýž‚Ý
 		pEffect->Init();
+
 	}
 
 	return pEffect;

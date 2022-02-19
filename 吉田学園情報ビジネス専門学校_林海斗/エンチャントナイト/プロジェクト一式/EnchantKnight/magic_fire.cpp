@@ -13,8 +13,11 @@
 #include "Renderer.h"
 #include "MagicCircle.h"
 #include "sound.h"
+#include "circlegauge.h"
 #define FIRE_SIZE (5.0)//火の魔法の大きさ
 #define FIRE_SPEED (4.0)//魔法の発射スピード
+#define FIRE_SPEEDLIMIT (10.0)//魔法の発射スピード
+
 #define FIRE_DELETE_TIME (90)//魔法の自動消滅時間
 #define FIRE_POWER (4)//攻撃力
 #define FIRE_ROT_SPEED (0.2)
@@ -28,7 +31,12 @@ C_Magic_Fire::C_Magic_Fire(OBJTYPE nPriority) : C_Magic(nPriority)
 	m_pFireModel = nullptr;
 	m_bUninit = false;
 	CManager::GetGame()->GetMPGauge()->SetGauge(FIRE_MP);
-
+	m_ControlPoint = { 100.0f,0.0f,200.0f };
+	m_StartingPoint = { 0.0f,0.0f,0.0f };
+	m_EndPoint = { 0.0f,0.0f,0.0f };
+	m_nTime = 0.0f;
+	m_nTimeAddSpeed = 0.04f;
+	m_bBezier = false;
 }
 //==========================================
 //デストラクタ
@@ -78,8 +86,17 @@ void C_Magic_Fire::Update()
 	}
 
 	//発射する方向を求める
-	m_pos.x -= sinf(m_rot.y)*FIRE_SPEED;
-	m_pos.z -= cosf(m_rot.y)*FIRE_SPEED;
+	//ベジェ曲線がオンなら
+	if (m_bBezier)
+	{
+		//ベジェ曲線の処理
+		BezierCurve();
+	}
+	else
+	{
+		m_pos.x -= sinf(m_rot.y)*FIRE_SPEED;
+		m_pos.z -= cosf(m_rot.y)*FIRE_SPEED;
+	}
 	//エフェクト
 	CManager::GetGame()->GetParticle()->RandomCircleParticle(m_pos, { 1.0f, 0.3f, 0.3f, 1.0f}, false);
 
@@ -94,7 +111,7 @@ void C_Magic_Fire::Update()
 		if (pScene_E != NULL)
 		{
 			CEnemy *pEnemy = (CEnemy*)pScene_E;
-			if (pEnemy->bHitAttack() == false && m_bAttack == false)
+			//if (pEnemy->bHitAttack() == false)
 			{
 				bool bHit = pCollision->CollisionWeapon((CEnemy*)pScene_E, m_pos, m_pFireModel->GetMaxPos().x);
 				pEnemy->SetHit(bHit);
@@ -108,6 +125,8 @@ void C_Magic_Fire::Update()
 					std::random_device random;	// 非決定的な乱数生成器
 					std::mt19937_64 mt(random());            // メルセンヌ・ツイスタの64ビット版、引数は初期シード
 					std::uniform_real_distribution<> randAng(-D3DX_PI, D3DX_PI);
+					//CPを増やす
+					CManager::GetGame()->GetCPGauge()->SetGauge(-5);
 
 					float fAng = randAng(mt);
 					//攻撃用のモデルとプレイヤーのベクトルを求める
@@ -164,7 +183,8 @@ void C_Magic_Fire::Draw()
 //==========================================
 //インスタンス生成処理
 //==========================================
-C_Magic_Fire * C_Magic_Fire::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot)
+C_Magic_Fire * C_Magic_Fire::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const bool bBezier,
+	CEnemy *pEnemy, const float Shotrot)
 {
 	C_Magic_Fire *pMagic = new C_Magic_Fire(CScene::OBJTYPE_MAGIC);
 	if (pMagic != nullptr)
@@ -172,9 +192,67 @@ C_Magic_Fire * C_Magic_Fire::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& r
 		pMagic->Init();
 		pMagic->m_pos = pos;
 		pMagic->m_rot = rot;
+		pMagic->m_rot.y += Shotrot;
+
+		pMagic->m_bBezier = bBezier;
+		//ベジェ曲線が有効なら
+		if (bBezier)
+		{
+			pMagic->m_pEnemy = pEnemy;
+			pMagic->m_EndPoint = pEnemy->GetEnemyPos();
+			pMagic->m_StartingPoint = pos;
+			pMagic->m_ControlPoint.y = pos.y;
+			D3DXVECTOR3 vec = pMagic->m_EndPoint - pos;
+			D3DXVECTOR3 Nomalaize;
+			//ベクトルを0.0~1.0の範囲にする
+			D3DXVec3Normalize(&Nomalaize, &vec);
+
+			//ベクトルの長さを求める
+			float fLength = sqrtf((vec.x * vec.x) + (vec.z * vec.z));
+
+			//正規化したベクトルの長さを求める
+			float fLengthNomalaize = sqrtf((Nomalaize.x * Nomalaize.x) + (Nomalaize.z * Nomalaize.z));
+
+			//ベクトルの長さから適切な速さを求める
+			float fSpeed = 1.0f / fLength;
+			pMagic->m_nTimeAddSpeed = fSpeed*FIRE_SPEED*1.4f;
+			//速度制限
+			if (pMagic->m_nTimeAddSpeed >= FIRE_SPEEDLIMIT)
+			{
+				pMagic->m_nTimeAddSpeed = FIRE_SPEEDLIMIT;
+			}
+			//軸ごとにベクトルを求める
+			float fVecLengthX = sqrtf((vec.x * vec.x));
+			float fVecLengthZ = sqrtf((vec.z * vec.z));
+
+			//どの角度でも同じような制御点になるようにする
+			pMagic->m_ControlPoint.x = (pos.x + (sinf((rot.y - D3DXToRadian(Shotrot))*fLengthNomalaize))*(fLength / 4.5f));
+			pMagic->m_ControlPoint.z = (pos.z + (cosf((rot.y - D3DXToRadian(Shotrot))*fLengthNomalaize))*(fLength / 4.5f));
+
+		}
+
 		CMagicCircle::Create(pos, { 0.0f,rot.y,0.0f }, FIRE_MAZIC_SIRCLE_RADIUS, 10, true, true, { 1.0f, 0.3f, 0.3f, 1.0f },
 			CTexture::MagicCircle_TypeB);
 
 	}
 	return pMagic;
+}
+//-------------------------------------
+//ベジェ曲線
+//-------------------------------------
+void C_Magic_Fire::BezierCurve()
+{
+	m_nTime += m_nTimeAddSpeed;
+	if (m_pEnemy->GetUninit() ==false)
+	{
+		m_EndPoint = m_pEnemy->GetEnemyPos();
+	}
+	//ベジェ曲線の計算式
+	m_pos.x = (1 - m_nTime)*(1 - m_nTime) * 
+		m_StartingPoint.x + 2 * (1 - m_nTime) * m_nTime * 
+		m_ControlPoint.x + m_nTime * m_nTime * m_EndPoint.x;
+	m_pos.z = (1 - m_nTime)*(1 - m_nTime) *
+		m_StartingPoint.z + 2 * (1 - m_nTime) * m_nTime *
+		m_ControlPoint.z + m_nTime * m_nTime * m_EndPoint.z;
+
 }

@@ -142,7 +142,7 @@ HRESULT CRenderer::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 
 		m_pCamera[1] = new CCamera;
 		m_pCamera[1]->Init();
-		m_pCamera[1]->SetViewport(0, 0, 320, 320, 0);
+		m_pCamera[1]->SetViewport(0, 0, 200, 200, 0);
 		m_pCamera[1]->SetAngleView(MAP_ANGLE_OF_VIEW);
 	}
 

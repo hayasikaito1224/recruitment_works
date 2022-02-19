@@ -27,7 +27,8 @@ public:
 		TIME,			// タイムナンバー
 		FADE,			
 		GOAL,
-		GAUGEBER,
+		GAUGEBER,//ゲージ
+		SKILLGAUGE,//必殺技ようのゲージ
 		SHADOW,			//影
 		FIELD,			//床
 		SKY,			//空
@@ -65,6 +66,7 @@ public:
 		SwordEffect,			//エフェクト
 		TargetText,//目的地表示用の
 		RockOn,//ロックオン用
+		SkillOk,//ロックオン用
 		Max,			// テクスチャの最大数
 	} Type;
 

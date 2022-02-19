@@ -29,12 +29,14 @@
 #include "billboard.h"
 #include "gauge.h"
 #include "Polygon.h"
-#include "magic_ice.h"
+#include "magic_skill02.h"
 #include "magic_heel.h"
 #include "magic_skill01.h"
 #include "Particle.h"
 #include "wall.h"
 #include "enemyspawner.h"
+#include "circlegauge.h"
+#include "directinput.h"
 //------------------------------------
 //マクロ定義
 //------------------------------------
@@ -44,10 +46,13 @@
 #define MAX_PLAYER_PARTS (16)
 #define PLAYER_SIZE (20.0)
 #define SWORDEFFECT_LONG (16)
-#define PLAYER_RANGE (400.0)		//プレイヤーと敵の近さを図る範囲
+#define PLAYER_RANGE (700.0)		//プレイヤーと敵の近さを図る範囲
 #define PLAYER_ROCKON_SIZE (5.0)	//ロックオン画像のサイズ
 #define PLAYER_POWER (10)			//攻撃力
 #define PLAYER_HIT_MAXTIME (50)		//無敵判定の時間
+#define PLAYER_DODGE_TIME (20.0f)		//回避の時間
+#define PLAYER_DODGE_SPEED (12.0f)		//回避の速度
+#define PLAYER_ATTACK_SPEED (15.0f)		//攻撃の移動速度
 
 //--------------------------
 //コンストラクト
@@ -71,6 +76,13 @@ CPlayer::CPlayer(OBJTYPE nPriority) : CScene(nPriority)
 	m_bHitStop = false;
 	m_State = STATE_NOWN;
 	m_bDeth = false;
+	m_bLockOn = false;
+	m_bDodge = false;
+	m_bBeginDodge = false;
+	m_bEndDodge = false;
+	m_fDodgeAddSpeed = 1.0f;
+	m_fDodgeTimer = 0.0f;
+	m_fDodgerot = 0.0f;
 }
 //--------------------------
 //デストラクト
@@ -99,7 +111,7 @@ HRESULT CPlayer::Init()
 	//ファイル読み込み
 	//階層構造の設定
 	m_pLayer = new CLayer_Structure;
-	m_pLayer->SetLayer_Structure("data/TEXT/PlayerParts000.txt", &m_pModel[0]);
+	m_pLayer->SetLayer_Structure("data/TEXT/PlayerParts000.txt", &m_pModel[0],CModel::TYPE_PLAYER);
 	//武器の当たり判定用の箱の読み込み
 	FILE *pFile = fopen("data/TEXT/WeaponSet000.txt", "r");
 	char string[6][255];
@@ -254,26 +266,31 @@ void CPlayer::Update()
 	if (m_bDeth == false)
 	{
 		//プレイヤーの移動処理
-		if (!m_bAttack && !m_bDelay && !m_Magic.m_bMagic)
+		if (!m_bAttack && !m_bDelay && !m_Magic.m_bMagic&&!m_bDodge)
 		{
 			m_pController->TestMove(m_pos, m_rot);
 			m_pController->TestPadMove(m_pos, m_rot, m_bMove);
 
 		}
-		else if (m_bSkill == true)
+		//回避の処理
+		if (!m_bAttack && !m_bSkill&&!m_Magic.m_bMagic&&m_State== STATE_NOWN)
 		{
-			m_pController->SkillPadMove(m_pos, m_rot, m_bMove, m_bNearEnemy);
-		}
+			Dodge();
 
-		//敵と近いかを調べる
+		}
+		//ロックオンしていなかったら敵と近いかを調べる
 		if (m_pController->GetNearEnemy() == nullptr)
 		{
 			m_bSearchStop = true;
-			if (m_pRockOnPolygon != nullptr)
+			if (m_bLockOn == false)
 			{
-				m_pRockOnPolygon->Uninit();
-				delete m_pRockOnPolygon;
-				m_pRockOnPolygon = nullptr;
+				if (m_pRockOnPolygon != nullptr)
+				{
+					m_pRockOnPolygon->Uninit();
+					delete m_pRockOnPolygon;
+					m_pRockOnPolygon = nullptr;
+				}
+
 			}
 
 		}
@@ -283,13 +300,16 @@ void CPlayer::Update()
 
 			NearEnemySearch(m_pController->GetNearEnemy()->GetEnemyPos());
 		}
+
+		m_bLockOn = m_pController->RockOn(m_pos, m_rot);
+
 		//ロックオンの処理
 		//ロックオンだったら色を変える
-		if (m_pController->RockOn(m_pos, m_rot) == true)
+		if (m_bLockOn == true)
 		{
 			if (m_pRockOnPolygon != nullptr)
 			{
-				m_pRockOnPolygon->SetColor({ 0.3f,0.3f,1.0,1.0 });
+				m_pRockOnPolygon->SetColor({ 1.0f,0.3f,0.3f,1.0f});
 			}
 		}
 		else
@@ -313,15 +333,19 @@ void CPlayer::Update()
 
 
 		//移動したら移動モーションに変える 
-		if (m_bMove && !m_bDelay)
+		if (m_bSkill == false&&m_bDodge==false)
 		{
-			m_nMotionType[m_nWeaponType] = N_MOVE;
-			m_bAttackNext = true;
+			if (m_bMove && !m_bDelay)
+			{
+				m_nMotionType[m_nWeaponType] = N_MOVE;
+				m_bAttackNext = true;
 
-		}
-		else if (!m_bMove && !m_bDelay && !m_Magic.m_bMagic)
-		{
-			m_nMotionType[m_nWeaponType] = N_NEUTRAL;
+			}
+			else if (!m_bMove && !m_bDelay && !m_Magic.m_bMagic&&!m_bDodge)
+			{
+				m_nMotionType[m_nWeaponType] = N_NEUTRAL;
+			}
+
 		}
 
 		//ディレイがオンになったら
@@ -353,14 +377,29 @@ void CPlayer::Update()
 		}
 		m_pController->Gravity(m_pos);
 		pShadow->SetPos(m_pos.x, m_pos.z, D3DXVECTOR3(PLAYER_SIZE, 0.0f, PLAYER_SIZE));
-		//コマンドセレクト
-		if (m_State == STATE_NOWN)
+		if (m_bDodge == false)
 		{
-			//攻撃に関する処理
-			PlayerAttack();
+			//コマンドセレクト
+			if (m_State == STATE_NOWN)
+			{
+				//攻撃に関する処理
+				PlayerAttack();
+
+			}
+			//必殺技
+			//CPがたまったら
+			int nCP = CManager::GetGame()->GetCPGauge()->GetGaugeValue();
+			if (nCP >= PLAYER_CP&&m_bDelay==false)
+			{
+				bool bSkill = m_pController->SpecalSkill();
+				if (bSkill == true && m_bSkill == false)
+				{
+
+					C_Magic_Skill01::Create(m_pos, m_rot);
+				}
+			}
 
 		}
-
 		//設置物との当たり判定
 		CCollision *pCollision = new CCollision;
 		float ModelPosY = 0.0f;
@@ -385,6 +424,8 @@ void CPlayer::Update()
 					if (bhit == true)
 					{
 						CManager::GetGame()->GetMPGauge()->SetGauge(-1);
+						//CPを増やす
+						CManager::GetGame()->GetCPGauge()->SetGauge(-5);
 						pEnemy->SetbDamage(true);
 						pEnemy->AddLife(-PLAYER_POWER);
 						CManager::GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_DAMAGE);
@@ -431,19 +472,53 @@ void CPlayer::Update()
 		CScene::SetPos(m_pos);
 		//プレイヤーにカメラを追従させる
 		m_pController->CameraControl(m_pos);
+
 		//モーションの再生
 		switch (m_State)
 		{
 		case STATE_NOWN:
-			m_pMotion[m_nWeaponType]->PlayMotion(MAX_PLAYER_PARTS, &m_pModel[0], m_nMotionType[m_nWeaponType],
-				m_nMotionLastType[m_nWeaponType], m_bMotionStop, m_bAttack, m_bDelay, false);
+			//if (m_bDelay == false)
+			//{
+			//	m_Magic.m_bMagic = false;
+
+			//}
+			if (m_Magic.m_bMagic)
+			{
+				m_pMotion[m_nWeaponType]->PlayMotion(MAX_PLAYER_PARTS, &m_pModel[0], m_nMotionType[m_nWeaponType],
+					m_nMotionLastType[m_nWeaponType], m_bMotionStop, m_Magic.m_bMagic, m_bDelay, m_Magic.m_bRetryMagic);
+
+			}
+			else
+			{
+				m_pMotion[m_nWeaponType]->PlayMotion(MAX_PLAYER_PARTS, &m_pModel[0], m_nMotionType[m_nWeaponType],
+					m_nMotionLastType[m_nWeaponType], m_bMotionStop, m_bAttack, m_bDelay, false);
+
+			}
 			break;
 
 		case STATE_MAGIC:
+			//if (m_bDelay == false)
+			//{
+			//	m_bAttack = false;
+
+			//}
 			//魔法関係の処理
-			PlayerMagic();
-			m_pMotion[m_nWeaponType]->PlayMotion(MAX_PLAYER_PARTS, &m_pModel[0], m_nMotionType[m_nWeaponType],
-				m_nMotionLastType[m_nWeaponType], m_bMotionStop, m_Magic.m_bMagic, m_bDelay, m_Magic.m_bRetryMagic);
+			if (m_bSkill == false&& m_bDodge==false)
+			{
+				PlayerMagic();
+
+			}
+			if (m_bAttack)
+			{
+				m_pMotion[m_nWeaponType]->PlayMotion(MAX_PLAYER_PARTS, &m_pModel[0], m_nMotionType[m_nWeaponType],
+					m_nMotionLastType[m_nWeaponType], m_bMotionStop, m_bAttack, m_bDelay, false);
+			}
+			else
+			{
+				m_pMotion[m_nWeaponType]->PlayMotion(MAX_PLAYER_PARTS, &m_pModel[0], m_nMotionType[m_nWeaponType],
+					m_nMotionLastType[m_nWeaponType], m_bMotionStop, m_Magic.m_bMagic, m_bDelay, m_Magic.m_bRetryMagic);
+
+			}
 			break;
 		}
 		
@@ -550,6 +625,58 @@ void CPlayer::Drawtext()
 	pFont->DrawText(NULL, str, -1, &rect, DT_LEFT, D3DCOLOR_ARGB(0xff, 0xff, 0xff, 0xff));
 
 }
+//--------------------------------------
+//回避の処理
+void CPlayer::Dodge()
+{
+	//DirectInputのゲームパッドの取得
+	CDirectInput *pGamePad = CManager::GetDirectInput();
+	//ゲームパッドのボタン情報の取得
+	DIJOYSTATE2 GamePad = pGamePad->GetJoyState();
+	//カメラの取得
+	CCamera *pCamera = CRenderer::GetCamera();
+	if (m_bDodge == false&& m_Magic.m_bMagic==false&&m_bAttack==false&& m_bDelay==false)
+	{
+		if ((float)GamePad.lX >= MAX_DEAD_ZOON || (float)GamePad.lY >= MAX_DEAD_ZOON ||
+			(float)GamePad.lX <= -MAX_DEAD_ZOON || (float)GamePad.lY <= -MAX_DEAD_ZOON)
+		{
+			float fRot = atan2f((float)GamePad.lX, (float)GamePad.lY);
+
+			m_fDodgerot = -(fRot - pCamera->GetRot().x);
+			m_rot.y = m_fDodgerot;
+		}
+		else
+		{
+			m_fDodgerot = m_rot.y;
+		}
+
+	}
+	if (pGamePad->GetButtonTrigger(CDirectInput::X)&& m_bDodge==false && m_bDelay == false)
+	{
+		m_bDodge = true;
+	}
+
+	//回避の判定がオンだったら
+	if (m_bDodge)
+	{
+		m_nMotionType[m_nWeaponType] = N_DODGE;
+
+		m_fDodgeTimer++;
+
+		if (m_fDodgeTimer >= PLAYER_DODGE_TIME)
+		{
+			m_fDodgeTimer = 0.0f;
+			m_bDodge = false;
+		}
+		else
+		{
+			m_pos.x -= sinf(m_fDodgerot)*PLAYER_DODGE_SPEED;
+			m_pos.z -= cosf(m_fDodgerot)*PLAYER_DODGE_SPEED;
+
+		}
+
+	}
+}
 bool  CPlayer::bColision()
 {
 	return 0;
@@ -576,7 +703,7 @@ void CPlayer::PlayerMagic()
 
 			break;
 		case CCommandUI::Ice:
-			if (pGauge->GetGaugeValue() < ICE_MP)
+			if (pGauge->GetGaugeValue() < MAGIC_SKILL02_MP)
 			{
 				bStop = true;
 			}
@@ -613,12 +740,23 @@ void CPlayer::PlayerMagic()
 			switch (m_nMagicCommandType)
 			{
 			case CCommandUI::Fire:
-				C_Magic_Fire::Create(m_Swordpos[0], m_rot);
+				if (m_pController->GetNearEnemy()!=nullptr&&m_bNearEnemy)
+				{
+					C_Magic_Fire::Create(m_Swordpos[0], m_rot,true, m_pController->GetNearEnemy(),80.0f);
+					C_Magic_Fire::Create(m_Swordpos[0], m_rot, true, m_pController->GetNearEnemy(),-80.0f);
+
+				}
+				else
+				{
+					C_Magic_Fire::Create(m_Swordpos[0], m_rot,false,nullptr,50.0f);
+					C_Magic_Fire::Create(m_Swordpos[0], m_rot, false, nullptr, -50.0f);
+
+				}
 				CManager::GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_FIRE);
 
 				break;
 			case CCommandUI::Ice:
-				C_Magic_Ice::Create(m_Swordpos[0], m_rot,6.0f);
+				C_Magic_Skill02::Create(m_pos, m_rot, 2.0f);
 				CManager::GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_ICE);
 
 				break;
@@ -627,7 +765,6 @@ void CPlayer::PlayerMagic()
 				CManager::GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_HEEL);
 
 				break;
-
 			}
 			m_bMagicShot = false;
 		}
@@ -649,6 +786,9 @@ void CPlayer::PlayerAttack()
 		{
 		case CPlayer_Controller::COMBO_1:
 			m_nMotionType[m_nWeaponType] = N_ATTACK_1;
+			m_pos.x -= sinf(m_rot.y)*PLAYER_ATTACK_SPEED*0.5f;
+			m_pos.z -= cosf(m_rot.y)*PLAYER_ATTACK_SPEED*0.5f;
+
 			break;
 		}
 	}
@@ -659,9 +799,15 @@ void CPlayer::PlayerAttack()
 		{
 		case CPlayer_Controller::COMBO_2:
 			m_nMotionType[m_nWeaponType] = N_ATTACK_2;
+			m_pos.x -= sinf(m_rot.y)*PLAYER_ATTACK_SPEED*0.1f;
+			m_pos.z -= cosf(m_rot.y)*PLAYER_ATTACK_SPEED*0.1f;
+
 			break;
 		case CPlayer_Controller::COMBO_3:
 			m_nMotionType[m_nWeaponType] = N_ATTACK_3;
+			m_pos.x -= sinf(m_rot.y)*PLAYER_ATTACK_SPEED*0.1f;
+			m_pos.z -= cosf(m_rot.y)*PLAYER_ATTACK_SPEED*0.1f;
+
 			break;
 		}
 	}
@@ -677,6 +823,7 @@ void CPlayer::PlayerAttack()
 			//攻撃したら連撃の遅延を０にする
 			if (m_bAttack)
 			{
+
 				m_nDelayTimer = 0;
 			}
 		}
@@ -701,9 +848,15 @@ void CPlayer::NearEnemySearch(D3DXVECTOR3 Enemy)
 			if (m_pRockOnPolygon == nullptr)
 			{
 				m_pRockOnPolygon = nullptr;
-				m_pRockOnPolygon = CBillboard::Create({ m_pController->GetNearEnemy()->GetModel(0)->GetMtxWorld()._41,
-					m_pController->GetNearEnemy()->GetModel(0)->GetMtxWorld()._42,
-					m_pController->GetNearEnemy()->GetModel(0)->GetMtxWorld()._43 }, { PLAYER_ROCKON_SIZE ,PLAYER_ROCKON_SIZE ,0.0f },
+				D3DXVECTOR3 pos = { 0.0f,0.0f,0.0f };
+				if (m_pController->GetNearEnemy()->GetModel(0) != nullptr)
+				{
+					pos = { m_pController->GetNearEnemy()->GetModel(0)->GetMtxWorld()._41 ,
+						m_pController->GetNearEnemy()->GetModel(0)->GetMtxWorld()._42 ,
+						m_pController->GetNearEnemy()->GetModel(0)->GetMtxWorld()._43 };
+				}
+
+				m_pRockOnPolygon = CBillboard::Create(pos, { PLAYER_ROCKON_SIZE ,PLAYER_ROCKON_SIZE ,0.0f },
 					CTexture::RockOn);
 			}
 			else
@@ -724,12 +877,28 @@ void CPlayer::NearEnemySearch(D3DXVECTOR3 Enemy)
 		{
 			//敵と遠いです
 			m_bNearEnemy = false;
-
-			if (m_pRockOnPolygon != nullptr)
+			if (m_bLockOn == false)
 			{
-				m_pRockOnPolygon->Uninit();
-				delete m_pRockOnPolygon;
-				m_pRockOnPolygon = nullptr;
+				if (m_pRockOnPolygon != nullptr)
+				{
+					m_pRockOnPolygon->Uninit();
+					delete m_pRockOnPolygon;
+					m_pRockOnPolygon = nullptr;
+				}
+
+			}
+			else
+			{
+				if (m_pController->GetNearEnemy() != nullptr&&m_pRockOnPolygon!=nullptr)
+				{
+					if (m_pController->GetNearEnemy()->GetModel(0) != nullptr)
+					{
+						m_pRockOnPolygon->Setpos({ m_pController->GetNearEnemy()->GetModel(0)->GetMtxWorld()._41,
+							m_pController->GetNearEnemy()->GetModel(0)->GetMtxWorld()._42,
+							m_pController->GetNearEnemy()->GetModel(0)->GetMtxWorld()._43 }, { PLAYER_ROCKON_SIZE ,PLAYER_ROCKON_SIZE ,0.0f });
+					}
+				}
+
 			}
 		}
 

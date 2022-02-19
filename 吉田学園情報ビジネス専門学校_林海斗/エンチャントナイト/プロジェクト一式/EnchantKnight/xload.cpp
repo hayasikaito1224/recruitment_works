@@ -9,6 +9,8 @@
 std::vector<CXload::ModelData> CXload::m_PlayerModelData;
 std::vector<CXload::ModelData> CXload::m_ObjectModelData;
 std::vector<CXload::ModelData> CXload::m_Enemy01ModelData;
+std::vector<CXload::ModelData> CXload::m_Enemy02ModelData;
+std::vector<CXload::ModelData> CXload::m_Enemy03ModelData;
 
 //=============================================================================
 // コンストラクタ
@@ -18,6 +20,9 @@ CXload::CXload()
 	m_PlayerModelData.clear();
 	m_ObjectModelData.clear();
 	m_Enemy01ModelData.clear();
+	m_Enemy02ModelData.clear();
+	m_Enemy03ModelData.clear();
+
 }
 
 //=============================================================================
@@ -51,7 +56,9 @@ void CXload::Load(void)
 	char sString[2][255];	// 読み込み用の変数
 	int nCnt = 0;
 	int nCnt2 = 0;
-	int nCnt3 = 0;
+	int nEnemyCnt0 = 0;
+	int nEnemyCnt1 = 0;
+	int nEnemyCnt2 = 0;
 
 	FILE *File = fopen("data/TEXT/AllModel.txt", "r");
 	char sFileName[124];
@@ -205,14 +212,14 @@ void CXload::Load(void)
 					D3DXMESH_SYSTEMMEM,
 					pDevice,
 					NULL,
-					&m_Enemy01ModelData[nCnt3].m_pBuffMat,
+					&m_Enemy01ModelData[nEnemyCnt0].m_pBuffMat,
 					NULL,
-					&m_Enemy01ModelData[nCnt3].m_nNumMat,
-					&m_Enemy01ModelData[nCnt3].m_pMesh);
+					&m_Enemy01ModelData[nEnemyCnt0].m_nNumMat,
+					&m_Enemy01ModelData[nEnemyCnt0].m_pMesh);
 
 				//マテリアル情報に対するポインタを取得
-				pMat = (D3DXMATERIAL *)m_Enemy01ModelData[nCnt3].m_pBuffMat->GetBufferPointer();
-				for (int nCntmat = 0; nCntmat < (int)m_Enemy01ModelData[nCnt3].m_nNumMat; nCntmat++)
+				pMat = (D3DXMATERIAL *)m_Enemy01ModelData[nEnemyCnt0].m_pBuffMat->GetBufferPointer();
+				for (int nCntmat = 0; nCntmat < (int)m_Enemy01ModelData[nEnemyCnt0].m_nNumMat; nCntmat++)
 				{
 					if (pMat[nCntmat].pTextureFilename != NULL)
 					{
@@ -223,101 +230,361 @@ void CXload::Load(void)
 						(pDevice,
 							pMat[nCntmat].pTextureFilename,
 							&Securement);
-						m_Enemy01ModelData[nCnt3].m_pTexture.push_back(Securement);
+						m_Enemy01ModelData[nEnemyCnt0].m_pTexture.push_back(Securement);
 
 					}
 					else
 					{
-						m_Enemy01ModelData[nCnt3].m_pTexture.push_back(NULL);
+						m_Enemy01ModelData[nEnemyCnt0].m_pTexture.push_back(NULL);
 					}
 
 				}
 				//頂点数を取得
-				m_Enemy01ModelData[nCnt3].m_nNumVtx = m_Enemy01ModelData[nCnt3].m_pMesh->GetNumVertices();
+				m_Enemy01ModelData[nEnemyCnt0].m_nNumVtx = m_Enemy01ModelData[nEnemyCnt0].m_pMesh->GetNumVertices();
 				//頂点フォーマットのサイズを取得
-				m_Enemy01ModelData[nCnt3].m_sizeFVF = D3DXGetFVFVertexSize(m_Enemy01ModelData[nCnt3].m_pMesh->GetFVF());
+				m_Enemy01ModelData[nEnemyCnt0].m_sizeFVF = D3DXGetFVFVertexSize(m_Enemy01ModelData[nEnemyCnt0].m_pMesh->GetFVF());
 				//頂点バッファをアンロック
-				m_Enemy01ModelData[nCnt3].m_pMesh->LockVertexBuffer(D3DLOCK_READONLY, (void**)&m_Enemy01ModelData[nCnt3].m_pVtxBuff);
+				m_Enemy01ModelData[nEnemyCnt0].m_pMesh->LockVertexBuffer(D3DLOCK_READONLY, (void**)&m_Enemy01ModelData[nEnemyCnt0].m_pVtxBuff);
 				//モデルの大きさを測る
-				for (int nCnt = 0; nCnt < m_Enemy01ModelData[nCnt3].m_nNumVtx; nCnt++)
+				for (int nCnt = 0; nCnt < m_Enemy01ModelData[nEnemyCnt0].m_nNumVtx; nCnt++)
 				{
-					D3DXVECTOR3 vtx = *(D3DXVECTOR3*)m_Enemy01ModelData[nCnt3].m_pVtxBuff;//頂点座標の代入
+					D3DXVECTOR3 vtx = *(D3DXVECTOR3*)m_Enemy01ModelData[nEnemyCnt0].m_pVtxBuff;//頂点座標の代入
 																						 //xの最大値の比較
-					if (m_Enemy01ModelData[nCnt3].m_vtxMax.x >= vtx.x)
+					if (m_Enemy01ModelData[nEnemyCnt0].m_vtxMax.x >= vtx.x)
 					{
-						m_Enemy01ModelData[nCnt3].m_vtxMax.x = vtx.x;
+						m_Enemy01ModelData[nEnemyCnt0].m_vtxMax.x = vtx.x;
 					}
 					//ｘの最小値の比較
-					else if (m_Enemy01ModelData[nCnt3].m_vtxMin.x <= vtx.x)
+					else if (m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.x <= vtx.x)
 					{
-						m_Enemy01ModelData[nCnt3].m_vtxMin.x = vtx.x;
+						m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.x = vtx.x;
 					}
 					//yの最大値の比較
-					if (m_Enemy01ModelData[nCnt3].m_vtxMax.y >= vtx.y)
+					if (m_Enemy01ModelData[nEnemyCnt0].m_vtxMax.y >= vtx.y)
 					{
-						m_Enemy01ModelData[nCnt3].m_vtxMax.y = vtx.y;
+						m_Enemy01ModelData[nEnemyCnt0].m_vtxMax.y = vtx.y;
 					}
 					//yの最小値の比較
-					else if (m_Enemy01ModelData[nCnt3].m_vtxMin.y <= vtx.y)
+					else if (m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.y <= vtx.y)
 					{
-						m_Enemy01ModelData[nCnt3].m_vtxMin.y = vtx.y;
+						m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.y = vtx.y;
 					}
 					//zの最大値の比較
-					if (m_Enemy01ModelData[nCnt3].m_vtxMax.z >= vtx.z)
+					if (m_Enemy01ModelData[nEnemyCnt0].m_vtxMax.z >= vtx.z)
 					{
-						m_Enemy01ModelData[nCnt3].m_vtxMax.z = vtx.z;
+						m_Enemy01ModelData[nEnemyCnt0].m_vtxMax.z = vtx.z;
 					}
 					//zの最小値の比較
-					else if (m_Enemy01ModelData[nCnt3].m_vtxMin.z <= vtx.z)
+					else if (m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.z <= vtx.z)
 					{
-						m_Enemy01ModelData[nCnt3].m_vtxMin.z = vtx.z;
+						m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.z = vtx.z;
 					}
-					m_Enemy01ModelData[nCnt3].m_pVtxBuff += m_Enemy01ModelData[nCnt3].m_sizeFVF;//頂点フォーマットのサイズ分ポインタを進める
+					m_Enemy01ModelData[nEnemyCnt0].m_pVtxBuff += m_Enemy01ModelData[nEnemyCnt0].m_sizeFVF;//頂点フォーマットのサイズ分ポインタを進める
 				}
 				//頂点バッファをアンロック
-				m_Enemy01ModelData[nCnt3].m_pMesh->UnlockVertexBuffer();
+				m_Enemy01ModelData[nEnemyCnt0].m_pMesh->UnlockVertexBuffer();
 				//8つの頂点情報の保存
 				//左奥（上面）
-				m_Enemy01ModelData[nCnt3].m_vtx[0].vtx = D3DXVECTOR3(
-					-m_Enemy01ModelData[nCnt3].m_vtxMin.x,
-					m_Enemy01ModelData[nCnt3].m_vtxMin.y,
-					m_Enemy01ModelData[nCnt3].m_vtxMin.z);
+				m_Enemy01ModelData[nEnemyCnt0].m_vtx[0].vtx = D3DXVECTOR3(
+					-m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.x,
+					m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.y,
+					m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.z);
 				//右奥（上面）
-				m_Enemy01ModelData[nCnt3].m_vtx[1].vtx = D3DXVECTOR3(
-					m_Enemy01ModelData[nCnt3].m_vtxMin.x,
-					m_Enemy01ModelData[nCnt3].m_vtxMin.y,
-					m_Enemy01ModelData[nCnt3].m_vtxMin.z);
+				m_Enemy01ModelData[nEnemyCnt0].m_vtx[1].vtx = D3DXVECTOR3(
+					m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.x,
+					m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.y,
+					m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.z);
 				//左前（上面）
-				m_Enemy01ModelData[nCnt3].m_vtx[2].vtx = D3DXVECTOR3(
-					-m_Enemy01ModelData[nCnt3].m_vtxMin.x,
-					m_Enemy01ModelData[nCnt3].m_vtxMin.y,
-					-m_Enemy01ModelData[nCnt3].m_vtxMin.z);
+				m_Enemy01ModelData[nEnemyCnt0].m_vtx[2].vtx = D3DXVECTOR3(
+					-m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.x,
+					m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.y,
+					-m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.z);
 				//右前（上面）
-				m_Enemy01ModelData[nCnt3].m_vtx[3].vtx = D3DXVECTOR3(
-					m_Enemy01ModelData[nCnt3].m_vtxMin.x,
-					m_Enemy01ModelData[nCnt3].m_vtxMin.y,
-					-m_Enemy01ModelData[nCnt3].m_vtxMin.z);
+				m_Enemy01ModelData[nEnemyCnt0].m_vtx[3].vtx = D3DXVECTOR3(
+					m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.x,
+					m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.y,
+					-m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.z);
 				//左奥（下面）
-				m_Enemy01ModelData[nCnt3].m_vtx[4].vtx = D3DXVECTOR3(
-					-m_Enemy01ModelData[nCnt3].m_vtxMin.x,
-					-m_Enemy01ModelData[nCnt3].m_vtxMax.y,
-					m_Enemy01ModelData[nCnt3].m_vtxMin.z);
+				m_Enemy01ModelData[nEnemyCnt0].m_vtx[4].vtx = D3DXVECTOR3(
+					-m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.x,
+					-m_Enemy01ModelData[nEnemyCnt0].m_vtxMax.y,
+					m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.z);
 				//右奥（下面）
-				m_Enemy01ModelData[nCnt3].m_vtx[5].vtx = D3DXVECTOR3(
-					m_Enemy01ModelData[nCnt3].m_vtxMin.x,
-					-m_Enemy01ModelData[nCnt3].m_vtxMax.y,
-					m_Enemy01ModelData[nCnt3].m_vtxMin.z);
+				m_Enemy01ModelData[nEnemyCnt0].m_vtx[5].vtx = D3DXVECTOR3(
+					m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.x,
+					-m_Enemy01ModelData[nEnemyCnt0].m_vtxMax.y,
+					m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.z);
 				//左前（下面）
-				m_Enemy01ModelData[nCnt3].m_vtx[6].vtx = D3DXVECTOR3(
-					-m_Enemy01ModelData[nCnt3].m_vtxMin.x,
-					-m_Enemy01ModelData[nCnt3].m_vtxMax.y,
-					-m_Enemy01ModelData[nCnt3].m_vtxMin.z);
+				m_Enemy01ModelData[nEnemyCnt0].m_vtx[6].vtx = D3DXVECTOR3(
+					-m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.x,
+					-m_Enemy01ModelData[nEnemyCnt0].m_vtxMax.y,
+					-m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.z);
 				//右前（下面）
-				m_Enemy01ModelData[nCnt3].m_vtx[7].vtx = D3DXVECTOR3(
-					m_Enemy01ModelData[nCnt3].m_vtxMin.x,
-					-m_Enemy01ModelData[nCnt3].m_vtxMax.y,
-					-m_Enemy01ModelData[nCnt3].m_vtxMin.z);
-				nCnt3++;
+				m_Enemy01ModelData[nEnemyCnt0].m_vtx[7].vtx = D3DXVECTOR3(
+					m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.x,
+					-m_Enemy01ModelData[nEnemyCnt0].m_vtxMax.y,
+					-m_Enemy01ModelData[nEnemyCnt0].m_vtxMin.z);
+				nEnemyCnt0++;
+			}
+			//敵モデルを読み込む
+			if (strcmp(sString[0], "ENEMY02MODEL_FILENAME") == 0)
+			{
+				LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();//デバイスのポインタ
+				D3DXMATERIAL *pMat;
+				ModelData Securement = {};
+				m_Enemy02ModelData.push_back(Securement);
+
+				fscanf(File, "%s", &sString[1]);
+
+				//モデル情報の読み込み
+				fscanf(File, "%s", &sFileName);
+				D3DXLoadMeshFromX(sFileName,
+					D3DXMESH_SYSTEMMEM,
+					pDevice,
+					NULL,
+					&m_Enemy02ModelData[nEnemyCnt1].m_pBuffMat,
+					NULL,
+					&m_Enemy02ModelData[nEnemyCnt1].m_nNumMat,
+					&m_Enemy02ModelData[nEnemyCnt1].m_pMesh);
+
+				//マテリアル情報に対するポインタを取得
+				pMat = (D3DXMATERIAL *)m_Enemy02ModelData[nEnemyCnt1].m_pBuffMat->GetBufferPointer();
+				for (int nCntmat = 0; nCntmat < (int)m_Enemy02ModelData[nEnemyCnt1].m_nNumMat; nCntmat++)
+				{
+					if (pMat[nCntmat].pTextureFilename != NULL)
+					{
+						LPDIRECT3DTEXTURE9 Securement;
+
+						//テクスチャの読み込み
+						D3DXCreateTextureFromFile
+						(pDevice,
+							pMat[nCntmat].pTextureFilename,
+							&Securement);
+						m_Enemy02ModelData[nEnemyCnt1].m_pTexture.push_back(Securement);
+
+					}
+					else
+					{
+						m_Enemy02ModelData[nEnemyCnt1].m_pTexture.push_back(NULL);
+					}
+
+				}
+				//頂点数を取得
+				m_Enemy02ModelData[nEnemyCnt1].m_nNumVtx = m_Enemy02ModelData[nEnemyCnt1].m_pMesh->GetNumVertices();
+				//頂点フォーマットのサイズを取得
+				m_Enemy02ModelData[nEnemyCnt1].m_sizeFVF = D3DXGetFVFVertexSize(m_Enemy02ModelData[nEnemyCnt1].m_pMesh->GetFVF());
+				//頂点バッファをアンロック
+				m_Enemy02ModelData[nEnemyCnt1].m_pMesh->LockVertexBuffer(D3DLOCK_READONLY, (void**)&m_Enemy02ModelData[nEnemyCnt1].m_pVtxBuff);
+				//モデルの大きさを測る
+				for (int nCnt = 0; nCnt < m_Enemy02ModelData[nEnemyCnt1].m_nNumVtx; nCnt++)
+				{
+					D3DXVECTOR3 vtx = *(D3DXVECTOR3*)m_Enemy02ModelData[nEnemyCnt1].m_pVtxBuff;//頂点座標の代入
+																							   //xの最大値の比較
+					if (m_Enemy02ModelData[nEnemyCnt1].m_vtxMax.x >= vtx.x)
+					{
+						m_Enemy02ModelData[nEnemyCnt1].m_vtxMax.x = vtx.x;
+					}
+					//ｘの最小値の比較
+					else if (m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.x <= vtx.x)
+					{
+						m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.x = vtx.x;
+					}
+					//yの最大値の比較
+					if (m_Enemy02ModelData[nEnemyCnt1].m_vtxMax.y >= vtx.y)
+					{
+						m_Enemy02ModelData[nEnemyCnt1].m_vtxMax.y = vtx.y;
+					}
+					//yの最小値の比較
+					else if (m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.y <= vtx.y)
+					{
+						m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.y = vtx.y;
+					}
+					//zの最大値の比較
+					if (m_Enemy02ModelData[nEnemyCnt1].m_vtxMax.z >= vtx.z)
+					{
+						m_Enemy02ModelData[nEnemyCnt1].m_vtxMax.z = vtx.z;
+					}
+					//zの最小値の比較
+					else if (m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.z <= vtx.z)
+					{
+						m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.z = vtx.z;
+					}
+					m_Enemy02ModelData[nEnemyCnt1].m_pVtxBuff += m_Enemy02ModelData[nEnemyCnt1].m_sizeFVF;//頂点フォーマットのサイズ分ポインタを進める
+				}
+				//頂点バッファをアンロック
+				m_Enemy02ModelData[nEnemyCnt1].m_pMesh->UnlockVertexBuffer();
+				//8つの頂点情報の保存
+				//左奥（上面）
+				m_Enemy02ModelData[nEnemyCnt1].m_vtx[0].vtx = D3DXVECTOR3(
+					-m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.x,
+					m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.y,
+					m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.z);
+				//右奥（上面）
+				m_Enemy02ModelData[nEnemyCnt1].m_vtx[1].vtx = D3DXVECTOR3(
+					m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.x,
+					m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.y,
+					m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.z);
+				//左前（上面）
+				m_Enemy02ModelData[nEnemyCnt1].m_vtx[2].vtx = D3DXVECTOR3(
+					-m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.x,
+					m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.y,
+					-m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.z);
+				//右前（上面）
+				m_Enemy02ModelData[nEnemyCnt1].m_vtx[3].vtx = D3DXVECTOR3(
+					m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.x,
+					m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.y,
+					-m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.z);
+				//左奥（下面）
+				m_Enemy02ModelData[nEnemyCnt1].m_vtx[4].vtx = D3DXVECTOR3(
+					-m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.x,
+					-m_Enemy02ModelData[nEnemyCnt1].m_vtxMax.y,
+					m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.z);
+				//右奥（下面）
+				m_Enemy02ModelData[nEnemyCnt1].m_vtx[5].vtx = D3DXVECTOR3(
+					m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.x,
+					-m_Enemy02ModelData[nEnemyCnt1].m_vtxMax.y,
+					m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.z);
+				//左前（下面）
+				m_Enemy02ModelData[nEnemyCnt1].m_vtx[6].vtx = D3DXVECTOR3(
+					-m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.x,
+					-m_Enemy02ModelData[nEnemyCnt1].m_vtxMax.y,
+					-m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.z);
+				//右前（下面）
+				m_Enemy02ModelData[nEnemyCnt1].m_vtx[7].vtx = D3DXVECTOR3(
+					m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.x,
+					-m_Enemy02ModelData[nEnemyCnt1].m_vtxMax.y,
+					-m_Enemy02ModelData[nEnemyCnt1].m_vtxMin.z);
+				nEnemyCnt1++;
+			}
+			//敵モデルを読み込む
+			if (strcmp(sString[0], "ENEMY03MODEL_FILENAME") == 0)
+			{
+				LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();//デバイスのポインタ
+				D3DXMATERIAL *pMat;
+				ModelData Securement = {};
+				m_Enemy03ModelData.push_back(Securement);
+
+				fscanf(File, "%s", &sString[1]);
+
+				//モデル情報の読み込み
+				fscanf(File, "%s", &sFileName);
+				D3DXLoadMeshFromX(sFileName,
+					D3DXMESH_SYSTEMMEM,
+					pDevice,
+					NULL,
+					&m_Enemy03ModelData[nEnemyCnt2].m_pBuffMat,
+					NULL,
+					&m_Enemy03ModelData[nEnemyCnt2].m_nNumMat,
+					&m_Enemy03ModelData[nEnemyCnt2].m_pMesh);
+
+				//マテリアル情報に対するポインタを取得
+				pMat = (D3DXMATERIAL *)m_Enemy03ModelData[nEnemyCnt2].m_pBuffMat->GetBufferPointer();
+				for (int nCntmat = 0; nCntmat < (int)m_Enemy03ModelData[nEnemyCnt2].m_nNumMat; nCntmat++)
+				{
+					if (pMat[nCntmat].pTextureFilename != NULL)
+					{
+						LPDIRECT3DTEXTURE9 Securement;
+
+						//テクスチャの読み込み
+						D3DXCreateTextureFromFile
+						(pDevice,
+							pMat[nCntmat].pTextureFilename,
+							&Securement);
+						m_Enemy03ModelData[nEnemyCnt2].m_pTexture.push_back(Securement);
+
+					}
+					else
+					{
+						m_Enemy03ModelData[nEnemyCnt2].m_pTexture.push_back(NULL);
+					}
+
+				}
+				//頂点数を取得
+				m_Enemy03ModelData[nEnemyCnt2].m_nNumVtx = m_Enemy03ModelData[nEnemyCnt2].m_pMesh->GetNumVertices();
+				//頂点フォーマットのサイズを取得
+				m_Enemy03ModelData[nEnemyCnt2].m_sizeFVF = D3DXGetFVFVertexSize(m_Enemy03ModelData[nEnemyCnt2].m_pMesh->GetFVF());
+				//頂点バッファをアンロック
+				m_Enemy03ModelData[nEnemyCnt2].m_pMesh->LockVertexBuffer(D3DLOCK_READONLY, (void**)&m_Enemy03ModelData[nEnemyCnt2].m_pVtxBuff);
+				//モデルの大きさを測る
+				for (int nCnt = 0; nCnt < m_Enemy03ModelData[nEnemyCnt2].m_nNumVtx; nCnt++)
+				{
+					D3DXVECTOR3 vtx = *(D3DXVECTOR3*)m_Enemy03ModelData[nEnemyCnt2].m_pVtxBuff;//頂点座標の代入
+																							   //xの最大値の比較
+					if (m_Enemy03ModelData[nEnemyCnt2].m_vtxMax.x >= vtx.x)
+					{
+						m_Enemy03ModelData[nEnemyCnt2].m_vtxMax.x = vtx.x;
+					}
+					//ｘの最小値の比較
+					else if (m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.x <= vtx.x)
+					{
+						m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.x = vtx.x;
+					}
+					//yの最大値の比較
+					if (m_Enemy03ModelData[nEnemyCnt2].m_vtxMax.y >= vtx.y)
+					{
+						m_Enemy03ModelData[nEnemyCnt2].m_vtxMax.y = vtx.y;
+					}
+					//yの最小値の比較
+					else if (m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.y <= vtx.y)
+					{
+						m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.y = vtx.y;
+					}
+					//zの最大値の比較
+					if (m_Enemy03ModelData[nEnemyCnt2].m_vtxMax.z >= vtx.z)
+					{
+						m_Enemy03ModelData[nEnemyCnt2].m_vtxMax.z = vtx.z;
+					}
+					//zの最小値の比較
+					else if (m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.z <= vtx.z)
+					{
+						m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.z = vtx.z;
+					}
+					m_Enemy03ModelData[nEnemyCnt2].m_pVtxBuff += m_Enemy03ModelData[nEnemyCnt2].m_sizeFVF;//頂点フォーマットのサイズ分ポインタを進める
+				}
+				//頂点バッファをアンロック
+				m_Enemy03ModelData[nEnemyCnt2].m_pMesh->UnlockVertexBuffer();
+				//8つの頂点情報の保存
+				//左奥（上面）
+				m_Enemy03ModelData[nEnemyCnt2].m_vtx[0].vtx = D3DXVECTOR3(
+					-m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.x,
+					m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.y,
+					m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.z);
+				//右奥（上面）
+				m_Enemy03ModelData[nEnemyCnt2].m_vtx[1].vtx = D3DXVECTOR3(
+					m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.x,
+					m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.y,
+					m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.z);
+				//左前（上面）
+				m_Enemy03ModelData[nEnemyCnt2].m_vtx[2].vtx = D3DXVECTOR3(
+					-m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.x,
+					m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.y,
+					-m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.z);
+				//右前（上面）
+				m_Enemy03ModelData[nEnemyCnt2].m_vtx[3].vtx = D3DXVECTOR3(
+					m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.x,
+					m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.y,
+					-m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.z);
+				//左奥（下面）
+				m_Enemy03ModelData[nEnemyCnt2].m_vtx[4].vtx = D3DXVECTOR3(
+					-m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.x,
+					-m_Enemy03ModelData[nEnemyCnt2].m_vtxMax.y,
+					m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.z);
+				//右奥（下面）
+				m_Enemy03ModelData[nEnemyCnt2].m_vtx[5].vtx = D3DXVECTOR3(
+					m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.x,
+					-m_Enemy03ModelData[nEnemyCnt2].m_vtxMax.y,
+					m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.z);
+				//左前（下面）
+				m_Enemy03ModelData[nEnemyCnt2].m_vtx[6].vtx = D3DXVECTOR3(
+					-m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.x,
+					-m_Enemy03ModelData[nEnemyCnt2].m_vtxMax.y,
+					-m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.z);
+				//右前（下面）
+				m_Enemy03ModelData[nEnemyCnt2].m_vtx[7].vtx = D3DXVECTOR3(
+					m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.x,
+					-m_Enemy03ModelData[nEnemyCnt2].m_vtxMax.y,
+					-m_Enemy03ModelData[nEnemyCnt2].m_vtxMin.z);
+				nEnemyCnt2++;
 			}
 
 			//ゲームに配置するモデルを読み込む

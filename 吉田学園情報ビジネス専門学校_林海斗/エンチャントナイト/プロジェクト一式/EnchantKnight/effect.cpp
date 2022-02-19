@@ -27,7 +27,7 @@ CEffect::~CEffect()
 //インスタンス生成
 //---------------------------------------------------
 CEffect * CEffect::Create(D3DXVECTOR3 pos, D3DXVECTOR3 m_move, D3DXVECTOR3 size, D3DXCOLOR col, bool bGravity,
-	float fGravity, float fDefSpeed, bool bIsBill, CTexture::Type type, float fAng, bool bScele, bool bScaleX)
+	float fGravity, float fDefSpeed, bool bIsBill, CTexture::Type type, float fAng, bool bScele, bool bScaleX, bool bDef)
 {//	位置, 移動量, サイズ,色, 小さくなるスピード
 	//インスタンス生成
 	CEffect *pEffect = new CEffect(OBJTYPE_EFFECT);
@@ -45,7 +45,7 @@ CEffect * CEffect::Create(D3DXVECTOR3 pos, D3DXVECTOR3 m_move, D3DXVECTOR3 size,
 	pEffect->m_bOnBillbord = bIsBill;
 	pEffect->m_bScale = bScele;
 	pEffect->m_bScaleX = bScaleX;
-
+	pEffect->m_bDefScale = bDef;
 	if (pEffect != NULL)
 	{
 		//画像読み込み

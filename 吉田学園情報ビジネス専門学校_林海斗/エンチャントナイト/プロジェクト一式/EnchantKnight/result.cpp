@@ -10,7 +10,7 @@
 #include "Polygon.h"
 #include "XInput.h"
 #include "sound.h"
-
+#include "directinput.h"
 CBg *CResult::m_pBg = NULL;
 //--------------------------------------------
 //コンストラクタ
@@ -72,6 +72,7 @@ void CResult::Update(void)
 {
 
 	CXInput *pGamePad = CManager::GetXInput();
+
 	if (m_bNextMode == false)
 	{
 		if (pGamePad->GetButtonTrigger(XINPUT_GAMEPAD_DPAD_UP) == true)

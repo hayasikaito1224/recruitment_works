@@ -9,7 +9,7 @@
 //class C_Magic_Ice;
 
 class CModel;
-
+class CMagicCircle;
 class C_Magic_Skill01 : public C_Magic
 {
 public:
@@ -27,6 +27,7 @@ private:
 	D3DXMATRIX m_mtxWorld;											//ワールドマトリックス
 	bool m_bAttack;
 	D3DXVECTOR3 ModelRot;
+	CMagicCircle *m_pMagicCircle;
 	//C_Magic_Ice *m_pIce;
 
 };

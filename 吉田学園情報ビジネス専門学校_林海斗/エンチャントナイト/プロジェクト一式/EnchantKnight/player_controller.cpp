@@ -39,6 +39,7 @@ CPlayer_Controller::CPlayer_Controller()
 	m_pNearEnemy = nullptr;
 	m_bCommandMagic = false;
 	m_nMagicCommandType = 0;
+	m_bRockNear = false;
 }
 //--------------------------
 //デストラクト
@@ -375,6 +376,23 @@ int CPlayer_Controller::MagicAttack(D3DXVECTOR3 & pos, float& frotY, int& nMotio
 	return m_nMagicCommandType;
 
 }
+//------------------------------
+//必殺技発動
+//------------------------------
+bool CPlayer_Controller::SpecalSkill()
+{
+	bool bSkill = false;
+	//DirectInputのゲームパッドの取得
+	CDirectInput *pGamePad = CManager::GetDirectInput();
+	//ゲームパッドのボタン情報の取得
+	DIJOYSTATE2 GamePad = pGamePad->GetJoyState();
+
+	if (pGamePad->GetJoyState().lZ>=500)
+	{
+		bSkill = true;
+	}
+	return bSkill;
+}
 //----------------------------
 //ロックオンの処理
 //----------------------------
@@ -384,18 +402,8 @@ bool CPlayer_Controller::RockOn(D3DXVECTOR3 & pos, D3DXVECTOR3 & rot)
 	CDirectInput *pGamePad = CManager::GetDirectInput();
 	//ゲームパッドのボタン情報の取得
 	DIJOYSTATE2 GamePad = pGamePad->GetJoyState();
-	//ロックオン判定を変える
-	if (pGamePad->GetButtonTrigger(CDirectInput::R) == true)
-	{
-		CScene *pScene_E = CScene::GetScene(CScene::OBJTYPE_ENEMY);//一番最初の敵
-		if (pScene_E != nullptr)
-		{
-			m_bRockOn = m_bRockOn ? false : true;
+	m_bRockNear = false;
 
-		}
-		CManager::GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_SELECT);
-
-	}
 
 	//ロックオンしていなかったら一番近い敵を求める
 	if (m_bRockOn==false)
@@ -430,11 +438,17 @@ bool CPlayer_Controller::RockOn(D3DXVECTOR3 & pos, D3DXVECTOR3 & rot)
 					D3DXVECTOR3 EnemyVecNext = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 					EnemyVecNext = EnemyPosNext - pos;			//敵とプレイヤーのベクトル
 					fLength2 = sqrtf((EnemyVecNext.z*EnemyVecNext.z) + (EnemyVecNext.x*EnemyVecNext.x));
+					//敵との距離が近かったらロックオンできるようにする
+					if (fLength2 < PLAYER_ROCK_LENGTH)
+					{
+						m_bRockNear = true;
+					}
 
 					//今の敵が次の敵より遠かったら
 					if (fLength > fLength2)
 					{
 						m_pNearEnemy = pEnemyNext;
+						//m_bRockOn = false;
 					}
 				}
 			}
@@ -458,6 +472,7 @@ bool CPlayer_Controller::RockOn(D3DXVECTOR3 & pos, D3DXVECTOR3 & rot)
 		}
 		else
 		{
+			m_bRockNear = true;
 			D3DXVECTOR3 EnemyPos = m_pNearEnemy->GetEnemyPos();
 			m_NearEnemyVec = EnemyPos - pos;			//敵とプレイヤーのベクトル
 
@@ -499,6 +514,18 @@ bool CPlayer_Controller::RockOn(D3DXVECTOR3 & pos, D3DXVECTOR3 & rot)
 			}
 		}
 
+
+	}
+	//ロックオン判定を変える
+	if (pGamePad->GetButtonTrigger(CDirectInput::R) == true&& m_bRockNear == true)
+	{
+		CScene *pScene_E = CScene::GetScene(CScene::OBJTYPE_ENEMY);//一番最初の敵
+		if (pScene_E != nullptr)
+		{
+			m_bRockOn = m_bRockOn ? false : true;
+
+		}
+		CManager::GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_SELECT);
 
 	}
 	return m_bRockOn;
@@ -817,9 +844,13 @@ void CPlayer_Controller::Attack(const D3DXVECTOR3& pos, float& frotY, int& nComb
 	CDirectInput *pGamePad = CManager::GetDirectInput();
 	//ゲームパッドのボタン情報の取得
 	DIJOYSTATE2 GamePad = pGamePad->GetJoyState();
+
 	//攻撃判定に変える
 	if (pGamePad->GetButtonTrigger(CDirectInput::B) == true && bAttack ==false)
 	{
+		bAttack = true;
+		bAttackNext = false;
+
 		//プレイヤーを敵の方向に向かせる
 		if (m_pNearEnemy != nullptr&&bNearEnemy == true)
 		{
@@ -836,8 +867,6 @@ void CPlayer_Controller::Attack(const D3DXVECTOR3& pos, float& frotY, int& nComb
 		{
 			nComboType = COMBO_1;
 		}
-		bAttack = true;
-		bAttackNext = false;
 		CManager::GetSound()->StopSound(CSound::SOUND_LABEL_SE_WALK);
 
 		CManager::GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_SWORD_ATTACK);

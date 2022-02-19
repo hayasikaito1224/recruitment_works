@@ -22,11 +22,12 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-	static CPolygon *Create(D3DXVECTOR3 pos, D3DXVECTOR3 scale, CTexture::Type texture);
+	static CPolygon *Create(D3DXVECTOR3 pos, D3DXVECTOR3 scale, CTexture::Type texture, D3DXCOLOR col = {1.0,1.0,1.0,1.0});
 	void SetPos(D3DXVECTOR3 pos);
 	D3DXVECTOR3 GetPos(void) { return m_Pos; }
 	D3DXVECTOR3 GetScale(void) { return m_Scale; }
 	void SetDraw(bool bDraw) { m_bDraw = bDraw; }
+
 private:
 	D3DXVECTOR3 m_Pos;
 	D3DXVECTOR3 m_Scale;

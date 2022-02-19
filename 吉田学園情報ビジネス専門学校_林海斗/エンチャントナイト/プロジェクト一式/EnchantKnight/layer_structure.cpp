@@ -24,7 +24,7 @@ CLayer_Structure::~CLayer_Structure()
 //-----------------------------------------------------------
 //階層構造の読み込み
 //-----------------------------------------------------------
-void CLayer_Structure::SetLayer_Structure(const char *sFileName, CModel **apModel)
+void CLayer_Structure::SetLayer_Structure(const char *sFileName, CModel **apModel, int nType)
 {
 	int nIndex = 0;						//パーツの番号
 	int nParent = 0;				//親子関係
@@ -105,7 +105,7 @@ void CLayer_Structure::SetLayer_Structure(const char *sFileName, CModel **apMode
 					//モデルの生成
 					if (strcmp(string[2], "END_PARTSSET") == 0)
 					{
-						apModel[nIndex] = CModel::Create(PartsPos, PartsRot, nIndex, nTypeMode);
+						apModel[nIndex] = CModel::Create(PartsPos, PartsRot, nIndex, nType);
 
 						//親子関係を付ける
 						if (nParent != -1)
@@ -140,7 +140,7 @@ void CLayer_Structure::SetLayer_Structure(const char *sFileName, CModel **apMode
 	}
 }
 
-void CLayer_Structure::SetLayer_Structure(const char * sFileName, vector<CModel*>& pModel)
+void CLayer_Structure::SetLayer_Structure(const char * sFileName, vector<CModel*>& pModel, int nType)
 {
 	int nIndex = 0;						//パーツの番号
 	int nParent = 0;				//親子関係
@@ -228,7 +228,7 @@ void CLayer_Structure::SetLayer_Structure(const char * sFileName, vector<CModel*
 					//モデルの生成
 					if (strcmp(string[2], "END_PARTSSET") == 0)
 					{
-						pModel[nIndex] = CModel::Create(PartsPos, PartsRot, nIndex, nTypeMode);
+						pModel[nIndex] = CModel::Create(PartsPos, PartsRot, nIndex, nType);
 
 						//親子関係を付ける
 						if (nParent != -1)

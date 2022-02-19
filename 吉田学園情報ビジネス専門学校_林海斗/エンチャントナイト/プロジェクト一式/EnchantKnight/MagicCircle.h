@@ -18,9 +18,13 @@ public:
 	void ColSizeAdd();
 	void SetSize();
 	void SetCol(D3DXCOLOR col) { m_col = col; }
-	void SetbSizeAdd(bool bSizeAdd) { m_bSizeAdd = bSizeAdd; }
+	void SetbSizeAdd(bool bSizeAdd, float fSizeSpeed = 1.5f)
+	{ m_bSizeAdd = bSizeAdd;
+	m_fScaleSpeed = fSizeSpeed; }
 	void SetbSizeDef(bool bSizeDef) { m_bSizeDef = bSizeDef; }
-
+	void SetbEraseStart(bool bStart, float fSizeSpeed = 1.5f) { m_bEraseStart = bStart;
+	m_fScaleSpeed = fSizeSpeed;
+	}
 	/*
 	位置の設定,
 	サイズ,

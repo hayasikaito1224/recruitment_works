@@ -23,7 +23,10 @@ private:
 	D3DXMATRIX m_mtxWorld;											//ワールドマトリックス
 	bool m_bAttack;
 	float	m_fSpeed;
+	int m_nTimer;
 	D3DXVECTOR3 ModelRot;
 	CModel *m_pModel;
+	int m_nAttackTimer;
+
 };
 #endif // !_MAGIC_ICE_H_

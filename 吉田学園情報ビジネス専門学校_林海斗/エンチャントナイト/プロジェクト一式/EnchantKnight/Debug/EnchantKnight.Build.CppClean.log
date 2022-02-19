@@ -1,6 +1,6 @@
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\vc140.pdb
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\vc140.idb
-c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\particle.obj
+c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\particle_heeleffect.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\pause.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\player.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\player_controller.obj
@@ -17,19 +17,19 @@ c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\stage
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\swordeffect.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\texture.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\title.obj
+c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\wall.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\xinput.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\xload.obj
-c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\gauge.obj
-c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\goal.obj
-c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\hirarchdata.obj
-c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\input.obj
-c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\keyboard.obj
-c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\layer_structure.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\light.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\magic.obj
+c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\magiccircle.obj
+c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\magicui.obj
+c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\magic_big_ice.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\magic_fire.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\magic_heel.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\magic_ice.obj
+c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\magic_skill01.obj
+c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\magic_skill02.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\main.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\manager.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\map_polygon.obj
@@ -39,36 +39,109 @@ c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\model
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\motion.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\mouse.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\myallocatehierarchy.obj
-c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\bg.obj
-c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\billboard.obj
-c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\bumper.obj
+c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\particle.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\camera.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\collision.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\commandui.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\deleteitem.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\directinput.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\effect.obj
+c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\effect_ring.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\effect_sphere.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\enemy.obj
+c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\enemyspawner.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\enemy_poyo.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\fade.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\field.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\game.obj
-c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\effect_ring.obj
-c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\particle_heeleffect.obj
-c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\magiccircle.obj
-c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\magic_skill01.obj
-c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\magic_big_ice.obj
-c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\magic_skill02.obj
-c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\wall.obj
-c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\magicui.obj
-c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\enemyspawner.obj
+c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\gauge.obj
+c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\goal.obj
+c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\hirarchdata.obj
+c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\input.obj
+c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\keyboard.obj
+c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\layer_structure.obj
+c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\bg.obj
+c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\billboard.obj
+c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\bumper.obj
+c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\miss.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\vc140.pdb
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\vc140.idb
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\particle_heeleffect.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\pause.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\player.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\player_controller.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\polygon.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\renderer.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\result.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\scene.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\scene2d.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\scene3d.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\score.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\shadow.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\sound.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\stage.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\swordeffect.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\texture.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\title.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\wall.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\xinput.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\xload.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\magic.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\magiccircle.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\magicui.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\magic_big_ice.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\magic_fire.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\magic_heel.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\magic_ice.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\magic_skill01.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\magic_skill02.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\main.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\manager.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\map_polygon.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\meshsphere.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\miss.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\model.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\model_spawner.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\motion.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\mouse.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\myallocatehierarchy.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\particle.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\collision.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\commandui.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\deleteitem.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\directinput.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\effect.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\effect_ring.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\effect_sphere.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\enemy.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\enemyspawner.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\enemy_poyo.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\fade.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\field.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\game.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\gauge.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\goal.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\hirarchdata.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\input.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\keyboard.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\layer_structure.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\light.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\bg.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\billboard.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\bumper.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\camera.obj
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\circlegauge.obj
 c:\users\student\documents\visual studio 2015\projects\enchantknight\enchantknight.ilk
 c:\users\student\documents\visual studio 2015\projects\enchantknight\enchantknight.exe
 c:\users\student\documents\visual studio 2015\projects\enchantknight\enchantknight.pdb
-c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\enchantknight.tlog\cl.command.1.tlog
-c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\enchantknight.tlog\cl.read.1.tlog
-c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\enchantknight.tlog\cl.write.1.tlog
-c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\enchantknight.tlog\link.command.1.tlog
-c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\enchantknight.tlog\link.read.1.tlog
-c:\users\student\documents\visual studio 2015\projects\enchantknight\debug\enchantknight.tlog\link.write.1.tlog
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\enchantknight.ilk
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\enchantknight.exe
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\enchantknight.pdb
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\player.obj.enc
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\wall.obj.enc
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\enchantknight.tlog\cl.command.1.tlog
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\enchantknight.tlog\cl.read.1.tlog
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\enchantknight.tlog\cl.write.1.tlog
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\enchantknight.tlog\link.command.1.tlog
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\enchantknight.tlog\link.read.1.tlog
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\debug\enchantknight.tlog\link.write.1.tlog

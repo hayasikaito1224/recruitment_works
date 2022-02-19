@@ -260,8 +260,8 @@ bool CWall::TestCollision(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pLastpos, float fRadiu
 		}
 	}
 	//法線ベクトルが相手の半径以下になってる&&前の法線ベクトルが相手の半径以上だったら
-	if (fVecClossX[0] < 0.50f && fVecClossX[1] < 0.50f && fVecClossX[2] < 0.50f && fVecClossX[3] < 0.50f||
-		fVecClossZ[0] < 0.50f && fVecClossZ[1] < 0.50f && fVecClossZ[2] < 0.50f && fVecClossZ[3] < 0.50f)
+	if (fVecClossX[0] < 0.00f && fVecClossX[1] < 0.00f && fVecClossX[2] < 0.00f && fVecClossX[3] < 0.00f||
+		fVecClossZ[0] < 0.00f && fVecClossZ[1] < 0.00f && fVecClossZ[2] < 0.00f && fVecClossZ[3] < 0.00f)
 	{
 		if (fLength <= fRadius && fOldLength >= -10.0f)
 		{

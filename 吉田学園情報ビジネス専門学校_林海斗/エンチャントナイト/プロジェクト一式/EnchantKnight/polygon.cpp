@@ -54,7 +54,7 @@ HRESULT CPolygon::Init(void)
 	CScene2D::BindTexture(m_Tex);
 	CScene2D::Init();
 	CScene2D::SetPos(m_Pos, m_Scale);
-	CScene2D::SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	CScene2D::SetCol(m_col);
 	return S_OK;
 }
 
@@ -89,7 +89,7 @@ void CPolygon::Draw(void)
 //=============================================================================
 //クリエイト
 //=============================================================================
-CPolygon *CPolygon::Create(D3DXVECTOR3 pos, D3DXVECTOR3 scale, CTexture::Type texture)
+CPolygon *CPolygon::Create(D3DXVECTOR3 pos, D3DXVECTOR3 scale, CTexture::Type texture, D3DXCOLOR col)
 {
 	//インスタンス生成
 	CPolygon *pPolygon = new CPolygon(OBJTYPE_POLYGON);
@@ -97,6 +97,7 @@ CPolygon *CPolygon::Create(D3DXVECTOR3 pos, D3DXVECTOR3 scale, CTexture::Type te
 	pPolygon->m_Pos = pos;
 	pPolygon->m_Scale = scale;
 	pPolygon->m_Tex = texture;
+	pPolygon->m_col = col;
 
 	if (pPolygon != NULL)
 	{

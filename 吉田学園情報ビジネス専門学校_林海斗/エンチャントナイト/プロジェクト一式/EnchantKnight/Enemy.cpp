@@ -42,6 +42,7 @@ CEnemy::CEnemy(OBJTYPE nPriority) : CScene(nPriority)
 	m_bMotionStop = false;
 	m_pAttackModel.clear();
 	m_pMapPolygon = nullptr;
+	m_bMove = false;
 }
 
 CEnemy::~CEnemy()
@@ -121,6 +122,9 @@ void CEnemy::Uninit()
 //-----------------------------------------
 void CEnemy::Update()
 {
+	//前回の位置情報の保存
+	m_lastPos = m_pos;
+
 	//敵のAI移動
 	//死んでいなかったら行動する
 	if (m_nLife <= 0)
@@ -130,7 +134,7 @@ void CEnemy::Update()
 	}
 	if (m_bDeth == false)
 	{
-		AIMove();
+		AIBehavior();
 
 		if (m_bDraw == true)
 		{
@@ -157,39 +161,11 @@ void CEnemy::Update()
 			//プレイヤーに対しての当たり判定
 			if (pPlayer != NULL)
 			{
-				pCollision->CollisionObjectPlayer(pPlayer, &m_pos, &m_lastPos, 80.0f);
+				pCollision->CollisionObjectPlayer(pPlayer, &m_pos, &m_lastPos, m_pPartsModel[0]->GetMaxPos().x);
 				//攻撃判定が当たったかどうか調べる
 				if (m_bAttack == true && pPlayer->GetHit() == false)
 				{
-					bool bHit = pCollision->CollisionAttack({ m_pAttackModel[0]->GetMtxWorld()._41 , m_pAttackModel[0]->GetMtxWorld()._42, m_pAttackModel[0]->GetMtxWorld()._43 },
-						pPlayer->GetPos(), { pPlayer->GetParts(2)->GetMtxWorld()._41 ,pPlayer->GetParts(2)->GetMtxWorld()._42,pPlayer->GetParts(2)->GetMtxWorld()._43 },
-						80.0f);
-					if (bHit == true&& pPlayer->GetDeth()==false)
-					{
-						CManager::GetGame()->GetHPGauge()->SetGauge(m_nPower);
-						pPlayer->SetHit(true);
-						std::random_device random;	// 非決定的な乱数生成器
-						std::mt19937_64 mt(random());            // メルセンヌ・ツイスタの64ビット版、引数は初期シード
-						std::uniform_real_distribution<> randAng(-D3DX_PI, D3DX_PI);
-						D3DXVECTOR3 AttackModelPos = { m_pAttackModel[0]->GetMtxWorld()._41 , m_pAttackModel[0]->GetMtxWorld()._42, m_pAttackModel[0]->GetMtxWorld()._43 };
-						float fAng = randAng(mt);
-						//攻撃用のモデルとプレイヤーのベクトルを求める
-						D3DXVECTOR3 vec = AttackModelPos - pPlayer->GetPos();
-						float fAngle = atan2(vec.x, vec.y);//敵の向き
-														   //ヒットエフェクトのずらし位置を求める
-						D3DXVECTOR3 Addmove = D3DXVECTOR3(
-							sinf(fAngle)*20.0f,
-							0.0f,
-							cosf(fAngle)*20.0f);
-						D3DXVECTOR3 PlayerPos = { pPlayer->GetPos().x,pPlayer->GetPos().y + 60.0f,pPlayer->GetPos().z };
-						CEffect::Create
-						(PlayerPos + Addmove,
-						{ 0.0f,0.0f,0.0f }, { 1.2f,1.0f,0.0f },
-						{ 1.0,0.5,0.5,1.0f }, false, 0.0f, 0.03f, true, CTexture::HitEffect, fAng, true);
-						CManager::GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_DAMAGE);
-
-					}
-
+					Colision();
 				}
 			}
 
@@ -208,7 +184,7 @@ void CEnemy::Update()
 				CWall *pWall = (CWall*)pScene_Wall;
 				CScene *pNext_Wall = CScene::GetSceneNext(pScene_Wall);
 				//当たり判定
-				bool bHit = pWall->TestCollision(&m_pos, &m_lastPos, 50.0f);
+				bool bHit = pWall->TestCollision(&m_pos, &m_lastPos, m_pPartsModel[0]->GetMaxPos().x);
 				pScene_Wall = pNext_Wall;
 
 			}
@@ -218,7 +194,7 @@ void CEnemy::Update()
 			{
 				if (pEnemy != NULL /*&& pEnemy == this*/)
 				{
-					pCollision->CollisionObjectEnemy((CEnemy*)pEnemy, &m_pos, &m_lastPos, 50.0f);
+					pCollision->CollisionObjectEnemy((CEnemy*)pEnemy, &m_pos, &m_lastPos, m_pPartsModel[0]->GetMaxPos().x);
 				}
 				pEnemy = pEnemy->GetSceneNext(pEnemy);
 			}
@@ -233,7 +209,6 @@ void CEnemy::Update()
 
 			delete pCollision;
 		}
-		m_lastPos = m_pos;
 
 	}
 	else
@@ -299,6 +274,59 @@ void CEnemy::Draw()
 			m_pAttackModel[nCnt]->SetDraw(false);
 			m_pAttackModel[nCnt]->Draw();
 		}
+	}
+
+}
+void CEnemy::Colision()
+{
+}
+void CEnemy::AIAttack()
+{
+}
+void CEnemy::AIMove()
+{
+	if (m_fPlayerVecLength < MAX_COLRADIUS)
+	{
+		m_bMove = true;
+		//自動で動くできるやつをオフにする
+		m_bAIMove = false;
+		m_bAIMoveStop = true;
+
+	}
+	//範囲外の時
+	else
+	{
+		m_bMove = false;
+		m_bAIMoveStop = false;
+
+		s_bCntStop = true;
+	}
+	//自動移動ができるなら
+	if (m_bMove)
+	{
+		m_rot.y = m_fAng + (D3DX_PI);
+		//発射する方向を求める
+		m_MoveSpeed.x = sinf(m_fAng)*MAX_SPEED;
+		m_MoveSpeed.z = cosf(m_fAng)*MAX_SPEED;
+		m_MotionType = MOVE;
+
+		m_fWalkSoundInterval -= 0.1f;
+
+		if (m_fWalkSoundInterval <= 0.0f)
+		{
+			CManager::GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_ENEMYWALK);
+			CManager::GetSound()->ControllVoice(CSound::SOUND_LABEL_SE_ENEMYWALK, 0.6f);
+			m_fWalkSoundInterval = 2.3f;
+		}
+		m_pos += m_MoveSpeed;
+
+	}
+	else
+	{
+		m_MotionType = NEUTRAL;
+		m_MoveSpeed.x = 0.0f;
+		m_MoveSpeed.y = 0.0f;
+		m_MoveSpeed.z = 0.0f;
 	}
 
 }
@@ -394,19 +422,18 @@ bool  CEnemy::bColision()
 //AIの処理
 //-----------------------------------------
 
-void CEnemy::AIMove()
+void CEnemy::AIBehavior()
 {
 	D3DXVECTOR3	pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	pos = CManager::GetGame()->GetPlayer()->GetPos();				//位置
 	D3DXVECTOR3 PlayerVec = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	PlayerVec = pos - m_pos;			//敵と弾のベクトル
-	float fLength = 0.0f;
 	float fLengthX = 0.0f;
-	fLength = sqrtf((PlayerVec.z*PlayerVec.z) + (PlayerVec.x*PlayerVec.x));
+	m_fPlayerVecLength = sqrtf((PlayerVec.z*PlayerVec.z) + (PlayerVec.x*PlayerVec.x));
 	m_fAng = atan2(PlayerVec.x, PlayerVec.z);//敵の向き
 	float fAngle = atan2(PlayerVec.x, PlayerVec.z);//敵の向き
 	//敵の出現
-	if (fLength < MAX_DRAWRADIUS)
+	if (m_fPlayerVecLength < MAX_DRAWRADIUS)
 	{
 		m_bDraw = true;
 	}
@@ -414,69 +441,15 @@ void CEnemy::AIMove()
 	{
 		m_bDraw = false;
 	}
+
 	//敵の追従
 	if (m_bAttack == false)
 	{
-		if (fLength < MAX_COLRADIUS)
-		{
-			//自動で動くできるやつをオフにする
-			m_bAIMove = false;
-			m_bAIMoveStop = true;
-			m_rot.y = m_fAng + (D3DX_PI);
-			//発射する方向を求める
-			m_MoveSpeed.x = sinf(m_fAng)*MAX_SPEED;
-			m_MoveSpeed.z = cosf(m_fAng)*MAX_SPEED;
-			m_MotionType = MOVE;
-
-			m_fWalkSoundInterval -= 0.1f;
-
-			if (m_fWalkSoundInterval <= 0.0f)
-			{
-				CManager::GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_ENEMYWALK);
-				CManager::GetSound()->ControllVoice(CSound::SOUND_LABEL_SE_ENEMYWALK,0.6f);
-				m_fWalkSoundInterval = 2.3f;
-			}
-			m_pos += m_MoveSpeed;
-
-		}
-		//範囲外の時
-		else
-		{
-			m_bAIMoveStop = false;
-			m_MotionType = NEUTRAL;
-			m_MoveSpeed.x = 0.0f;
-			m_MoveSpeed.y = 0.0f;
-			m_MoveSpeed.z = 0.0f;
-
-			s_bCntStop = true;
-		}
-
+		AIMove();
 	}
 	//プレイヤーが攻撃範囲に入ったら
-	if (fLength < MAX_ATTACKSTART_RADIUS)
-	{
-		if (m_bAttack == false)
-		{
-			m_nAttackStartCnt++;
-			//攻撃開始時間になったら
-			if (m_nAttackStartCnt >= MAX_ATTACKSTARTTIME)
-			{
-				m_nAttackStartCnt = 0;
-				m_MotionType = ATTACK;
-				m_bAttack = true;
-				//攻撃音
-				CManager::GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_SWORD_ATTACK);
-				CManager::GetSound()->ControllVoice(CSound::SOUND_LABEL_SE_SWORD_ATTACK,0.7f);
+	AIAttack();
 
-			}
-
-		}
-	}
-	else
-	{
-		m_nAttackStartCnt = 0;
-
-	}
 	if (m_bAIMoveStop == false && m_bDraw == true)
 	{
 		//敵が自動で動ける状態だったら

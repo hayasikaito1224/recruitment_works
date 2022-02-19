@@ -8,6 +8,8 @@
 #define MAX_MAGICCOMMAND (3)
 #define MAX_COMMAND (3)
 #define MAX_SPAWNER (3)
+#define PLAYER_CP (100)		//É}ÉiÇÃëΩÇ≥
+
 //ëOï˚êÈåæ
 class CBg;
 class CPlayer;
@@ -27,6 +29,8 @@ class CCommandUI;
 class CMagicUI;
 class CGauge;
 class CEnemy_Spawner;
+class CCircleGauge;
+
 class CGame
 {
 public:
@@ -54,7 +58,7 @@ public:
 	static CParticle		*GetParticle(void) { return m_Particle; }
 	static CGauge		*GetHPGauge() { return m_pHPGauge; }
 	static CGauge		*GetMPGauge() { return m_pMPGauge; }
-	static CGauge		*GetCPGauge() { return m_pCPGauge; }
+	static CCircleGauge		*GetCPGauge() { return m_pCPGauge; }
 	static CEnemy_Spawner		*GetEnemySpawner(int nNum) { return m_pEnemySpawner[nNum]; }
 
 	static CMagicUI	*GetMagicCommand(int nType) { return m_pMagicCommand[nType]; }
@@ -62,9 +66,9 @@ public:
 private:
 	static CGauge *m_pHPGauge;
 	static CGauge *m_pMPGauge;
-	static CGauge *m_pCPGauge;
 	static std::vector<CPolygon*> m_pCStock;
 	static CEnemy_Spawner	*m_pEnemySpawner[MAX_SPAWNER];
+	static CCircleGauge	*m_pCPGauge;
 
 	static CCommandUI	*m_pCommand;
 	static CMagicUI	*m_pMagicCommand[MAX_MAGICCOMMAND];

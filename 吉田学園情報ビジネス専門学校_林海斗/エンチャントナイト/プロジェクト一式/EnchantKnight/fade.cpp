@@ -94,7 +94,7 @@ void CFade::Update(void)
 		//フェード画面を出す
 		else if (m_fade == FADE_OUT)
 		{
-			m_colorAlpha += 0.01f;
+			m_colorAlpha += 0.05f;
 
 			if (m_colorAlpha >= 1.0f)
 			{

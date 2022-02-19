@@ -43,6 +43,13 @@ void CModel::Init()
 	case TYPE_OBJECT:
 		m_pModelDataX = pModelDataX->GetObjectData(m_nModelType);
 		break;
+	case TYPE_FRAMEENEMY:
+		m_pModelDataX = pModelDataX->GetEnemy02ModelData(m_nModelType);
+		break;
+	case TYPE_CRYSTALENEMY:
+		m_pModelDataX = pModelDataX->GetEnemy03ModelData(m_nModelType);
+		break;
+
 	}
 
 	for (int nVtx = 0; nVtx < MAX_MODEL_VTX; nVtx++)

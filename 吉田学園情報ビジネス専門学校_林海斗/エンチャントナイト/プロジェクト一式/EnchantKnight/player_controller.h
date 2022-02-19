@@ -47,13 +47,14 @@ public:
 	void Jump(float& fGravity,bool& bJump);
 	void Gravity(D3DXVECTOR3& pos, float& fGravity,const float& fGravitySpeed, bool& bJump);		//重力
 	bool RockOn(D3DXVECTOR3& pos, D3DXVECTOR3& rot);//ロックオン
-
+	bool SpecalSkill();//必殺技発動
 private:
 	CEnemy *m_pNearEnemy;
 	bool	m_bCommandMagic;//まほうコマンドを選択したかの判定
 	void LengthNearEnemy(D3DXVECTOR3 & pos);//一番近い敵を求める
 	void RotNearEnemy();//一番プレイヤーが向いている方向に近い敵を求める
 	bool	m_bRockOn;												//現在ロックオンしているかの判定
+	bool m_bRockNear;
 	D3DXVECTOR3 m_NearEnemyVec;
 	float m_rot_y, m_fAngle, m_fAngleScece,m_LastAngle;
 	bool	m_bJumpLock;											//ジャンプの制限

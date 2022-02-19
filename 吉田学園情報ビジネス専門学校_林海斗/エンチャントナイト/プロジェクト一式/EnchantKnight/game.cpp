@@ -38,12 +38,12 @@
 #include "magic_fire.h"
 #include "enemyspawner.h"
 #include "miss.h"
-#define MAGICCOMMAND_SIZE_X (200)
-#define MAGICCOMMAND_SIZE_Y (30)
-#define MAGICCOMMAND_INTERVAL (200)
+#include "circlegauge.h"
+#define MAGICCOMMAND_SIZE_X (140)
+#define MAGICCOMMAND_SIZE_Y (20)
+#define MAGICCOMMAND_INTERVAL (140)
 #define PLAYER_LIFE (100)		//生命力
 #define PLAYER_MP (100)		//マナの多さ
-#define PLAYER_CP (100)		//マナの多さ
 #define MAX_DELAY (30)//ディレイの最大
 //静的メンバ変数宣言
 CBg		*CGame::m_pBg = nullptr;
@@ -63,7 +63,7 @@ CMagicUI   *CGame::m_pMagicCommand[MAX_MAGICCOMMAND] = {};
 CParticle   *CGame::m_Particle = nullptr;
 CGauge   *CGame::m_pHPGauge = nullptr;
 CGauge   *CGame::m_pMPGauge = nullptr;
-CGauge   *CGame::m_pCPGauge = nullptr;
+CCircleGauge   *CGame::m_pCPGauge = nullptr;
 CEnemy_Spawner   *CGame::m_pEnemySpawner[MAX_SPAWNER] = {};
 
 std::vector<CPolygon*>   CGame::m_pCStock = {};
@@ -98,6 +98,7 @@ CGame::CGame()
 	m_Particle = nullptr;
 	m_pCommand = nullptr;
 	m_pStage = nullptr;
+	m_Polygon = nullptr;
 	memset(&m_pEnemySpawner, NULL, sizeof(m_pEnemySpawner));
 	m_nCntDelay = 0;
 	memset(&m_pMagicCommand, NULL, sizeof(m_pMagicCommand));
@@ -136,11 +137,11 @@ HRESULT CGame::Init(void)
 	}
 
 	//まほうコマンドの生成
-	for (int nCnt = 0; nCnt < CCommandUI::Magic_Max; nCnt++)
+	for (int nCnt = 0; nCnt < CCommandUI::Magic_Max-1; nCnt++)
 	{
 		if (m_pMagicCommand[nCnt] == nullptr)
 		{
-			CTexture::Type TexType = CTexture::None;
+			CTexture::Type TexType = CTexture::Text;
 			//魔法タイプごとにテクスチャを変える
 			switch (nCnt)
 			{
@@ -157,7 +158,7 @@ HRESULT CGame::Init(void)
 			//コマンド用のポリゴンの生成
 			m_pMagicCommand[nCnt] = CMagicUI::Create({
 				MAGICCOMMAND_INTERVAL,
-				800.0f + (MAGICCOMMAND_SIZE_Y *2.1f*nCnt),
+				600.0f + (MAGICCOMMAND_SIZE_Y *2.1f*nCnt),
 				0.0f },
 				{ MAGICCOMMAND_SIZE_X ,MAGICCOMMAND_SIZE_Y,0.0f }, TexType);
 		}
@@ -175,17 +176,20 @@ HRESULT CGame::Init(void)
 	//HPバーの生成
 	if (m_pHPGauge == nullptr)
 	{
-		m_pHPGauge = CGauge::Create({ 1900.0f,930.0f,0.0f }, { 600.0f,20.0f,0.0f }, { 0.5,1.0,0.5,1.0 }, 600.0f, PLAYER_LIFE, CGauge::L_ADD);
+		m_pHPGauge = CGauge::Create({ SCREEN_WIDTH,SCREEN_HEIGHT-40.0f,0.0f }, { 400.0f,15.0f,0.0f }, { 0.5,1.0,0.5,1.0 }, 400.0f, PLAYER_LIFE, CGauge::L_ADD);
 	}
 	//MPバーの生成
 	if (m_pMPGauge == nullptr)
 	{
-		m_pMPGauge = CGauge::Create({ 1900.0f,970.0f,0.0f }, { 600.0f,15.0f,0.0f }, { 0.5,0.5,1.0,1.0 }, 600.0f, PLAYER_MP, CGauge::L_ADD);
+		m_pMPGauge = CGauge::Create({ SCREEN_WIDTH,SCREEN_HEIGHT-20.0f,0.0f }, { 400.0f,5.0f,0.0f }, { 0.5,0.5,1.0,1.0 }, 400.0f, PLAYER_MP, CGauge::L_ADD);
 	}
 	//CPバーの生成
 	if (m_pCPGauge == nullptr)
 	{
-		m_pCPGauge = CGauge::Create({ 10.0f,600.0f,0.0f }, { 0.0f,20.0f,0.0f }, { 1.0,1.0,0.0,1.0 }, 300.0f, PLAYER_CP, CGauge::R_ADD);
+		CPolygon::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT-40.0f, 0.0f),
+			D3DXVECTOR3(60.0f, 40.0f, 0.0f), CTexture::SKILLGAUGE, {1.0,1.0,1.0,0.1f});
+
+		m_pCPGauge = CCircleGauge::Create({ SCREEN_WIDTH/2.0f,SCREEN_HEIGHT,0.0f }, { 60.0f,0.0f,0.0f }, { 1.0,1.0,1.0,0.4f }, 80.0f, PLAYER_CP);
 		m_pCPGauge->SetGaugeValue(0);
 	}
 
@@ -219,10 +223,10 @@ HRESULT CGame::Init(void)
 
 	//目的表示
 	CPolygon::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 40.0f, 0.0f),
-		D3DXVECTOR3(430.0f, 40.0f, 0.0f), CTexture::TargetText);
+		D3DXVECTOR3(210.0f, 20.0f, 0.0f), CTexture::TargetText);
 	//操作方法
-	CPolygon::Create(D3DXVECTOR3(200.0f, SCREEN_HEIGHT/2.0f, 0.0f),
-		D3DXVECTOR3(200.0f, 100.0f, 0.0f), CTexture::Operation);
+	CPolygon::Create(D3DXVECTOR3(130.0f, SCREEN_HEIGHT/2.0f, 0.0f),
+		D3DXVECTOR3(130.0f, 90.0f, 0.0f), CTexture::Operation);
 
 	m_fAlpha = 1.0f;
 	m_bNextMode = false;
@@ -273,15 +277,20 @@ void CGame::Uninit(void)
 		m_pHPGauge->Uninit();
 		m_pHPGauge = nullptr;
 	}
-	//if (m_pCPGauge != nullptr)
-	//{
-	//	m_pCPGauge->Uninit();
-	//	m_pCPGauge = nullptr;
-	//}
+	if (m_pCPGauge != nullptr)
+	{
+		m_pCPGauge->Uninit();
+		m_pCPGauge = nullptr;
+	}
 	if (!m_pCommand)
 	{
 		m_pCommand->Uninit();
 		m_pCommand = nullptr;
+	}
+	if (m_Polygon != nullptr)
+	{
+		m_Polygon->Uninit();
+		m_Polygon = nullptr;
 	}
 	for (int nCnt = 0; nCnt < MAX_SPAWNER; nCnt++)
 	{
@@ -332,7 +341,11 @@ void CGame::Update(void)
 			{
 
 				//魔法を打てる状態にする
-				m_Player->SetState(m_Player->STATE_MAGIC);
+				if (m_Player->GetDodge() == false)
+				{
+					m_Player->SetState(m_Player->STATE_MAGIC);
+
+				}
 				if (m_pCommand != nullptr)
 				{
 					m_pCommand->SetPush(true);
@@ -436,18 +449,21 @@ void CGame::Update(void)
 		{
 			m_pMPGauge->SetGauge(-0.06);
 		}
+		if (m_pCPGauge != nullptr)
+		{
 
+			//チャンスゲージが１００言ったら
+			if (m_pCPGauge->GetGaugeValue() >= PLAYER_CP)
+			{
+				//CPolygon *pPoly = {};
+				//m_pCStock.push_back(pPoly);
+				//m_pCStock[m_nChanceStock] = CPolygon::Create({ 20.0f + (20.0f*m_nChanceStock),560.0f,0.0f }, { 10.0f,20.0f,0.0f }, CTexture::Text);
+				//m_nChanceStock++;
+				//m_pCPGauge->ResetGauge();
+			}
+
+		}
 	}
-	//チャンスゲージが１００育ごとにゲージリセット
-	//if (m_pCPGauge->GetGaugeValue() >= PLAYER_CP)
-	//{
-	//	CPolygon *pPoly = {};
-	//	m_pCStock.push_back(pPoly);
-	//	m_pCStock[m_nChanceStock] = CPolygon::Create({ 20.0f + (20.0f*m_nChanceStock),560.0f,0.0f }, { 10.0f,20.0f,0.0f }, CTexture::Text);
-	//	m_nChanceStock++;
-	//	m_pCPGauge->ResetGauge();
-	//}
-
 
 }
 

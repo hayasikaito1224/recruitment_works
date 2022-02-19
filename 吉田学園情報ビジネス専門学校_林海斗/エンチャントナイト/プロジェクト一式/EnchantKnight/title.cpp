@@ -10,7 +10,7 @@
 #include "Polygon.h"
 #include "XInput.h"
 #include "sound.h"
-
+#include "directinput.h"
 //--------------------------------------------
 //コンストラクタ
 //--------------------------------------------
@@ -56,10 +56,12 @@ void CTitle::Uninit(void)
 void CTitle::Update(void)
 {
 	CXInput *pGamePad = CManager::GetXInput();
+	CDirectInput *pDGamePad = CManager::GetDirectInput();
 
 	//Aボタンを押すと
 	if (pGamePad->GetButtonTrigger(XINPUT_GAMEPAD_A) == true ||
-		pGamePad->GetButtonTrigger(XINPUT_GAMEPAD_START) == true)
+		pGamePad->GetButtonTrigger(XINPUT_GAMEPAD_START) == true||
+		pDGamePad->GetButtonTrigger(CDirectInput::START)==true)
 	{
 		if (m_bNextMode == false)
 		{

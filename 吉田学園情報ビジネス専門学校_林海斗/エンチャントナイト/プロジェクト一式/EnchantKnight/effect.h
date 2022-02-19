@@ -32,7 +32,8 @@ public:
 	 Texture
 	*/
 	static CEffect *Create(D3DXVECTOR3 pos, D3DXVECTOR3 m_move, D3DXVECTOR3 size, D3DXCOLOR col,bool bGravity,
-		float fGravity, float fDefSpeed, bool bIsBill,CTexture::Type type = CTexture::Text,float fAng = 0.0f,bool bScele=false,bool bScaleX=false);
+		float fGravity, float fDefSpeed, bool bIsBill,CTexture::Type type = CTexture::Text,float fAng = 0.0f,
+		bool bScele=false,bool bScaleX=false,bool bDef = false);
 	
 private:
 	float m_fGravity;//èdóÕ

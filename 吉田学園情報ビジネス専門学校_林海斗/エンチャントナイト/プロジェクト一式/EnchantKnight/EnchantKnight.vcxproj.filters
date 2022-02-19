@@ -61,17 +61,11 @@
     <Filter Include="ソース ファイル\シーン">
       <UniqueIdentifier>{9d78ad03-f168-425c-85d5-07eef0f05ca7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="キャラクター\敵">
-      <UniqueIdentifier>{1b464bad-c141-4c01-b86b-60d115a111cd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="キャラクター\モーション">
       <UniqueIdentifier>{3416964b-a128-48ea-878f-465363f0ef1a}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\ゲージ関係">
       <UniqueIdentifier>{9d7ad13f-9608-4b3c-a3bc-5fe4b9e8f57e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="キャラクター\プレイヤー\魔法">
-      <UniqueIdentifier>{38e87f36-0f6b-403e-9d31-02961b3a06cb}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\壁・床">
       <UniqueIdentifier>{29a5be17-e6b3-4051-bb7e-4207da980116}</UniqueIdentifier>
@@ -81,6 +75,15 @@
     </Filter>
     <Filter Include="ソース ファイル\失敗画面">
       <UniqueIdentifier>{c28f0b61-6371-4a41-995a-445a346c477d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\テクスチャ">
+      <UniqueIdentifier>{759228e3-ab64-46f7-b890-50f2c564562b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="キャラクター\敵">
+      <UniqueIdentifier>{1b464bad-c141-4c01-b86b-60d115a111cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="キャラクター\魔法">
+      <UniqueIdentifier>{38e87f36-0f6b-403e-9d31-02961b3a06cb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -97,9 +100,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="stage.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="texture.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="deleteItem.h">
@@ -220,16 +220,16 @@
       <Filter>キャラクター\敵</Filter>
     </ClInclude>
     <ClInclude Include="magic.h">
-      <Filter>キャラクター\プレイヤー\魔法</Filter>
+      <Filter>キャラクター\魔法</Filter>
     </ClInclude>
     <ClInclude Include="magic_fire.h">
-      <Filter>キャラクター\プレイヤー\魔法</Filter>
+      <Filter>キャラクター\魔法</Filter>
     </ClInclude>
     <ClInclude Include="magic_ice.h">
-      <Filter>キャラクター\プレイヤー\魔法</Filter>
+      <Filter>キャラクター\魔法</Filter>
     </ClInclude>
     <ClInclude Include="magic_heel.h">
-      <Filter>キャラクター\プレイヤー\魔法</Filter>
+      <Filter>キャラクター\魔法</Filter>
     </ClInclude>
     <ClInclude Include="bumper.h">
       <Filter>キャラクター\敵</Filter>
@@ -250,13 +250,13 @@
       <Filter>エフェクト</Filter>
     </ClInclude>
     <ClInclude Include="magic_skill01.h">
-      <Filter>キャラクター\プレイヤー\魔法</Filter>
+      <Filter>キャラクター\魔法</Filter>
     </ClInclude>
     <ClInclude Include="magic_big_Ice.h">
-      <Filter>キャラクター\プレイヤー\魔法</Filter>
+      <Filter>キャラクター\魔法</Filter>
     </ClInclude>
     <ClInclude Include="magic_skill02.h">
-      <Filter>キャラクター\プレイヤー\魔法</Filter>
+      <Filter>キャラクター\魔法</Filter>
     </ClInclude>
     <ClInclude Include="wall.h">
       <Filter>ソース ファイル\壁・床</Filter>
@@ -276,11 +276,29 @@
     <ClInclude Include="miss.h">
       <Filter>ソース ファイル\失敗画面</Filter>
     </ClInclude>
+    <ClInclude Include="circlegauge.h">
+      <Filter>ソース ファイル\ゲージ関係</Filter>
+    </ClInclude>
+    <ClInclude Include="texture.h">
+      <Filter>ソース ファイル\テクスチャ</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy_Frame.h">
+      <Filter>キャラクター\敵</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy_magic_fire.h">
+      <Filter>キャラクター\魔法</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy_Crystal.h">
+      <Filter>キャラクター\敵</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy_magic_ice.h">
+      <Filter>キャラクター\魔法</Filter>
+    </ClInclude>
+    <ClInclude Include="col_area.h">
+      <Filter>エフェクト</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="texture.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="deleteItem.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -414,16 +432,16 @@
       <Filter>キャラクター\敵</Filter>
     </ClCompile>
     <ClCompile Include="magic.cpp">
-      <Filter>キャラクター\プレイヤー\魔法</Filter>
+      <Filter>キャラクター\魔法</Filter>
     </ClCompile>
     <ClCompile Include="magic_fire.cpp">
-      <Filter>キャラクター\プレイヤー\魔法</Filter>
+      <Filter>キャラクター\魔法</Filter>
     </ClCompile>
     <ClCompile Include="magic_ice.cpp">
-      <Filter>キャラクター\プレイヤー\魔法</Filter>
+      <Filter>キャラクター\魔法</Filter>
     </ClCompile>
     <ClCompile Include="magic_heel.cpp">
-      <Filter>キャラクター\プレイヤー\魔法</Filter>
+      <Filter>キャラクター\魔法</Filter>
     </ClCompile>
     <ClCompile Include="bumper.cpp">
       <Filter>キャラクター\敵</Filter>
@@ -444,13 +462,13 @@
       <Filter>エフェクト</Filter>
     </ClCompile>
     <ClCompile Include="magic_skill01.cpp">
-      <Filter>キャラクター\プレイヤー\魔法</Filter>
+      <Filter>キャラクター\魔法</Filter>
     </ClCompile>
     <ClCompile Include="magic_big_Ice.cpp">
-      <Filter>キャラクター\プレイヤー\魔法</Filter>
+      <Filter>キャラクター\魔法</Filter>
     </ClCompile>
     <ClCompile Include="magic_skill02.cpp">
-      <Filter>キャラクター\プレイヤー\魔法</Filter>
+      <Filter>キャラクター\魔法</Filter>
     </ClCompile>
     <ClCompile Include="wall.cpp">
       <Filter>ソース ファイル\壁・床</Filter>
@@ -469,6 +487,27 @@
     </ClCompile>
     <ClCompile Include="miss.cpp">
       <Filter>ソース ファイル\失敗画面</Filter>
+    </ClCompile>
+    <ClCompile Include="circlegauge.cpp">
+      <Filter>ソース ファイル\ゲージ関係</Filter>
+    </ClCompile>
+    <ClCompile Include="texture.cpp">
+      <Filter>ソース ファイル\テクスチャ</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy_Frame.cpp">
+      <Filter>キャラクター\敵</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy_magic_fire.cpp">
+      <Filter>キャラクター\魔法</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy_Crystal.cpp">
+      <Filter>キャラクター\敵</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy_magic_ice.cpp">
+      <Filter>キャラクター\魔法</Filter>
+    </ClCompile>
+    <ClCompile Include="col_area.cpp">
+      <Filter>エフェクト</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

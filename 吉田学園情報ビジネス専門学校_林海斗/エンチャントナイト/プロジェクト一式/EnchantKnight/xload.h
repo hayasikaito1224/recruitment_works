@@ -41,11 +41,15 @@ public:
 	static void Load(void);
 	static ModelData GetPlayerModelData(int nType) { return m_PlayerModelData[nType]; }
 	static ModelData GetEnemy01ModelData(int nType) { return m_Enemy01ModelData[nType]; }
+	static ModelData GetEnemy02ModelData(int nType) { return m_Enemy02ModelData[nType]; }
+	static ModelData GetEnemy03ModelData(int nType) { return m_Enemy03ModelData[nType]; }
 
 	static ModelData GetObjectData(int nType){ return m_ObjectModelData[nType]; }
 private:
 	static vector<ModelData>		m_PlayerModelData;//モデル情報の構造体
 	static vector<ModelData>		m_Enemy01ModelData;//モデル情報の構造体
+	static vector<ModelData>		m_Enemy02ModelData;//モデル情報の構造体フレイムウィッチ
+	static vector<ModelData>		m_Enemy03ModelData;//モデル情報の構造体クリスタルウィッチ
 
 	static vector<ModelData>		m_ObjectModelData;//モデル情報の構造体
 

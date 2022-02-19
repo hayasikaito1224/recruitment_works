@@ -3,6 +3,8 @@
 //=======================================
 #include "enemyspawner.h"
 #include "Enemy_poyo.h"
+#include "Enemy_Frame.h"
+#include "Enemy_Crystal.h"
 //=======================================
 //コンストラクタ
 //=======================================
@@ -37,8 +39,20 @@ HRESULT CEnemy_Spawner::Init()
 		std::uniform_real_distribution<> randAreaZ(-m_fAreaZ, m_fAreaZ);
 		float fAreaX = (float)randAreaX(mt);
 		float fAreaZ = (float)randAreaZ(mt);
+		if(nCnt % 3 == 0)
+		{
+			m_pEnemy[nCnt] = CEnemy_Frame::Create({ m_pos.x + fAreaX,m_pos.y,m_pos.z + fAreaZ }, { 0.0f,0.0f,0.0f });
+		}
+		else if (nCnt % 4 == 0)
+		{
+			m_pEnemy[nCnt] = CEnemy_Crystal::Create({ m_pos.x + fAreaX,m_pos.y,m_pos.z + fAreaZ }, { 0.0f,0.0f,0.0f });
 
-		m_pEnemy[nCnt] = CEnemy_Poyo::Create({ m_pos.x + fAreaX,m_pos.y,m_pos.z + fAreaZ }, {0.0f,0.0f,0.0f});
+		}
+		else
+		{
+			m_pEnemy[nCnt] = CEnemy_Poyo::Create({ m_pos.x + fAreaX,m_pos.y,m_pos.z + fAreaZ }, { 0.0f,0.0f,0.0f });
+		}
+
 	}
 	return S_OK;
 }

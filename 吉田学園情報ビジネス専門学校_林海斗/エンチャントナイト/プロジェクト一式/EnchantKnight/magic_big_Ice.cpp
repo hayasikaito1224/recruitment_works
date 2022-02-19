@@ -95,6 +95,7 @@ void C_Magic_Big_Ice::Update()
 				{
 					pEnemy->SetbDamage(true);
 					pEnemy->AddLife(-MAGIC_BIG_ICE_POWER, pEnemy->FIRE);
+
 				}
 			}
 		}

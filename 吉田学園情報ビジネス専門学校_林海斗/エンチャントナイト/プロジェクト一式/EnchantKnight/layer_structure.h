@@ -13,8 +13,8 @@ class CLayer_Structure
 public:
 	CLayer_Structure();
 	~CLayer_Structure();
-	void SetLayer_Structure(const char *sFileName, CModel **apModel);
-	void SetLayer_Structure(const char *sFileName, vector<CModel*>& pModel);
+	void SetLayer_Structure(const char *sFileName, CModel **apModel, int nType = 0);
+	void SetLayer_Structure(const char *sFileName, vector<CModel*>& pModel,int nType = 0);
 
 	int	 GetMaxParts(void) { return m_MaxParts; }
 

@@ -23,6 +23,7 @@ public:
 		Fire = 0,
 		Ice,
 		Heal,
+		SonicStlake,
 		Magic_Max
 	}Magic;
 

@@ -31,8 +31,8 @@ public:
 
 	void SetGauge(float Set);//ゲージの増減
 	void SetScalePos(D3DXVECTOR3 pos, D3DXVECTOR3 scale,ADDTYPE AddType);
-	int GetGaugeValue() { return m_fValue; }
-	void SetGaugeValue(int nValue) { m_fValue = nValue; }
+	int GetGaugeValue() { return (int)m_fValue; }
+	void SetGaugeValue(int nValue) { m_fValue = (float)nValue; }
 
 private:
 	D3DXVECTOR3			m_Scale;		//ゲージの大きさ

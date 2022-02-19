@@ -12,11 +12,15 @@
 #include "gauge.h"
 #include "MagicCircle.h"
 #include "sound.h"
+#include "circlegauge.h"
+
 #define ICE_MOVE (6)
 #define ICE_ROT_SPEED (0.2)
-#define ICE_POWER (4)//魔法の攻撃力
-#define ICE_DELETE_TIME (90)//魔法の自動消滅時間
+#define ICE_POWER (1)//魔法の攻撃力
+#define ICE_DELETE_TIME (150)//魔法の自動消滅時間
 #define ICE_MAZIC_SIRCLE_RADIUS (20.0)
+#define ICE_UPWARD_TIME (20)//魔法の上昇時間
+#define ICE_ATTACK_INTERVALTIME (80)//魔法のクールタイム
 
 //========================================---
 //コンストラクタ
@@ -24,7 +28,6 @@
 C_Magic_Ice::C_Magic_Ice(OBJTYPE nPriority) : C_Magic(nPriority)
 {
 	m_pModel = nullptr;
-	CManager::GetGame()->GetMPGauge()->SetGauge(ICE_MP);
 
 }
 //==========================================
@@ -40,7 +43,13 @@ HRESULT C_Magic_Ice::Init()
 {
 	if (m_pModel == nullptr)
 	{
-		m_pModel = CModel::Create(m_pos, m_rot, 2, CModel::TYPE_OBJECT);
+		std::random_device random;	// 非決定的な乱数生成器
+		std::mt19937_64 mt(random());            // メルセンヌ・ツイスタの64ビット版、引数は初期シード
+		std::uniform_real_distribution<> randAng(-D3DX_PI, D3DX_PI);
+
+
+		m_pModel = CModel::Create(m_pos, {m_rot.x,(float)randAng(mt),m_rot.z}, 4, CModel::TYPE_OBJECT);
+		m_pModel->SetPos({ m_pos.x,m_pos.y - m_pModel->GetMaxPos().y,m_pos.z });
 	}
 
 	return S_OK;
@@ -72,61 +81,24 @@ void C_Magic_Ice::Update()
 		m_bUninit = true;
 	}
 
-	ModelRot.z += ICE_ROT_SPEED;
-
-	if (m_pModel != nullptr)
+	//魔法の上昇時間をカウント
+	m_nTimer++;
+	if (m_nTimer <= ICE_UPWARD_TIME)
 	{
-		m_pModel->SetRot({ m_rot.x+ModelRot.x,0.0f,m_rot.z+ModelRot.z });
+		m_pos.y += m_fSpeed;
 	}
+	////エフェクト
+	//CManager::GetGame()->GetParticle()->RandomCircleParticle(m_pos, { 0.2f, 0.3f, 1.0, 1.0 }, false);
 
-	m_pos.x -= sinf(m_rot.y)*m_fSpeed;
-	m_pos.z -= cosf(m_rot.y)*m_fSpeed;
-
-	//エフェクト
-	CManager::GetGame()->GetParticle()->RandomCircleParticle(m_pos, { 0.2f, 0.3f, 1.0, 1.0 }, false);
-
-	//当たり判定
-	CScene *pScene_E = CScene::GetScene(OBJTYPE_ENEMY);
-	CCollision *pCollision = new CCollision;
-
-	//敵とのの当たり判定
-	while (pScene_E != nullptr)
+	//攻撃していたらいったん攻撃しない
+	if (m_bAttack)
 	{
-		if (pScene_E != nullptr&&m_pModel!=nullptr)
+		m_nAttackTimer++;
+		if (m_nAttackTimer >= ICE_ATTACK_INTERVALTIME)
 		{
-			CEnemy *pEnemy = (CEnemy*)pScene_E;
-			if (pEnemy->bHitAttack() == false && m_bAttack == false)
-			{
-				bool bHit = pCollision->CollisionWeapon((CEnemy*)pScene_E, m_pos, m_pModel->GetMaxPos().x);
-				pEnemy->SetHit(bHit);
-				if (bHit == true)
-				{
-
-					pEnemy->SetbDamage(true);
-					pEnemy->AddLife(-ICE_POWER, pEnemy->FIRE);
-					CManager::GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_DAMAGE);
-					std::random_device random;	// 非決定的な乱数生成器
-					std::mt19937_64 mt(random());            // メルセンヌ・ツイスタの64ビット版、引数は初期シード
-					std::uniform_real_distribution<> randAng(-D3DX_PI, D3DX_PI);
-
-					float fAng = randAng(mt);
-					//攻撃用のモデルとプレイヤーのベクトルを求める
-					D3DXVECTOR3 vec = m_pos - pEnemy->GetPos();
-					float fAngle = atan2(vec.x, vec.y);//敵の向き
-													   //ヒットエフェクトのずらし位置を求める
-					D3DXVECTOR3 Addmove = D3DXVECTOR3(
-						sinf(fAngle)*10.0f,
-						0.0f,
-						cosf(fAngle)*10.0f);
-					CEffect::Create
-					({ m_pos.x+Addmove.x, m_pos.y + Addmove.y, m_pos.z + Addmove.z } ,
-					{ 0.0f,0.0f,0.0f }, { 1.2f,1.0f,0.0f },
-					{ 1.0f,0.5f,0.5f,1.0f }, false, 0.0f, 0.032f, true, CTexture::HitEffect, fAng, true);
-
-				}
-			}
+			m_nAttackTimer = 0;
+			m_bAttack = false;
 		}
-		pScene_E = pScene_E->GetSceneNext(pScene_E);
 	}
 	//消去判定がオンになっていたら消す
 	if (m_bUninit == true)
@@ -170,7 +142,7 @@ C_Magic_Ice * C_Magic_Ice::Create(const D3DXVECTOR3 & pos, const D3DXVECTOR3 & r
 		pIce->m_pos = pos;
 		pIce->m_rot = rot;
 		pIce->m_fSpeed = m_fSpeed;
-		CMagicCircle::Create(pos, { 0.0f,rot.y,0.0f }, ICE_MAZIC_SIRCLE_RADIUS, 10, true, true, { 0.2f, 0.3f, 1.0, 1.0 },
+		CMagicCircle::Create(pos, {D3DXToRadian(90.0f),0.0f,0.0f }, ICE_MAZIC_SIRCLE_RADIUS, 10, true, true, { 0.2f, 0.3f, 1.0, 1.0 },
 			CTexture::MagicCircle_TypeB);
 
 	}

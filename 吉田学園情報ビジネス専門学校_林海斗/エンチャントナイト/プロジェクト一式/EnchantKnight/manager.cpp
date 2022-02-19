@@ -37,7 +37,7 @@ CTitle			*CManager::m_pTitle = NULL;
 CResult			*CManager::m_pResult = NULL;
 CFade			*CManager::m_Fade = NULL;
 CXInput			*CManager::m_XInput = NULL;
-CManager::MODE	 CManager::m_Mode = MODE_TITLE;		// 初期モード
+CManager::MODE	 CManager::m_Mode = MODE_GAME;		// 初期モード
 CMouse			*CManager::m_Mouse = NULL;
 CSound			*CManager::m_pSound = NULL;
 CPause			*CManager::m_pPause = NULL;
@@ -286,8 +286,10 @@ void CManager::Update(void)
 		{
 			m_pGame->Update();
 			//ポーズ
-			if (m_XInput->GetButtonTrigger(XINPUT_GAMEPAD_START) == true&&m_bEnd==false)
+			if (m_XInput->GetButtonTrigger(XINPUT_GAMEPAD_START) == true||
+				m_pDirectInput->GetButtonTrigger(m_pDirectInput->START))
 			{
+				if(m_bEnd == false)
 				m_bStop = m_bStop ? false : true;
 
 				m_bPause = m_bPause ? false : true;

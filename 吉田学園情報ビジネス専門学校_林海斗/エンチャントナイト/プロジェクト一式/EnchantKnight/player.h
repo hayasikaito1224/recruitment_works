@@ -15,9 +15,10 @@ class CPolygon;
 //マクロ定義
 //------------------------------------
 #define PLAYER_POS_X (0.0)
-#define PLAYER_POS_Y (100.0)
+#define PLAYER_POS_Y (0.0)
 #define PLAYER_POS_Z (0.0)
 #define PLAYER_FALL (-100.0)//落下判定に入るまでの位置
+#define PLAYER_ROCK_LENGTH (500.0)//落下判定に入るまでの位置
 
 class CPlayer : public CScene
 {
@@ -45,6 +46,7 @@ public:
 		N_MAGIC_ATTACK,//魔法攻撃
 		N_SKILL002,
 		N_DETH,
+		N_DODGE,
 		N_MAX
 	}N_MOTION;
 	typedef enum 
@@ -55,12 +57,14 @@ public:
 
 	CPlayer(OBJTYPE nPriority = CScene::OBJTYPE_PLAYER);
 	~CPlayer();
+	//静的メンバー関数
+	static CPlayer *Create();
 	HRESULT Init();
 	void Uninit();
 	void Update();
 	void Draw();
 	void Drawtext();
-	bool bColision();
+	void Dodge();//回避の処理
 	void PlayerMagic();//魔法に関する処理
 	void PlayerAttack();//攻撃に関する処理
 	void NearEnemySearch(D3DXVECTOR3 Enemy);
@@ -69,20 +73,23 @@ public:
 	void SetHit(bool bHit) { m_bHit = bHit; }//プレイヤーが敵の攻撃に当たった時
 	void SetbAttack(bool bAttack) { m_bAttack = bAttack; }
 	void SetbSkill(bool bSkill) { m_bSkill = bSkill; }
-	D3DXVECTOR3 GetRot() { return m_rot; }
-	CBillboard *GetNearEnemyPos() {return m_pRockOnPolygon;}
 	void SetDeth(bool bDeth) { m_bDeth = bDeth; }
-	//静的メンバー関数
-	static CPlayer *Create();
-	bool GetCommandMagic() { return m_bSelectMagic; }
-	CModel *GetParts(int nNumParts) { return m_pModel[nNumParts]; }
-	D3DXVECTOR3 GetLastPos(void) { return m_lastpos; }
+	void SetGameStop(bool bStop) { m_bGameStop = bStop; }
 	void SetPlayerPos(D3DXVECTOR3 pos) { m_pos = pos; }
+	void SetMotionType(int nType) { m_nMotionType[0] = nType; }
+	void SetbMove(bool bMove) {}
 	int GetWeaponType(void) { return m_nWeaponType; }
+	bool bColision();
+	bool GetCommandMagic() { return m_bSelectMagic; }
 	bool GetHit() { return m_bHitStop; }
 	bool GetGameStop() { return m_bGameStop; }
-	void SetGameStop(bool bStop) { m_bGameStop = bStop; }
 	bool GetDeth() { return m_bDeth; }
+	bool GetDodge() { return m_bDodge; }
+	D3DXVECTOR3 GetLastPos(void) { return m_lastpos; }
+	D3DXVECTOR3 GetRot() { return m_rot; }
+	CBillboard *GetNearEnemyPos() { return m_pRockOnPolygon; }
+	CModel *GetParts(int nNumParts) { return m_pModel[nNumParts]; }
+
 private:
 	STATE m_State;//プレイヤーの状態
 
@@ -94,6 +101,7 @@ private:
 	float m_fLength;
 	float m_move = 2.0f;
 	D3DXVECTOR3 m_rot;												//向き
+	D3DXVECTOR3 m_DodgePos;//回避した先
 	D3DXMATRIX m_mtxWorld;											//ワールドマトリックス
 	CModel *m_pModel[MAX_PARTS];
 	CModel *m_pCollision;									//当たり判定用の武器の原点を決めるやつ
@@ -105,6 +113,9 @@ private:
 	CLayer_Structure *m_pLayer;
 	bool m_bGameStop;
 	bool	m_bDeth;												//死んだかの判定
+	bool	m_bDodge;//回避の判定
+	bool	m_bBeginDodge;
+	bool	m_bEndDodge;
 
 	bool	m_bland;												//地面についてるか判定
 	bool	m_bColloison;											//当たり判定
@@ -123,6 +134,7 @@ private:
 	bool	m_bHitStop;//敵の攻撃を当たらないようにする判定
 	bool	m_bSkill;//スキル演出中の動作
 	bool m_bSearchStop;
+	bool m_bLockOn;
 	float	m_fMagicShotDelayCnt;									//魔法が出るまでのカウント
 	float	m_fMagicShotDelayMax;									//魔法が出る最大の時間
 	float	m_fSoundInterval;										//サウンドインターバル
@@ -139,6 +151,9 @@ private:
 	int		m_nCommandType;											//コマンドを選択しているタイプ
 	int		m_nMagicCommandType;											//コマンドを選択しているタイプ
 	int		m_nHitTime;
+	float  m_fDodgeAddSpeed;//回避中の増加量
+	float m_fDodgeTimer;
+	float m_fDodgerot;//回避する方向
 };
 
 

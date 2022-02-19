@@ -9,8 +9,8 @@
 #define MAX_COL (0.7)
 #define ALPHA_MIN (0.4)
 #define ALPHA_MAX (1.0)
-#define BUTTON_POSX (160.0)
-#define BUTTON_SIZE (30.0)
+#define BUTTON_POSX (110.0)
+#define BUTTON_SIZE (20.0)
 
 //=============================================================================
 // コンストラクタ
@@ -45,7 +45,7 @@ HRESULT CMagicUI::Init()
 	}
 	if (m_pButton == nullptr)
 	{
-		CTexture::Type ButtonTexType = CTexture::None;
+		CTexture::Type ButtonTexType = CTexture::Text;
 		switch (m_nTexType)
 		{
 		case CTexture::BLAZE:
