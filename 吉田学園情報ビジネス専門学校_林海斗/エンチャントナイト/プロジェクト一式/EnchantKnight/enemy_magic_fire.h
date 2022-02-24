@@ -5,10 +5,11 @@
 #define _ENEMY_MAGIC_FIRE_H_
 #include "magic.h"
 
-
 //前方宣言
 class CModel;
 class CPlayer;
+class CShadow;
+
 class C_Enemy_Magic_Fire : public C_Magic
 {
 public:
@@ -23,6 +24,8 @@ public:
 		const float Shotrot = 0.0f);
 	void BezierCurve();//ベジェ曲線の処理
 private:
+	CShadow *m_pShadow;//影
+
 	CModel *m_pFireModel;//ファイアーボール用のポリゴン.
 	D3DXVECTOR3 ModelRot;
 	D3DXMATRIX m_mtxWorld;											//ワールドマトリックス

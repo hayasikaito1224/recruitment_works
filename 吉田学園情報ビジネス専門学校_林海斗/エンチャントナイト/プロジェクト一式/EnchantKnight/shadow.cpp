@@ -34,13 +34,16 @@ void CShadow::BindTexture(CTexture::Type type)
 CShadow *CShadow::Create(D3DXVECTOR3 pos, float fSize, CTexture::Type texture)
 {
 	//インスタンス生成
-	CShadow *pShadow = new CShadow(OBJTYPE_EFFECT);
+	CShadow *pShadow = new CShadow(OBJTYPE_SHADOW);
 
 	if (pShadow != NULL)
 	{
 		pShadow->BindTexture(texture);
+		pShadow->m_size.x = fSize;
+		pShadow->m_size.z = fSize;
+
 		pShadow->Init();
-		pShadow->m_pos.y = 0.0f;
+		pShadow->m_pos.y = 0.5f;
 		pShadow->SetPos(pos.x, pos.z, D3DXVECTOR3(fSize, 0.0f, fSize));
 	}
 
@@ -81,10 +84,10 @@ HRESULT CShadow::Init(void)
 	pVtx[2].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	pVtx[3].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 
-	pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.6f);
+	pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.6f);
+	pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.6f);
+	pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.6f);
 
 	m_pVtxBuff->Unlock();
 	return S_OK;
@@ -111,16 +114,6 @@ void CShadow::Uninit(void)
 
 void CShadow::Update(void)
 {
-	if (m_fGravitySpeed > 0.0f)
-	{
-		m_fGravity -= m_fGravitySpeed;
-		m_pos.y += m_fGravity;
-
-	}
-	if (m_pos.y <= -100.0f)
-	{
-		m_pos.y = -100.0f;
-	}
 	m_LastPos = m_pos;
 }
 

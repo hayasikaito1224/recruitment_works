@@ -259,3 +259,35 @@ void CEnemy_Frame::AIMove()
 	}
 
 }
+
+void CEnemy_Frame::AddLife(int nPower, int nType)
+{
+	if (m_bDamage == true)
+	{
+		float fDamege = 0;
+		switch (nType)
+		{
+		case FIRE:
+			fDamege = (nPower + m_nDefense)*1.5f;
+
+			break;
+		case BULLIZAD:
+			fDamege = nPower + m_nDefense;
+
+			break;
+		}
+		m_nLife += fDamege;
+
+	}
+
+}
+
+void CEnemy_Frame::AddLife(int nLife)
+{
+	if (m_bDamage == true && m_bHitCollision == true)
+	{
+		float fDamege = nLife + m_nDefense;
+		m_nLife += fDamege;
+
+	}
+}

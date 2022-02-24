@@ -9,6 +9,8 @@
 //前方宣言
 class CModel;
 class CPlayer;
+class CShadow;
+
 class C_Enemy_Magic_Ice : public C_Magic
 {
 public:
@@ -21,6 +23,8 @@ public:
 	void Draw();
 	static C_Enemy_Magic_Ice *Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot);
 private:
+	CShadow *m_pShadow;//影
+
 	CModel *m_pIceModel;//アイスボール用のモデル.
 	D3DXVECTOR3 ModelRot;
 	D3DXMATRIX m_mtxWorld;											//ワールドマトリックス

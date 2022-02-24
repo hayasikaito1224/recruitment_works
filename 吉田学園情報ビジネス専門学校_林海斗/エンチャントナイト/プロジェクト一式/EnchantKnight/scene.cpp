@@ -203,7 +203,8 @@ void CScene::MapDraw(void)
 	for (int nObj = 0; nObj < OBJTYPE_MAX; nObj++)
 	{
 		if (nObj != OBJTYPE_SKY && nObj != OBJTYPE_PLAYER && nObj != OBJTYPE_EFFECT&&
-			nObj != OBJTYPE_MAGIC && nObj!= OBJTYPE_ENEMY && nObj != OBJTYPE_WALL)
+			nObj != OBJTYPE_MAGIC && nObj!= OBJTYPE_ENEMY && nObj != OBJTYPE_WALL&&
+			nObj != OBJTYPE_SHADOW)
 		{
 			if (m_pTop[nObj] != NULL)
 			{

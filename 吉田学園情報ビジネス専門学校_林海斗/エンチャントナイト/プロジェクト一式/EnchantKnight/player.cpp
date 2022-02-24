@@ -428,20 +428,29 @@ void CPlayer::Update()
 						CManager::GetGame()->GetCPGauge()->SetGauge(-5);
 						pEnemy->SetbDamage(true);
 						pEnemy->AddLife(-PLAYER_POWER);
+
 						CManager::GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_DAMAGE);
 
 						std::random_device random;	// 非決定的な乱数生成器
 						std::mt19937_64 mt(random());            // メルセンヌ・ツイスタの64ビット版、引数は初期シード
 						std::uniform_real_distribution<> randAng(-D3DX_PI, D3DX_PI);
+						D3DXVECTOR3 EnemyVec = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+						EnemyVec = pEnemy->GetEnemyPos() - m_pos;			//敵と弾のベクトル
+						float fEnemyAng = atan2(EnemyVec.x, EnemyVec.z)+ D3DX_PI;
+						D3DXVECTOR3 Addmove = D3DXVECTOR3(
+							sinf(fEnemyAng)*pEnemy->GetModel(0)->GetMaxPos().x,
+							pEnemy->GetModel(1)->GetMaxPos().y / 2.0f,
+							cosf(fEnemyAng)*pEnemy->GetModel(0)->GetMaxPos().x);
+
 						float fAng = randAng(mt);
-						CEffect::Create({ pEnemy->GetEnemyPos().x,pEnemy->GetEnemyPos().y + 40.0f,pEnemy->GetEnemyPos().z }, { 0.0f,0.0f,0.0f }, { 1.0f,1.0f,0.0f },
+						CEffect::Create(Addmove + pEnemy->GetEnemyPos(), { 0.0f,0.0f,0.0f }, { 1.0f,1.0f,0.0f },
 						{ 1.0,1.0,1.0,0.5f }, false, 0.0f, 0.01f, true, CTexture::HitEffect, fAng, true);
-						CEffect::Create({ pEnemy->GetEnemyPos().x,pEnemy->GetEnemyPos().y + 40.0f,pEnemy->GetEnemyPos().z }, { 0.0f,0.0f,0.0f }, { 0.4f,0.2f,0.0f },
+						CEffect::Create(Addmove + pEnemy->GetEnemyPos(), { 0.0f,0.0f,0.0f }, { 0.4f,0.2f,0.0f },
 						{ 1.0,1.0,1.0,0.7f }, false, 0.0f, 0.015f, true, CTexture::HitEffect, fAng, true);
 
-						CEffect::Create({ pEnemy->GetEnemyPos().x,pEnemy->GetEnemyPos().y + 40.0f,pEnemy->GetEnemyPos().z }, { 0.0f,0.0f,0.0f }, { 1.5f,1.0f,0.0f },
+						CEffect::Create(Addmove + pEnemy->GetEnemyPos(), { 0.0f,0.0f,0.0f }, { 1.5f,1.0f,0.0f },
 						{ 1.0f,0.5f,0.0f,1.0f }, false, 0.0f, 0.03f, true, CTexture::Effect, fAng, false, true);
-						CEffect::Create({ pEnemy->GetEnemyPos().x,pEnemy->GetEnemyPos().y + 40.0f,pEnemy->GetEnemyPos().z }, { 0.0f,0.0f,0.0f }, { 1.5f,1.0f,0.0f },
+						CEffect::Create(Addmove + pEnemy->GetEnemyPos(), { 0.0f,0.0f,0.0f }, { 1.5f,1.0f,0.0f },
 						{ 1.0f,0.5f,0.0f,1.0f }, false, 0.0f, 0.03f, true, CTexture::Effect, fAng, false, true);
 
 					}
@@ -449,6 +458,7 @@ void CPlayer::Update()
 			}
 			pScene_E = pScene_E->GetSceneNext(pScene_E);
 		}
+
 		CScene *pScene_Wall = CScene::GetScene(OBJTYPE_WALL);
 		//壁との当たり判定
 		while (pScene_Wall != nullptr)
@@ -660,13 +670,15 @@ void CPlayer::Dodge()
 	if (m_bDodge)
 	{
 		m_nMotionType[m_nWeaponType] = N_DODGE;
-
+		//無敵にする
+		m_bHitStop = true;
 		m_fDodgeTimer++;
 
 		if (m_fDodgeTimer >= PLAYER_DODGE_TIME)
 		{
 			m_fDodgeTimer = 0.0f;
 			m_bDodge = false;
+			m_bHitStop = false;
 		}
 		else
 		{

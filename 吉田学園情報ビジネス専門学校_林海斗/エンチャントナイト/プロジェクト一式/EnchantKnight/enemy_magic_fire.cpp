@@ -14,11 +14,13 @@
 #include "MagicCircle.h"
 #include "sound.h"
 #include "circlegauge.h"
+#include "shadow.h"
+
 #define ENEMY_MAGIC_FIRE_SIZE (5.0)//火の魔法の大きさ
 #define ENEMY_MAGIC_FIRE_SPEED (7.0)//魔法の発射スピード
 #define ENEMY_MAGIC_FIRE_SPEEDLIMIT (10.0)//魔法の発射スピード
 
-#define ENEMY_MAGIC_FIRE_DELETE_TIME (200)//魔法の自動消滅時間
+#define ENEMY_MAGIC_FIRE_DELETE_TIME (150)//魔法の自動消滅時間
 #define ENEMY_MAGIC_FIRE_POWER (4)//攻撃力
 #define ENEMY_MAGIC_FIRE_ROT_SPEED (0.2)
 
@@ -51,6 +53,10 @@ HRESULT C_Enemy_Magic_Fire::Init()
 	{
 		m_pFireModel = CModel::Create(m_pos, m_rot, 3, CModel::TYPE_OBJECT);
 	}
+	if (m_pShadow == nullptr)
+	{
+		m_pShadow = CShadow::Create({ 0.0f,0.0f,0.0f }, 50.0f, CTexture::Effect);
+	}
 
 	return S_OK;
 }
@@ -65,6 +71,12 @@ void C_Enemy_Magic_Fire::Uninit()
 		delete m_pFireModel;
 		m_pFireModel = nullptr;
 	}
+	if (m_pShadow != nullptr)
+	{
+		m_pShadow->Uninit();
+		m_pShadow = nullptr;
+	}
+
 	Release();
 }
 //==========================================
@@ -73,6 +85,7 @@ void C_Enemy_Magic_Fire::Uninit()
 void C_Enemy_Magic_Fire::Update()
 {
 	m_nDeleteTimer++;
+
 	if (m_nDeleteTimer >= ENEMY_MAGIC_FIRE_DELETE_TIME)
 	{
 		m_bUninit = true;
@@ -81,6 +94,11 @@ void C_Enemy_Magic_Fire::Update()
 	if (m_pFireModel != nullptr)
 	{
 		m_pFireModel->SetRot({ m_rot.x + ModelRot.x,0.0f,m_rot.z + ModelRot.z });
+	}
+	if (m_pShadow != nullptr)
+	{
+		m_pShadow->SetPos(0.0f, 0.0f, { m_pFireModel->GetMaxPos().x ,0.0,m_pFireModel->GetMaxPos().z });
+		m_pShadow->SetPos({ m_pos.x,0.1f ,m_pos.z });
 	}
 
 	//発射する方向を求める
@@ -95,9 +113,12 @@ void C_Enemy_Magic_Fire::Update()
 		m_pos.x -= sinf(m_rot.y)*ENEMY_MAGIC_FIRE_SPEED;
 		m_pos.z -= cosf(m_rot.y)*ENEMY_MAGIC_FIRE_SPEED;
 	}
-	//エフェクト
-	CManager::GetGame()->GetParticle()->RandomCircleParticle(m_pos, { 1.0f, 0.3f, 0.3f, 1.0f}, false);
+	if (m_nDeleteTimer % 10 == 0)
+	{
+		////エフェクト
+		//CManager::GetGame()->GetParticle()->RandomCircleParticle(m_pos, { 1.0f, 0.3f, 0.3f, 1.0f }, false);
 
+	}
 	//位置情報を反映
 
 	CPlayer *pPlayer = CManager::GetGame()->GetPlayer();
@@ -105,7 +126,7 @@ void C_Enemy_Magic_Fire::Update()
 	bool bHit = pCollision->CollisionAttack(m_pos,
 		pPlayer->GetPos(), { pPlayer->GetParts(2)->GetMtxWorld()._41 ,pPlayer->GetParts(2)->GetMtxWorld()._42,pPlayer->GetParts(2)->GetMtxWorld()._43 },
 		50.0f);
-	if (bHit == true && pPlayer->GetDeth() == false)
+	if (bHit == true && pPlayer->GetDeth() == false&& pPlayer->GetHit()==false)
 	{
 		m_bUninit = true;
 		CManager::GetGame()->GetHPGauge()->SetGauge(ENEMY_MAGIC_FIRE_POWER);

@@ -27,6 +27,8 @@ public:
 	void Colision();
 	void AIAttack();
 	void AIMove();
+	void AddLife(int nPower, int nType);
+	void AddLife(int nLife);//‘Ì—Í‚Ì‘Œ¸
 	//Ã“Iƒƒ“ƒo[ŠÖ”
 	static CEnemy_Frame *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot);
 private:

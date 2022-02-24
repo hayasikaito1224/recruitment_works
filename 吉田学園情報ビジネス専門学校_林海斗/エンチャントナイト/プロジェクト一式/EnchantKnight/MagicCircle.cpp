@@ -31,7 +31,8 @@ CMagicCircle::~CMagicCircle()
 //---------------------------------------------------
 //インスタンス生成
 //---------------------------------------------------
-CMagicCircle * CMagicCircle::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, float fsize, float fMaxTime, bool bRot, bool bEraseStart, D3DXCOLOR col, CTexture::Type type)
+CMagicCircle * CMagicCircle::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, float fsize, float fMaxTime, bool bRot, bool bEraseStart,
+	D3DXCOLOR col, CTexture::Type type, const float fSpeed)
 {//	位置, 移動量, サイズ,色, 小さくなるスピード
  //インスタンス生成
 	CMagicCircle *pEffect = new CMagicCircle(OBJTYPE_EFFECT);
@@ -43,6 +44,7 @@ CMagicCircle * CMagicCircle::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, float fsiz
 	pEffect->m_bEraseStart = bEraseStart;
 	pEffect->m_fEraseMaxTime = fMaxTime;
 	pEffect->m_bSizeAdd = bEraseStart;
+	pEffect->m_fScaleSpeed = fSpeed;
 	pEffect->bOnBill(false);
 	pEffect->m_bRotX = bRot;
 	if (pEffect != NULL)

@@ -9,6 +9,8 @@
 //前方宣言
 class CModel;
 class CEnemy;
+class CShadow;
+
 class C_Magic_Fire : public C_Magic
 {
 public:
@@ -23,7 +25,9 @@ public:
 		CEnemy *pEnemy = nullptr,const float Shotrot = 0.0f);
 	void BezierCurve();//ベジェ曲線の処理
 private:
-	CModel *m_pFireModel;//ファイアーボール用のポリゴン.
+	CShadow *m_pShadow;//影
+
+	CModel *m_pFireModel;//ファイアーボール用のモデル
 	D3DXVECTOR3 ModelRot;
 	D3DXMATRIX m_mtxWorld;											//ワールドマトリックス
 	D3DXVECTOR3 m_StartingPoint;//始点

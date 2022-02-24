@@ -39,9 +39,12 @@
 #include "enemyspawner.h"
 #include "miss.h"
 #include "circlegauge.h"
+#include "Boss.h"
 #define MAGICCOMMAND_SIZE_X (140)
 #define MAGICCOMMAND_SIZE_Y (20)
 #define MAGICCOMMAND_INTERVAL (140)
+#define BOSS_LIFE (100)		//生命力
+
 #define PLAYER_LIFE (100)		//生命力
 #define PLAYER_MP (100)		//マナの多さ
 #define MAX_DELAY (30)//ディレイの最大
@@ -61,10 +64,12 @@ CGoal   *CGame::m_Goal = nullptr;
 CCommandUI   *CGame::m_pCommand = nullptr;
 CMagicUI   *CGame::m_pMagicCommand[MAX_MAGICCOMMAND] = {};
 CParticle   *CGame::m_Particle = nullptr;
+CGauge   *CGame::m_pBossHPGauge = nullptr;
 CGauge   *CGame::m_pHPGauge = nullptr;
 CGauge   *CGame::m_pMPGauge = nullptr;
 CCircleGauge   *CGame::m_pCPGauge = nullptr;
 CEnemy_Spawner   *CGame::m_pEnemySpawner[MAX_SPAWNER] = {};
+CBoss   *CGame::m_Boss = nullptr;
 
 std::vector<CPolygon*>   CGame::m_pCStock = {};
 
@@ -83,6 +88,7 @@ CGame::CGame()
 {
 	m_pHPGauge = nullptr;
 	m_pMPGauge = nullptr;
+	m_pBossHPGauge = nullptr;
 	m_pCPGauge = nullptr;
 	m_pCStock.clear();
 	m_Player = nullptr;
@@ -104,6 +110,7 @@ CGame::CGame()
 	memset(&m_pMagicCommand, NULL, sizeof(m_pMagicCommand));
 	m_bPush = false;
 	m_bEnd = false;
+	m_Boss = nullptr;
 }
 //--------------------------------------------
 //デストラクタ
@@ -131,11 +138,15 @@ HRESULT CGame::Init(void)
 	{
 		m_pEnemySpawner[1] = CEnemy_Spawner::Create({ 60.21f, 0.00f, 3572.87f }, 500.0f, 400.0f, 15);
 	}
-	if (m_pEnemySpawner[2] == nullptr)
+	//if (m_pEnemySpawner[2] == nullptr)
+	//{
+	//	m_pEnemySpawner[2] = CEnemy_Spawner::Create({ 1135.01f, 0.00f, 6678.77f }, 600.0f, 600.0f, 20);
+	//}
+	//ボスの配置
+	if (m_Boss == nullptr)
 	{
-		m_pEnemySpawner[2] = CEnemy_Spawner::Create({ 1135.01f, 0.00f, 6678.77f }, 600.0f, 600.0f, 20);
+		m_Boss = CBoss::Create({ 1135.01f, 0.00f, 6678.77f }, { 0.0f, 0.00f, 0.0f }, 0, BOSS_LIFE);
 	}
-
 	//まほうコマンドの生成
 	for (int nCnt = 0; nCnt < CCommandUI::Magic_Max-1; nCnt++)
 	{
@@ -277,6 +288,11 @@ void CGame::Uninit(void)
 		m_pHPGauge->Uninit();
 		m_pHPGauge = nullptr;
 	}
+	if (m_pBossHPGauge != nullptr)
+	{
+		m_pBossHPGauge->Uninit();
+		m_pBossHPGauge = nullptr;
+	}
 	if (m_pCPGauge != nullptr)
 	{
 		m_pCPGauge->Uninit();
@@ -321,10 +337,23 @@ void CGame::Update(void)
 	//ゲームが続いていたら
 	if (m_bEnd == false)
 	{
+		//ボスと近くなたらボスのHPを出現
+		if (m_Boss != nullptr)
+		{
+			if (m_Boss->GetbBattle() == true)
+			{
+				//HPバーの生成
+				if (m_pBossHPGauge == nullptr)
+				{
+					m_pBossHPGauge = CGauge::Create({ SCREEN_WIDTH/2.0f-300.0f,SCREEN_HEIGHT/2.0f - 250.0f,0.0f }, { 600.0f,15.0f,0.0f },
+					{ 0.5,1.0,0.5,1.0 }, 600.0f, BOSS_LIFE, CGauge::R_ADD);
+				}
+			}
+		}
 		//全ての敵を倒したらリザルトへ行く
 		if (m_pEnemySpawner[0]->IsGimmickLock() == false &&
 			m_pEnemySpawner[1]->IsGimmickLock() == false &&
-			m_pEnemySpawner[2]->IsGimmickLock() == false)
+			m_Boss->IsGimmickLock() == false)
 		{
 			CFade::SetFade(CManager::MODE_RESULT);
 			m_bEnd = true;

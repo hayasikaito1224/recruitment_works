@@ -14,6 +14,7 @@
 #include "MagicCircle.h"
 #include "sound.h"
 #include "circlegauge.h"
+#include "shadow.h"
 
 #define ENEMY_MAGIC_ICE_SIZE (5.0)//火の魔法の大きさ
 #define ENEMY_MAGIC_ICE_SPEED (7.0)//魔法の発射スピード
@@ -45,6 +46,11 @@ HRESULT C_Enemy_Magic_Ice::Init()
 	{
 		m_pIceModel = CModel::Create(m_pos, m_rot, 2, CModel::TYPE_OBJECT);
 	}
+	if (m_pShadow == nullptr)
+	{
+		m_pShadow = CShadow::Create({ 0.0f,0.0f,0.0f }, 50.0f, CTexture::Effect);
+	}
+
 	return S_OK;
 }
 //==========================================
@@ -58,6 +64,12 @@ void C_Enemy_Magic_Ice::Uninit()
 		delete m_pIceModel;
 		m_pIceModel = nullptr;
 	}
+	if (m_pShadow != nullptr)
+	{
+		m_pShadow->Uninit();
+		m_pShadow = nullptr;
+	}
+
 	Release();
 }
 //==========================================
@@ -71,7 +83,11 @@ void C_Enemy_Magic_Ice::Update()
 	{
 		m_bUninit = true;
 	}
-
+	if (m_pShadow != nullptr)
+	{
+		m_pShadow->SetPos(0.0f, 0.0f, { m_pIceModel->GetMaxPos().x ,0.0,m_pIceModel->GetMaxPos().z });
+		m_pShadow->SetPos({ m_pos.x,0.1f ,m_pos.z });
+	}
 	ModelRot.z += ENEMY_MAGIC_ICE_ROT_SPEED;
 
 	if (m_pIceModel != nullptr)

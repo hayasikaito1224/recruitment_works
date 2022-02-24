@@ -11,7 +11,7 @@
 #include "keyboard.h"
 #include "fade.h"
 #include "XInput.h"
-#define MAX_MOVE (380.0f)
+#define MAX_MOVE (240.0f)
 #define MAX_MISS_TIME_LIMIT_1 (0)
 
 //--------------------------

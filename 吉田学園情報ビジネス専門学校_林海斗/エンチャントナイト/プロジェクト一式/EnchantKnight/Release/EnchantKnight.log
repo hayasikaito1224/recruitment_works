@@ -1,8 +1,8 @@
-﻿  manager.cpp
+﻿  title.cpp
   コード生成しています。
-  0 of 1479 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  2 of 1549 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    2 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   EnchantKnight.vcxproj -> C:\Users\student\Desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\EnchantKnight\Release\EnchantKnight.exe
   EnchantKnight.vcxproj -> C:\Users\student\Desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\EnchantKnight\Release\EnchantKnight.pdb (Full PDB)

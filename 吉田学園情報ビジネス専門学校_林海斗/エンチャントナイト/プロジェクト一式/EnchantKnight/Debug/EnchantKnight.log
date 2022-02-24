@@ -1,8 +1,3 @@
-﻿  magic_skill02.cpp
-c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\circlegauge.h(27): warning C4244: 'return': 'float' から 'int' への変換です。データが失われる可能性があります。
-c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\circlegauge.h(28): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
-c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\magic_skill02.cpp(92): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
-c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\magic_skill02.cpp(94): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
-c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\magic_skill02.cpp(133): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+﻿  miss.cpp
   EnchantKnight.vcxproj -> C:\Users\student\Desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\EnchantKnight\EnchantKnight.exe
   EnchantKnight.vcxproj -> C:\Users\student\Desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\EnchantKnight\EnchantKnight.pdb (Full PDB)

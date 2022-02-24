@@ -1,19 +1,24 @@
 //----------------------------------
-//ポリゴンの処理
+//当たり判定が発生するエリアの表示
 //-----------------------------------
 #include "col_area.h"
 #include "input.h"
 #include "Renderer.h"
 #include "manager.h"
-#include "texture.h"
+
 #include "keyboard.h"
 #include "Scene3D.h"
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CCol_Area::CCol_Area()
+CCol_Area::CCol_Area(OBJTYPE nPriority) : CScene(nPriority)
 {
 	m_bDraw = false;
+	m_pos = { 0.0f,0.0f,0.0f };
+	m_rot = { 0.0f,0.0f,0.0f };
+	m_size = { 0.0f,0.0f,0.0f };
+	m_fValue = 0.0f;
+	m_col = { 1.0,1.0,1.0,1.0 };
 }
 
 //=============================================================================
@@ -50,10 +55,10 @@ HRESULT CCol_Area::Init()
 
 	//バッファの生成
 	//バッファの生成
-	pVtx[0].pos = D3DXVECTOR3(-m_size.x, 0.0f, m_size.z);
-	pVtx[1].pos = D3DXVECTOR3(m_size.x, 0.0f, m_size.z);
-	pVtx[2].pos = D3DXVECTOR3(-m_size.x, 0.0f, 0.0f);
-	pVtx[3].pos = D3DXVECTOR3(m_size.x, 0.0f, 0.0f);
+	pVtx[0].pos = D3DXVECTOR3(-m_size.x, 0.0f, 0.01f);
+	pVtx[1].pos = D3DXVECTOR3(m_size.x, 0.0f, 0.01f);
+	pVtx[2].pos = D3DXVECTOR3(-m_size.x, 0.0f, 0.01f);
+	pVtx[3].pos = D3DXVECTOR3(m_size.x, 0.0f, 0.01f);
 	m_vtx[0].vtx = pVtx[0].pos;
 	m_vtx[1].vtx = pVtx[1].pos;
 	m_vtx[2].vtx = pVtx[2].pos;
@@ -90,7 +95,7 @@ void CCol_Area::Uninit(void)
 		m_pVtxBuff->Release();
 		m_pVtxBuff = NULL;
 	}
-
+	Release();
 }
 
 //=============================================================================
@@ -98,6 +103,13 @@ void CCol_Area::Uninit(void)
 //=============================================================================
 void CCol_Area::Update(void)
 {
+	MoveVtx();
+	
+	if (m_bUninit)
+	{
+		Uninit();
+	}
+
 }
 
 //=============================================================================
@@ -112,10 +124,10 @@ void CCol_Area::Draw(void)
 	D3DXMatrixIdentity(&m_mtxWorld);
 	//m_mtxWorld._11 = m_size.x;
 	//m_mtxWorld._33 = m_size.z;
-	//αテスト
-	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-	pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
+	////αテスト
+	//pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	//pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+	//pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
 
 	////向きを反映
 	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
@@ -131,35 +143,67 @@ void CCol_Area::Draw(void)
 	pDevice->SetFVF(FVF_VERTEX_3D);//頂点フォーマットの設定
 
 	pDevice->SetTexture(0, m_pTexture);
-	if (m_bDraw)
-	{
-		//ポリゴンの描画
-		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,
-			0,
-			2);
+	//ポリゴンの描画
+	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,
+		0,
+		2);
 
-	}
 	//αテスト
-	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_ALWAYS);
-	pDevice->SetRenderState(D3DRS_ALPHAREF, 0x00);
+	//pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	//pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_ALWAYS);
+	//pDevice->SetRenderState(D3DRS_ALPHAREF, 0x00);
 
 }
 //---------------------------------------------------------------
 //インスタンス生成処理
 //---------------------------------------------------------------
-CCol_Area *CCol_Area::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 scale, CTexture::Type texture, D3DXCOLOR col)
+CCol_Area * CCol_Area::Create(const D3DXVECTOR3 pos, const float fRotY, const float fSizeX, const float fAlpha, const float MaxGauge,
+	const int nValueMax, const CTexture::Type texture)
 {
 	//インスタンス生成
-	CCol_Area *pCol_Area = new CCol_Area();
+	CCol_Area *pCol_Area = new CCol_Area(OBJTYPE_EFFECT);
 	if (pCol_Area != NULL)
 	{
 		pCol_Area->m_pos = pos;
-		pCol_Area->m_size = scale;
-		pCol_Area->m_col = col;
+		pCol_Area->m_size.x = fSizeX;
+		pCol_Area->m_col.a = fAlpha;
 		pCol_Area->m_Tex = texture;
-		pCol_Area->m_rot = rot;
+		pCol_Area->m_rot.y = fRotY;
+		pCol_Area->m_fMaxGauge = MaxGauge;
+		pCol_Area->m_fValueMax = nValueMax;
 		pCol_Area->Init();
 	}
 	return pCol_Area;
+}
+//---------------------------------------------------------------
+//頂点の移動
+//---------------------------------------------------------------
+void CCol_Area::MoveVtx()
+{
+	m_fValue += 1.0f;
+
+	float fAdd = (m_fMaxGauge * 1.0f) / m_fValueMax;
+	m_size.z += fAdd;
+
+	if (m_fValue >= m_fValueMax)
+	{
+		m_fValue = m_fValueMax;
+		m_size.z = m_fMaxGauge;
+		m_bUninit = true;
+	}
+	VERTEX_3D *pVtx;
+
+	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	pVtx[0].pos = D3DXVECTOR3(-m_size.x, 0.0f, 0.0f);
+	pVtx[1].pos = D3DXVECTOR3(m_size.x, 0.0f, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(-m_size.x, 0.0f, -m_size.z);
+	pVtx[3].pos = D3DXVECTOR3(m_size.x, 0.0f, -m_size.z);
+	pVtx[0].col = m_col;
+	pVtx[1].col = m_col;
+	pVtx[2].col = m_col;
+	pVtx[3].col = m_col;
+
+	m_pVtxBuff->Unlock();
+
 }

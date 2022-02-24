@@ -14,6 +14,8 @@
 #include "MagicCircle.h"
 #include "sound.h"
 #include "circlegauge.h"
+#include "shadow.h"
+
 #define FIRE_SIZE (5.0)//火の魔法の大きさ
 #define FIRE_SPEED (4.0)//魔法の発射スピード
 #define FIRE_SPEEDLIMIT (10.0)//魔法の発射スピード
@@ -53,6 +55,10 @@ HRESULT C_Magic_Fire::Init()
 	{
 		m_pFireModel = CModel::Create(m_pos, m_rot, 3, CModel::TYPE_OBJECT);
 	}
+	if (m_pShadow == nullptr)
+	{
+		m_pShadow = CShadow::Create({ 0.0f,0.0f,0.0f }, 50.0f, CTexture::Effect);
+	}
 
 	return S_OK;
 }
@@ -67,6 +73,12 @@ void C_Magic_Fire::Uninit()
 		delete m_pFireModel;
 		m_pFireModel = nullptr;
 	}
+	if (m_pShadow != nullptr)
+	{
+		m_pShadow->Uninit();
+		m_pShadow = nullptr;
+	}
+
 	Release();
 }
 //==========================================
@@ -83,6 +95,11 @@ void C_Magic_Fire::Update()
 	if (m_pFireModel != nullptr)
 	{
 		m_pFireModel->SetRot({ m_rot.x + ModelRot.x,0.0f,m_rot.z + ModelRot.z });
+	}
+	if (m_pShadow != nullptr)
+	{
+		m_pShadow->SetPos(0.0f, 0.0f, { m_pFireModel->GetMaxPos().x ,0.0,m_pFireModel->GetMaxPos().z });
+		m_pShadow->SetPos({ m_pos.x,0.1f ,m_pos.z });
 	}
 
 	//発射する方向を求める

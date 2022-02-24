@@ -30,6 +30,7 @@ class CMagicUI;
 class CGauge;
 class CEnemy_Spawner;
 class CCircleGauge;
+class CBoss;
 
 class CGame
 {
@@ -60,12 +61,16 @@ public:
 	static CGauge		*GetMPGauge() { return m_pMPGauge; }
 	static CCircleGauge		*GetCPGauge() { return m_pCPGauge; }
 	static CEnemy_Spawner		*GetEnemySpawner(int nNum) { return m_pEnemySpawner[nNum]; }
+	static CBoss		*GetBoss() { return m_Boss; }
+	static CGauge		*GetBossHPGauge() { return m_pBossHPGauge; }
 
 	static CMagicUI	*GetMagicCommand(int nType) { return m_pMagicCommand[nType]; }
 
 private:
 	static CGauge *m_pHPGauge;
 	static CGauge *m_pMPGauge;
+	static CGauge *m_pBossHPGauge;
+
 	static std::vector<CPolygon*> m_pCStock;
 	static CEnemy_Spawner	*m_pEnemySpawner[MAX_SPAWNER];
 	static CCircleGauge	*m_pCPGauge;
@@ -85,6 +90,8 @@ private:
 	static CStage		*m_pStage;
 	static CGoal		*m_Goal;
 	static CParticle	*m_Particle;
+	static CBoss		*m_Boss;
+
 	static int			m_nChancePoint;											//チャンスポイント
 	static int			m_nChanceStock;
 	bool m_bPush;

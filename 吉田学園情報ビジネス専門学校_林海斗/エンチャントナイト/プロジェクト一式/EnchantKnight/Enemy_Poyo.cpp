@@ -95,7 +95,7 @@ void CEnemy_Poyo::Colision()
 	bool bHit = pCollision->CollisionAttack({ m_pAttackModel[0]->GetMtxWorld()._41 , m_pAttackModel[0]->GetMtxWorld()._42, m_pAttackModel[0]->GetMtxWorld()._43 },
 		pPlayer->GetPos(), { pPlayer->GetParts(2)->GetMtxWorld()._41 ,pPlayer->GetParts(2)->GetMtxWorld()._42,pPlayer->GetParts(2)->GetMtxWorld()._43 },
 		80.0f);
-	if (bHit == true && pPlayer->GetDeth() == false)
+	if (bHit == true && pPlayer->GetDeth() == false && pPlayer->GetHit() == false)
 	{
 		CManager::GetGame()->GetHPGauge()->SetGauge(m_nPower);
 		pPlayer->SetHit(true);
@@ -201,4 +201,36 @@ void CEnemy_Poyo::AIMove()
 		m_MoveSpeed.z = 0.0f;
 	}
 
+}
+
+void CEnemy_Poyo::AddLife(int nPower, int nType)
+{
+	if (m_bDamage == true)
+	{
+		float fDamege = 0;
+		switch (nType)
+		{
+		case FIRE:
+			fDamege = (nPower + m_nDefense)*1.5f;
+
+			break;
+		case BULLIZAD:
+			fDamege = nPower + m_nDefense;
+
+			break;
+		}
+		m_nLife += fDamege;
+
+	}
+
+}
+
+void CEnemy_Poyo::AddLife(int nLife)
+{
+	if (m_bDamage == true && m_bHitCollision == true)
+	{
+		float fDamege = nLife + m_nDefense;
+		m_nLife += fDamege;
+
+	}
 }

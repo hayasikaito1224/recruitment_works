@@ -7,6 +7,7 @@
 
 class CSound;
 class CMap_Polygon;
+class CShadow;
 
 #define MAX_KEYSET (10) //最大キーセット数
 #define MAX_DRAWRADIUS (1000.0f)
@@ -41,6 +42,9 @@ public:
 	virtual void Colision();
 	virtual void AIAttack();
 	virtual void AIMove();
+	virtual void AddLife(int nPower, int nType);
+	virtual void AddLife(int nLife);//体力の増減
+
 	bool bColision();
 	//静的メンバー関数
 	static CEnemy *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot);
@@ -57,7 +61,6 @@ public:
 	D3DXVECTOR3 GetEnemyPos(void) { return m_pos; }
 	void SetUninit(bool Uninit) { m_bUninit = Uninit; }
 	bool GetUninit(void) { return m_bUninit; }
-	void AddLife(int nLife);//体力の増減
 	int GetLife(void) { return m_nLife; }//体力の増減
 	void SetbDamage(bool bDamage) { m_bDamage = bDamage; }//ダメージを受けた状態にする
 	bool GetbDamage(void) { return m_bDamage; }//ダメージを受けている状態か取得
@@ -68,13 +71,13 @@ public:
 	bool GetHit() { return m_bHit; }
 	bool GetbInvincible() { return m_bInvincible; }
 	void Knockback(D3DXVECTOR3& Playerpos);
-	void AddLife(int nPower, int nType);
+	void SetbHitCollision(bool bHitCollision) { m_bHitCollision = bHitCollision; }
 
 private:
+protected:
 	std::random_device s_random;	// 非決定的な乱数生成器
-
 	CMap_Polygon		*m_pMapPolygon;
-
+	CShadow *m_pShadow;//影
 	bool  m_bKnockback;//ノックバックするかどうかの判定
 
 	D3DXMATRIX m_mtxWorld; //ワールドマトリックス
@@ -90,7 +93,9 @@ private:
 	bool	m_bDamage;//今攻撃を受けているか
 	bool	m_bInvincible;//無敵時間の判定
 	bool    m_bEffect;
-protected:
+
+	bool m_bHitCollision;//プレイヤーからの攻撃が当たるようにする判定
+
 	D3DXVECTOR3 m_MoveSpeed; //位置
 	float m_fAng;
 

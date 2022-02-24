@@ -297,6 +297,18 @@
     <ClInclude Include="col_area.h">
       <Filter>エフェクト</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy_Purple.h">
+      <Filter>キャラクター\敵</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>キャラクター\敵</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy_magic_field_ice.h">
+      <Filter>キャラクター\魔法</Filter>
+    </ClInclude>
+    <ClInclude Include="col_area_bg.h">
+      <Filter>エフェクト</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="deleteItem.cpp">
@@ -507,6 +519,18 @@
       <Filter>キャラクター\魔法</Filter>
     </ClCompile>
     <ClCompile Include="col_area.cpp">
+      <Filter>エフェクト</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy_Purple.cpp">
+      <Filter>キャラクター\敵</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>キャラクター\敵</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy_magic_field_ice.cpp">
+      <Filter>キャラクター\魔法</Filter>
+    </ClCompile>
+    <ClCompile Include="col_area_bg.cpp">
       <Filter>エフェクト</Filter>
     </ClCompile>
   </ItemGroup>

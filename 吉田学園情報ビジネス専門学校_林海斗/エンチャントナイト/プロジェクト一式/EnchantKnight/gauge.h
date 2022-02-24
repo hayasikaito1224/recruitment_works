@@ -22,7 +22,8 @@ public:
 
 	CGauge(OBJTYPE nPriority = OBJTYPE_UI);
 	~CGauge();
-	static CGauge*Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 scale, const D3DXCOLOR col, const float MaxGauge, const int nValue, const ADDTYPE type);
+	static CGauge*Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 scale, const D3DXCOLOR col,
+		const float MaxGauge, const int nValue, const ADDTYPE type);
 	HRESULT Init();
 	void Uninit(void);
 	void Update(void);

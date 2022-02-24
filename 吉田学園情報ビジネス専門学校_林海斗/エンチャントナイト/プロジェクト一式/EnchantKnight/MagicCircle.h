@@ -33,7 +33,8 @@ public:
 	Texture
 	*/
 
-	static CMagicCircle *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, float fsize, float fMaxTime, bool bRot, bool bEraseStart, D3DXCOLOR col, CTexture::Type type = CTexture::Text);
+	static CMagicCircle *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, float fsize, float fMaxTime, bool bRot,
+		bool bEraseStart, D3DXCOLOR col, CTexture::Type type = CTexture::Text,const float fSpeed = 1.5f);
 
 private:
 	CShadow *pShadow;

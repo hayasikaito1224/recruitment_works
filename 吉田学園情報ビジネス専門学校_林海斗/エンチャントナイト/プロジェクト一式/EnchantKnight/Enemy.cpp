@@ -16,6 +16,7 @@
 #include "Particle.h"
 #include "wall.h"
 #include "map_polygon.h"
+#include "shadow.h"
 #define MIN_MOVE (80.0)		//敵が動く最小の範囲
 #define MAX_MOVE (100.0)	//敵が動く最大の範囲
 #define MIN_TIME (180.0)		//敵が動くまでの時間の最小の範囲
@@ -43,6 +44,8 @@ CEnemy::CEnemy(OBJTYPE nPriority) : CScene(nPriority)
 	m_pAttackModel.clear();
 	m_pMapPolygon = nullptr;
 	m_bMove = false;
+	m_bHitCollision = true;
+	m_pShadow = nullptr;
 }
 
 CEnemy::~CEnemy()
@@ -69,7 +72,6 @@ HRESULT CEnemy::Init()
 	m_nDefense = MAX_ENEMY_DEFENSE;
 	m_fWalkSoundInterval = 0.0f;
 	m_fSoundInterval = 0.0f;
-	m_nLife = MAX_ENEMY_LIFE;
 	m_bDamage = false;
 
 	std::mt19937_64 s_mt(s_random());            // メルセンヌ・ツイスタの64ビット版、引数は初期シード
@@ -88,6 +90,10 @@ HRESULT CEnemy::Init()
 	m_fMovingRange = (float)s_randMove(s_mt);
 	m_rot.y = (float)s_randAng(s_mt)+(D3DX_PI);
 	s_MoveRandAng = (float)s_randAng(s_mt);
+	if (m_pShadow == nullptr)
+	{
+		m_pShadow = CShadow::Create({ 0.0f,0.0f,0.0f }, 50.0f, CTexture::Effect);
+	}
 	return S_OK;
 }
 
@@ -115,6 +121,11 @@ void CEnemy::Uninit()
 		m_pMapPolygon->Uninit();
 		m_pMapPolygon = nullptr;
 	}
+	if (m_pShadow != nullptr)
+	{
+		m_pShadow->Uninit();
+		m_pShadow = nullptr;
+	}
 	Release();
 }
 //-----------------------------------------
@@ -135,7 +146,12 @@ void CEnemy::Update()
 	if (m_bDeth == false)
 	{
 		AIBehavior();
+		if(m_pShadow != nullptr)
+		{
+			m_pShadow->SetPos(0.0f, 0.0f, { m_pPartsModel[0]->GetMaxPos().x ,0.0,m_pPartsModel[0]->GetMaxPos().z });
+			m_pShadow->SetPos(m_pos);
 
+		}
 		if (m_bDraw == true)
 		{
 			CCollision *pCollision = new CCollision;
@@ -163,7 +179,7 @@ void CEnemy::Update()
 			{
 				pCollision->CollisionObjectPlayer(pPlayer, &m_pos, &m_lastPos, m_pPartsModel[0]->GetMaxPos().x);
 				//攻撃判定が当たったかどうか調べる
-				if (m_bAttack == true && pPlayer->GetHit() == false)
+				if (m_bAttack == true && pPlayer->GetHit() == false && m_bHitCollision == true)
 				{
 					Colision();
 				}
@@ -335,7 +351,7 @@ void CEnemy::AIMove()
 //----------------------------------------------------------
 void CEnemy::AddLife(int nLife)
 {
-	if (m_bDamage == true)
+	if (m_bDamage == true && m_bHitCollision == true)
 	{
 		float fDamege = nLife+ m_nDefense;
 		m_nLife += fDamege;
@@ -419,9 +435,8 @@ bool  CEnemy::bColision()
 	return 0;
 }
 //-----------------------------------------
-//AIの処理
+//敵AIの挙動の処理
 //-----------------------------------------
-
 void CEnemy::AIBehavior()
 {
 	D3DXVECTOR3	pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);

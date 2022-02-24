@@ -13,6 +13,7 @@
 #include "MagicCircle.h"
 #include "sound.h"
 #include "circlegauge.h"
+#include "shadow.h"
 
 #define ICE_MOVE (6)
 #define ICE_ROT_SPEED (0.2)
@@ -51,6 +52,10 @@ HRESULT C_Magic_Ice::Init()
 		m_pModel = CModel::Create(m_pos, {m_rot.x,(float)randAng(mt),m_rot.z}, 4, CModel::TYPE_OBJECT);
 		m_pModel->SetPos({ m_pos.x,m_pos.y - m_pModel->GetMaxPos().y,m_pos.z });
 	}
+	if (m_pShadow == nullptr)
+	{
+		m_pShadow = CShadow::Create({ 0.0f,0.0f,0.0f }, 50.0f, CTexture::Effect);
+	}
 
 	return S_OK;
 }
@@ -66,6 +71,12 @@ void C_Magic_Ice::Uninit()
 		m_pModel = nullptr;
 
 	}
+	if (m_pShadow != nullptr)
+	{
+		m_pShadow->Uninit();
+		m_pShadow = nullptr;
+	}
+
 	Release();
 
 }
@@ -74,6 +85,11 @@ void C_Magic_Ice::Uninit()
 //==========================================
 void C_Magic_Ice::Update()
 {
+	if (m_pShadow != nullptr)
+	{
+		m_pShadow->SetPos(0.0f, 0.0f, { m_pModel->GetMaxPos().x ,0.0,m_pModel->GetMaxPos().z });
+		m_pShadow->SetPos({m_pos.x,0.1f ,m_pos.z});
+	}
 
 	m_nDeleteTimer++;
 	if (m_nDeleteTimer >= ICE_DELETE_TIME)

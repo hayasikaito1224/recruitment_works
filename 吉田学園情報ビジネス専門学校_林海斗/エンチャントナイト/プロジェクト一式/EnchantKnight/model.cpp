@@ -49,6 +49,9 @@ void CModel::Init()
 	case TYPE_CRYSTALENEMY:
 		m_pModelDataX = pModelDataX->GetEnemy03ModelData(m_nModelType);
 		break;
+	case TYPE_PURPLEENEMY:
+		m_pModelDataX = pModelDataX->GetEnemy04ModelData(m_nModelType);
+		break;
 
 	}
 

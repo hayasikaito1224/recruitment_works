@@ -13,7 +13,7 @@
 class CShadow : public CScene3D
 {
 public:
-	CShadow(OBJTYPE nPriority = OBJTYPE_EFFECT);
+	CShadow(OBJTYPE nPriority = OBJTYPE_SHADOW);
 	~CShadow();
 	HRESULT Init(void);
 	void Uninit(void);
@@ -21,6 +21,8 @@ public:
 	void Draw(void);
 	static CShadow *Create(D3DXVECTOR3 pos, float fSize, CTexture::Type texture = CTexture::Text);
 	void SetPos(const float fposX, const float fposZ, D3DXVECTOR3 scale);
+	void SetPos(const D3DXVECTOR3 pos) { m_pos = pos; }
+
 	void SetPosY(float fposY) { m_pos.y = fposY; }
 	void SetGraviSp(float data) { m_fGravitySpeed = data; }
 	void SetGravi(float data) { m_fGravity = data; }

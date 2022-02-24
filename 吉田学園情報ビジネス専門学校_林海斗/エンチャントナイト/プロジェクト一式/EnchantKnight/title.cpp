@@ -34,7 +34,7 @@ HRESULT CTitle::Init(void)
 {
 	m_bNextMode = false;
 	CBg::Create(CTexture::Title, CScene::OBJTYPE_BG, false);	//背景
-	m_Polygon = CPolygon::Create(D3DXVECTOR3(SCREEN_WIDTH/2.0f, SCREEN_HEIGHT / 2 + 280.0f, 0.0f), D3DXVECTOR3(430.0f, 80.0f, 0.0f), CTexture::GameStart);	//タイトルロゴ
+	m_Polygon = CPolygon::Create(D3DXVECTOR3(SCREEN_WIDTH/2.0f, SCREEN_HEIGHT / 2 + 100.0f, 0.0f), D3DXVECTOR3(430.0f, 80.0f, 0.0f), CTexture::GameStart);	//タイトルロゴ
 	return S_OK;
 }
 //--------------------------------------------

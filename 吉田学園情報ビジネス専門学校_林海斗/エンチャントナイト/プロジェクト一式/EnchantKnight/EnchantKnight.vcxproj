@@ -154,11 +154,13 @@
   <ItemGroup>
     <ClInclude Include="bg.h" />
     <ClInclude Include="billboard.h" />
+    <ClInclude Include="Boss.h" />
     <ClInclude Include="bumper.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="circlegauge.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="col_area.h" />
+    <ClInclude Include="col_area_bg.h" />
     <ClInclude Include="commandUI.h" />
     <ClInclude Include="deleteItem.h" />
     <ClInclude Include="directinput.h" />
@@ -169,9 +171,11 @@
     <ClInclude Include="enemyspawner.h" />
     <ClInclude Include="Enemy_Crystal.h" />
     <ClInclude Include="Enemy_Frame.h" />
+    <ClInclude Include="enemy_magic_field_ice.h" />
     <ClInclude Include="enemy_magic_fire.h" />
     <ClInclude Include="enemy_magic_ice.h" />
     <ClInclude Include="Enemy_poyo.h" />
+    <ClInclude Include="Enemy_Purple.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="field.h" />
     <ClInclude Include="game.h" />
@@ -226,11 +230,13 @@
   <ItemGroup>
     <ClCompile Include="bg.cpp" />
     <ClCompile Include="billboard.cpp" />
+    <ClCompile Include="Boss.cpp" />
     <ClCompile Include="bumper.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="circlegauge.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="col_area.cpp" />
+    <ClCompile Include="col_area_bg.cpp" />
     <ClCompile Include="commandUI.cpp" />
     <ClCompile Include="deleteItem.cpp" />
     <ClCompile Include="directinput.cpp" />
@@ -241,9 +247,11 @@
     <ClCompile Include="enemyspawner.cpp" />
     <ClCompile Include="Enemy_Crystal.cpp" />
     <ClCompile Include="Enemy_Frame.cpp" />
+    <ClCompile Include="enemy_magic_field_ice.cpp" />
     <ClCompile Include="enemy_magic_fire.cpp" />
     <ClCompile Include="enemy_magic_ice.cpp" />
     <ClCompile Include="Enemy_Poyo.cpp" />
+    <ClCompile Include="Enemy_Purple.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="field.cpp" />
     <ClCompile Include="game.cpp" />
