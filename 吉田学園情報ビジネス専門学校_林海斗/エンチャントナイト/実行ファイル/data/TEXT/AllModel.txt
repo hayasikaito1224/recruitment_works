@@ -30,6 +30,9 @@ ENEMY02MODEL_FILENAME = data/MODEL/FRAMEENEMY/FrameEnemyHead.x		# [1]左耳
 //敵のモデル03
 ENEMY03MODEL_FILENAME = data/MODEL/CRYSTALENEMY/CrystalEnemyBody.x		# [0]体
 ENEMY03MODEL_FILENAME = data/MODEL/CRYSTALENEMY/CrystalEnemyHead.x		# [1]左耳
+//敵のモデル04
+ENEMY04MODEL_FILENAME = data/MODEL/ENEMYPURPLE/PurpleEnemyBody.x		# [0]体
+ENEMY04MODEL_FILENAME = data/MODEL/ENEMYPURPLE/PurpleEnemyHead.x		# [1]左耳
 
 //ステージに配置するモデル
 OBJECTMODEL_FILENAME = data/MODEL/Block000.x			# [0]箱
