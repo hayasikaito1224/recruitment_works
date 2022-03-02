@@ -27,9 +27,15 @@ typedef struct
 class CScene3D : public CScene
 {
 public:
+	typedef enum
+	{
+		TYPE_FIELD = 0,
+		TYPE_WALL,
+		TYPE_MAX
+	}TYPE;
 	CScene3D(OBJTYPE nPriority = OBJTYPE_NONE);
 	~CScene3D();
-	HRESULT Init(CTexture::Type type= CTexture::Text);
+	HRESULT Init(const int nPolygonType,CTexture::Type type= CTexture::Text);
 	HRESULT Init(void);
 
 	void Uninit(void);

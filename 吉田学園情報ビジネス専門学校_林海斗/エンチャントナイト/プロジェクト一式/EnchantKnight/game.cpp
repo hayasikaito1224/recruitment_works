@@ -40,8 +40,9 @@
 #include "miss.h"
 #include "circlegauge.h"
 #include "Boss.h"
-#define MAGICCOMMAND_SIZE_X (140)
-#define MAGICCOMMAND_SIZE_Y (20)
+#include "gimmick_wall.h"
+#define MAGICCOMMAND_SIZE_X (100)
+#define MAGICCOMMAND_SIZE_Y (15)
 #define MAGICCOMMAND_INTERVAL (140)
 #define BOSS_LIFE (100)		//生命力
 
@@ -111,6 +112,7 @@ CGame::CGame()
 	m_bPush = false;
 	m_bEnd = false;
 	m_Boss = nullptr;
+	m_bGimmickUnlock = false;
 }
 //--------------------------------------------
 //デストラクタ
@@ -127,16 +129,18 @@ HRESULT CGame::Init(void)
 	//コマンドの生成
 	if (!m_pCommand)
 	{
-		m_pCommand = CCommandUI::Create(D3DXVECTOR3(80.0f, 745.0f, 0.0f), D3DXVECTOR3(80.0f, 30.0f, 0.0f), CTexture::L_BUTTON);
+		m_pCommand = CCommandUI::Create(D3DXVECTOR3(800.0f, 500.0f, 0.0f), D3DXVECTOR3(40.0f, 15.0f, 0.0f), CTexture::L_BUTTON);
 	}
 	//敵のスポナーの生成
 	if (m_pEnemySpawner[0] == nullptr)
 	{
-		m_pEnemySpawner[0] = CEnemy_Spawner::Create({ 977.71f, 0.00f, 1985.35f }, 500.0f, 400.0f, 10);
+		m_pEnemySpawner[0] = CEnemy_Spawner::Create({ 977.71f, 0.00f, 1985.35f }, 500.0f, 400.0f, CEnemy_Spawner::TYPE_POYO, 3);
 	}
 	if (m_pEnemySpawner[1] == nullptr)
 	{
-		m_pEnemySpawner[1] = CEnemy_Spawner::Create({ 60.21f, 0.00f, 3572.87f }, 500.0f, 400.0f, 15);
+		m_pEnemySpawner[1] = CEnemy_Spawner::Create({ 60.21f, 0.00f, 3572.87f }, 500.0f, 400.0f, CEnemy_Spawner::TYPE_FRAME,2);
+		m_pEnemySpawner[2] = CEnemy_Spawner::Create({ 60.21f, 0.00f, 3572.87f }, 500.0f, 400.0f, CEnemy_Spawner::TYPE_POYO, 5);
+
 	}
 	//if (m_pEnemySpawner[2] == nullptr)
 	//{
@@ -147,33 +151,31 @@ HRESULT CGame::Init(void)
 	{
 		m_Boss = CBoss::Create({ 1135.01f, 0.00f, 6678.77f }, { 0.0f, 0.00f, 0.0f }, 0, BOSS_LIFE);
 	}
+	//通行止め用の壁
+	CGimmickWall::Create({ 73.3f,75.0f ,1651.6f }, { 85.0f,85.0f,0.0f }, { 0.0f,-1.57f,0.0f }, 0, CTexture::MagicCircle_TypeB);
+	CGimmickWall::Create({ 73.3f,75.0f ,1801.6f }, { 85.0f,85.0f,0.0f }, { 0.0f,-1.57f,0.0f }, 0, CTexture::MagicCircle_TypeB);
+
+	CGimmickWall::Create({ 1050.0f,75.0f ,4278.4f }, { 85.0f,85.0f,0.0f }, { 0.0f,0.0f,0.0f }, 1, CTexture::MagicCircle_TypeB);
+	CGimmickWall::Create({ 1200.0f,75.0f ,4278.4f }, { 85.0f,85.0f,0.0f }, { 0.0f,0.0f,0.0f }, 1, CTexture::MagicCircle_TypeB);
+
 	//まほうコマンドの生成
-	for (int nCnt = 0; nCnt < CCommandUI::Magic_Max-1; nCnt++)
-	{
-		if (m_pMagicCommand[nCnt] == nullptr)
-		{
-			CTexture::Type TexType = CTexture::Text;
-			//魔法タイプごとにテクスチャを変える
-			switch (nCnt)
-			{
-			case CMagicUI::Fire:
-				TexType = CTexture::BLAZE;
-				break;
-			case CMagicUI::Ice:
-				TexType = CTexture::ICECLE;
-				break;
-			case CMagicUI::Heal:
-				TexType = CTexture::HEEL;
-				break;
-			}
-			//コマンド用のポリゴンの生成
-			m_pMagicCommand[nCnt] = CMagicUI::Create({
-				MAGICCOMMAND_INTERVAL,
-				600.0f + (MAGICCOMMAND_SIZE_Y *2.1f*nCnt),
-				0.0f },
-				{ MAGICCOMMAND_SIZE_X ,MAGICCOMMAND_SIZE_Y,0.0f }, TexType);
-		}
-	}
+	//コマンド用のポリゴンの生成
+	m_pMagicCommand[0] = CMagicUI::Create({
+		1120.0f,
+		550.0f,
+		0.0f },
+		{ MAGICCOMMAND_SIZE_X ,MAGICCOMMAND_SIZE_Y,0.0f }, CTexture::BLAZE);
+	m_pMagicCommand[1] = CMagicUI::Create({
+		880.0f,
+		550.0f,
+		0.0f },
+		{ MAGICCOMMAND_SIZE_X ,MAGICCOMMAND_SIZE_Y,0.0f }, CTexture::ICECLE);
+	m_pMagicCommand[2] = CMagicUI::Create({
+		1000.0f,
+		600.0f,
+		0.0f },
+		{ MAGICCOMMAND_SIZE_X ,MAGICCOMMAND_SIZE_Y,0.0f }, CTexture::HEEL);
+
 
 	//プレイヤーの生成
 	if (!m_Player)
@@ -187,36 +189,22 @@ HRESULT CGame::Init(void)
 	//HPバーの生成
 	if (m_pHPGauge == nullptr)
 	{
-		m_pHPGauge = CGauge::Create({ SCREEN_WIDTH,SCREEN_HEIGHT-40.0f,0.0f }, { 400.0f,15.0f,0.0f }, { 0.5,1.0,0.5,1.0 }, 400.0f, PLAYER_LIFE, CGauge::L_ADD);
+		m_pHPGauge = CGauge::Create({ 10.0f,50.0f,0.0f }, { 400.0f,15.0f,0.0f }, { 0.5,1.0,0.5,1.0 }, 400.0f, PLAYER_LIFE, CGauge::R_ADD);
 	}
 	//MPバーの生成
 	if (m_pMPGauge == nullptr)
 	{
-		m_pMPGauge = CGauge::Create({ SCREEN_WIDTH,SCREEN_HEIGHT-20.0f,0.0f }, { 400.0f,5.0f,0.0f }, { 0.5,0.5,1.0,1.0 }, 400.0f, PLAYER_MP, CGauge::L_ADD);
+		m_pMPGauge = CGauge::Create({ 10.0f,80.0f,0.0f }, { 400.0f,10.0f,0.0f }, { 0.5,0.5,1.0,1.0 }, 400.0f, PLAYER_MP, CGauge::R_ADD);
 	}
 	//CPバーの生成
 	if (m_pCPGauge == nullptr)
 	{
-		CPolygon::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT-40.0f, 0.0f),
-			D3DXVECTOR3(60.0f, 40.0f, 0.0f), CTexture::SKILLGAUGE, {1.0,1.0,1.0,0.1f});
+		CPolygon::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT-50.0f, 0.0f),
+			D3DXVECTOR3(90.0f, 50.0f, 0.0f), CTexture::SKILLGAUGE, {1.0,1.0,1.0,0.2f});
 
-		m_pCPGauge = CCircleGauge::Create({ SCREEN_WIDTH/2.0f,SCREEN_HEIGHT,0.0f }, { 60.0f,0.0f,0.0f }, { 1.0,1.0,1.0,0.4f }, 80.0f, PLAYER_CP);
+		m_pCPGauge = CCircleGauge::Create({ SCREEN_WIDTH/2.0f,SCREEN_HEIGHT,0.0f }, { 90.0f,0.0f,0.0f }, { 1.0,1.0,1.0,0.4f }, 100.0f, PLAYER_CP);
 		m_pCPGauge->SetGaugeValue(0);
 	}
-
-	//CBumper::Create({ 100.0f,0.0f,50.0f }, { 0.0f,0.0f,0.0f });
-	//if (m_pField == NULL)
-	//{
-	//	m_pField = CField::Create(D3DXVECTOR3(0.0f, -200.0f, -0.0f), D3DXVECTOR3(500.0f, 0.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, -0.0f)
-	//		, 50, 50, CTexture::SEA000);
-	//	m_pField->SetCol(0.8);
-	//}
-	//if (m_pSea == NULL)
-	//{
-	//	m_pSea = CField::Create(D3DXVECTOR3(0.0f, -200.0f, -0.0f), D3DXVECTOR3(600.0f, 0.0f, 600.0f), D3DXVECTOR3(0.0f, 0.0f, -0.0f)
-	//		, 50, 50, CTexture::SEA001);
-	//	m_pSea->SetCol(0.4);
-	//}
 
 	//空の生成
 	if (m_pMeshSphere == NULL)
@@ -236,8 +224,8 @@ HRESULT CGame::Init(void)
 	CPolygon::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 40.0f, 0.0f),
 		D3DXVECTOR3(210.0f, 20.0f, 0.0f), CTexture::TargetText);
 	//操作方法
-	CPolygon::Create(D3DXVECTOR3(130.0f, SCREEN_HEIGHT/2.0f, 0.0f),
-		D3DXVECTOR3(130.0f, 90.0f, 0.0f), CTexture::Operation);
+	CPolygon::Create(D3DXVECTOR3(140.0f, SCREEN_HEIGHT-130.0f, 0.0f),
+		D3DXVECTOR3(140.0f, 90.0f, 0.0f), CTexture::Operation);
 
 	m_fAlpha = 1.0f;
 	m_bNextMode = false;
@@ -345,10 +333,35 @@ void CGame::Update(void)
 				//HPバーの生成
 				if (m_pBossHPGauge == nullptr)
 				{
-					m_pBossHPGauge = CGauge::Create({ SCREEN_WIDTH/2.0f-300.0f,SCREEN_HEIGHT/2.0f - 250.0f,0.0f }, { 600.0f,15.0f,0.0f },
-					{ 0.5,1.0,0.5,1.0 }, 600.0f, BOSS_LIFE, CGauge::R_ADD);
+					m_pBossHPGauge = CGauge::Create({ SCREEN_WIDTH/2.0f-300.0f,SCREEN_HEIGHT/2.0f - 230.0f,0.0f }, { 600.0f,15.0f,0.0f },
+					{ 1.0,0.0,0.0,1.0 }, 600.0f, BOSS_LIFE, CGauge::R_ADD);
 				}
 			}
+		}
+		//ボスが死んだら
+		if (m_Boss->IsGimmickLock() == false)
+		{
+			if (m_pBossHPGauge != nullptr)
+			{
+				m_pBossHPGauge->Uninit();
+				m_pBossHPGauge = nullptr;
+			}
+		}
+		//0地点の敵のエリアを全滅させたら
+		if (m_pEnemySpawner[0]->IsGimmickLock() == false)
+		{
+			//ギミックを解除
+			m_bGimmickUnlock = true;
+			m_nGimmickNum = 0;
+		}
+		//1地点の敵のエリアを全滅させたら
+		if (m_pEnemySpawner[1]->IsGimmickLock() == false&&
+			m_pEnemySpawner[2]->IsGimmickLock() == false)
+		{
+			//ギミックを解除
+			m_bGimmickUnlock = true;
+			m_nGimmickNum = 1;
+
 		}
 		//全ての敵を倒したらリザルトへ行く
 		if (m_pEnemySpawner[0]->IsGimmickLock() == false &&
@@ -357,6 +370,21 @@ void CGame::Update(void)
 		{
 			CFade::SetFade(CManager::MODE_RESULT);
 			m_bEnd = true;
+		}
+		//ギミックがアンロックされたら
+		if (m_bGimmickUnlock)
+		{
+			//壁を消す
+			CScene *pSceneGW = CScene::GetScene(CScene::OBJTYPE_GIMMICKWALL);
+			while (pSceneGW!=nullptr)
+			{
+				CGimmickWall *pGimmickWall = (CGimmickWall*)pSceneGW;
+				CScene *pNext_Wall = CScene::GetSceneNext(pSceneGW);
+				pGimmickWall->GimmickUnlock(m_nGimmickNum);
+				pSceneGW = pNext_Wall;
+
+			}
+
 		}
 		//Lボタンを長押ししていたら
 		if (m_Player != nullptr)
@@ -490,6 +518,7 @@ void CGame::Update(void)
 				//m_nChanceStock++;
 				//m_pCPGauge->ResetGauge();
 			}
+
 
 		}
 	}

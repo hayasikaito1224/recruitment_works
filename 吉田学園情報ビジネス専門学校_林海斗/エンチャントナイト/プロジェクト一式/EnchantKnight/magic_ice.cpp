@@ -17,7 +17,7 @@
 
 #define ICE_MOVE (6)
 #define ICE_ROT_SPEED (0.2)
-#define ICE_POWER (1)//魔法の攻撃力
+#define ICE_POWER (3)//魔法の攻撃力
 #define ICE_DELETE_TIME (150)//魔法の自動消滅時間
 #define ICE_MAZIC_SIRCLE_RADIUS (20.0)
 #define ICE_UPWARD_TIME (20)//魔法の上昇時間

@@ -28,6 +28,8 @@ public:
 		FADE,			
 		GOAL,
 		GAUGEBER,//ゲージ
+		GAUGEFRAME,//ゲージの枠
+		COL_AREA,
 		SKILLGAUGE,//必殺技ようのゲージ
 		SHADOW,			//影
 		FIELD,			//床

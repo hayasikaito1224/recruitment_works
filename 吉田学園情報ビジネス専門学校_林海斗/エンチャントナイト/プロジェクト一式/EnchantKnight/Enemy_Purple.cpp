@@ -394,10 +394,10 @@ void CEnemy_Purple::FireAttack()
 			posAdd.x = m_pos.x + (sinf(fAng)*PURPLE_ADDPOS);
 			posAdd.z = m_pos.z + (cosf(fAng)*PURPLE_ADDPOS);
 			posAdd.y = m_pos.y + 40.0f;
-			CCol_Area_Bg::Create(posAdd, fAng, 10.0f, (ENEMY_MAGIC_FIELD_ICE_SIZE_Z) * 20, 0.5f,
-				PURPLE_FIRE_ATTACK_STARTTIME, CTexture::FADE);
-			CCol_Area::Create(posAdd, fAng, 10.0f, 0.5f, (ENEMY_MAGIC_FIELD_ICE_SIZE_Z) * 20,
-				PURPLE_FIRE_ATTACK_STARTTIME, CTexture::FADE);
+			CCol_Area_Bg::Create(posAdd, fAng, 10.0f, (ENEMY_MAGIC_FIELD_ICE_SIZE_Z) * 20, 0.3f,
+				PURPLE_FIRE_ATTACK_STARTTIME, CTexture::COL_AREA);
+			CCol_Area::Create(posAdd, fAng, 10.0f, 0.7f, (ENEMY_MAGIC_FIELD_ICE_SIZE_Z) * 20,
+				PURPLE_FIRE_ATTACK_STARTTIME, CTexture::COL_AREA);
 
 
 		}
@@ -486,10 +486,10 @@ void CEnemy_Purple::IceAttack()
 			posAdd.x = m_pos.x + (sinf(fAng)*PURPLE_ADDPOS);
 			posAdd.z = m_pos.z + (cosf(fAng)*PURPLE_ADDPOS);
 			posAdd.y = m_pos.y;
-			CCol_Area_Bg::Create(posAdd, fAng, ENEMY_MAGIC_FIELD_ICE_SIZE_X, (ENEMY_MAGIC_FIELD_ICE_SIZE_Z) * 20, 0.5f,
-				PURPLE_ICE_ATTACK_STARTTIME, CTexture::FADE);
-			CCol_Area::Create(posAdd, fAng, ENEMY_MAGIC_FIELD_ICE_SIZE_X, 0.5f, (ENEMY_MAGIC_FIELD_ICE_SIZE_Z) * 20,
-				PURPLE_ICE_ATTACK_STARTTIME, CTexture::FADE);
+			CCol_Area_Bg::Create(posAdd, fAng, ENEMY_MAGIC_FIELD_ICE_SIZE_X, (ENEMY_MAGIC_FIELD_ICE_SIZE_Z) * 20, 0.3f,
+				PURPLE_ICE_ATTACK_STARTTIME, CTexture::COL_AREA);
+			CCol_Area::Create(posAdd, fAng, ENEMY_MAGIC_FIELD_ICE_SIZE_X, 0.7f, (ENEMY_MAGIC_FIELD_ICE_SIZE_Z) * 20,
+				PURPLE_ICE_ATTACK_STARTTIME, CTexture::COL_AREA);
 
 		}
 

@@ -8,6 +8,12 @@ class CEnemy;
 class CEnemy_Spawner : public CScene
 {
 public:
+	typedef enum
+	{
+		TYPE_FRAME = 0,
+		TYPE_CRYSTAL,
+		TYPE_POYO
+	}TYPE;
 
 	CEnemy_Spawner(OBJTYPE nPriority = CScene::OBJTYPE_ENEMY);
 	~CEnemy_Spawner();
@@ -16,13 +22,14 @@ public:
 	void Update();
 	void Draw();
 	//Ã“Iƒƒ“ƒo[ŠÖ”
-	static CEnemy_Spawner *Create(D3DXVECTOR3 pos,float fAreaX, float fAreaZ,int nMaxEnemy);
+	static CEnemy_Spawner *Create(D3DXVECTOR3 pos,float fAreaX, float fAreaZ,int nType,int nMaxEnemy);
 	bool IsGimmickLock() { return m_bGimmickLock; }
 	CEnemy* GetEnemy(int nNum) { return m_pEnemy[nNum]; }
 private:
 	D3DXVECTOR3 m_pos;
 	std::vector<CEnemy*> m_pEnemy;//“G‚ÌŠi”[
 	int m_nNumEnemy;//“G‚Ì”
+	int m_nEnemyType;//“G‚Ìí—Ş
 	float m_fAreaX;
 	float m_fAreaZ;
 	bool m_bGimmickLock;//dŠ|‚¯‚ÌƒƒbƒN

@@ -1,3 +1,6 @@
+//=============================================================================
+// エフェクトの処理
+//=============================================================================
 #ifndef _EFFECT_H_
 #define _EFFECT_H_
 #include "scene.h"
@@ -13,7 +16,6 @@ public:
 	}DeleteType;
 	CEffect(OBJTYPE nPriority = OBJTYPE_EFFECT);
 	~CEffect();
-	HRESULT Init(CTexture::Type type);
 	HRESULT Init();
 	void Uninit();
 	void Update();

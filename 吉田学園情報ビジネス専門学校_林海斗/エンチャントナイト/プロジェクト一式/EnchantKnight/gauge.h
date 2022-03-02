@@ -9,7 +9,7 @@
 #include "Scene2D.h"
 #include "texture.h"
 
-
+class CPolygon;
 
 class CGauge : public CScene2D
 {
@@ -36,6 +36,7 @@ public:
 	void SetGaugeValue(int nValue) { m_fValue = (float)nValue; }
 
 private:
+	CPolygon *m_pFrame;//ゲージの枠
 	D3DXVECTOR3			m_Scale;		//ゲージの大きさ
 	ADDTYPE				m_AddType;		//ゲージの増えるタイプ
 	float				m_fMaxGauge;	//gaugeの最大数

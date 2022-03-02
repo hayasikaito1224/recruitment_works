@@ -1,3 +1,4 @@
-﻿  miss.cpp
+﻿  col_area.cpp
+c:\users\student\desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\enchantknight\col_area.cpp(173): warning C4244: '=': 'const int' から 'float' への変換です。データが失われる可能性があります。
   EnchantKnight.vcxproj -> C:\Users\student\Desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\EnchantKnight\EnchantKnight.exe
   EnchantKnight.vcxproj -> C:\Users\student\Desktop\recruitment_works\吉田学園情報ビジネス専門学校_林海斗\エンチャントナイト\プロジェクト一式\EnchantKnight\EnchantKnight.pdb (Full PDB)

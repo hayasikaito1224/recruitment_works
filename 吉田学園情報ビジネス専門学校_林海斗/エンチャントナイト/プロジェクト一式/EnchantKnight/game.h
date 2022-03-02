@@ -96,7 +96,9 @@ private:
 	static int			m_nChanceStock;
 	bool m_bPush;
 	bool m_bEnd;
+	bool m_bGimmickUnlock;
 	int m_nCntDelay;//ディレイのカウンタ
+	int m_nGimmickNum;//ギミックのナンバー
 	float				m_fAlpha;
 	bool				m_bNextMode;//二重押し防止変数
 	int					m_nTimer;//カウンター

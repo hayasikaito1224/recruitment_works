@@ -1,7 +1,5 @@
 //=============================================================================
-//
 // 当たり判定エリアの表示処理の背景
-//
 //=============================================================================
 #ifndef _COL_AREA_BG_H_
 #define _COL_AREA_BG_H_
@@ -28,17 +26,17 @@ public:
 
 private:
 
-	CTexture::Type m_Tex;
-	bool m_bDraw;
+	CTexture::Type m_Tex;//テクスチャの種類
+	bool m_bDraw;//描画判定
 	bool m_bUninit;//消去判定
 	LPDIRECT3DTEXTURE9		m_pTexture = NULL;				//テクスチャへのポインタ
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff = NULL;				//頂点バッファへのポインタ
 	LPDIRECT3DDEVICE9 m_pDevice = NULL;//デバイスのポインタ
-	D3DXCOLOR m_col;
-	D3DXMATRIX m_mtxWorld;
-	D3DXVECTOR3 m_pos;
-	D3DXVECTOR3 m_rot;
-	D3DXVECTOR3 m_size;
+	D3DXCOLOR m_col;//色
+	D3DXMATRIX m_mtxWorld;//ワールドマトリックス
+	D3DXVECTOR3 m_pos;//位置
+	D3DXVECTOR3 m_rot;//向き
+	D3DXVECTOR3 m_size;//大きさ
 	float				m_fMaxGauge;	//gaugeの最大数
 	float				m_fValueMax;	//ゲージの値の最大数
 	float				m_fValue;		//ゲージの数値

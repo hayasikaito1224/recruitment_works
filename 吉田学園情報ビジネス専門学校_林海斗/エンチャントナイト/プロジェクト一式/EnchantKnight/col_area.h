@@ -41,20 +41,20 @@ public:
 private:
 	FieldVtx				m_vtx[AREA_VTX];			//各頂点の情報格納構造体
 
-	CTexture::Type m_Tex;
-	bool m_bDraw;
+	CTexture::Type m_Tex;//テクスチャのタイプ
+	bool m_bDraw;//描画判定
 	bool m_bUninit;//消去判定
 	LPDIRECT3DTEXTURE9		m_pTexture = NULL;				//テクスチャへのポインタ
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff = NULL;				//頂点バッファへのポインタ
 	LPDIRECT3DDEVICE9 m_pDevice = NULL;//デバイスのポインタ
-	D3DXCOLOR m_col;
-	D3DXMATRIX m_mtxWorld;
-	D3DXVECTOR3 m_pos;
-	D3DXVECTOR3 m_rot;
-	D3DXVECTOR3 m_size;
+	D3DXCOLOR m_col;//色
+	D3DXMATRIX m_mtxWorld;//ワールドマトリックス
+	D3DXVECTOR3 m_pos;//位置
+	D3DXVECTOR3 m_rot;//向き
+	D3DXVECTOR3 m_size;//サイズ
 	float				m_fMaxGauge;	//gaugeの最大数
-	float				m_fValueMax;	//ゲージの値の最大数
-	float				m_fValue;		//ゲージの数値
+	float				m_fTimeMax;		//最大の時間
+	float				m_fTime;		//現在の時間
 
 };
 

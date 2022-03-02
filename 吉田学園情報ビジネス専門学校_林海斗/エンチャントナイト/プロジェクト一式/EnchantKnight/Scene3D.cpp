@@ -29,7 +29,7 @@ void CScene3D::BindTexture(CTexture::Type type)
 //=============================================================================
 // ポリゴンの初期化処理
 //=============================================================================
-HRESULT CScene3D::Init(CTexture::Type type)
+HRESULT CScene3D::Init(const int nPolygonType, CTexture::Type type)
 {
 
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();//デバイスのポインタ
@@ -52,10 +52,23 @@ HRESULT CScene3D::Init(CTexture::Type type)
 
 	//バッファの生成
 	//バッファの生成
-	pVtx[0].pos = D3DXVECTOR3(-m_size.x, 0.0f, m_size.z);
-	pVtx[1].pos = D3DXVECTOR3(m_size.x, 0.0f, m_size.z);
-	pVtx[2].pos = D3DXVECTOR3(-m_size.x, 0.0f, -m_size.z);
-	pVtx[3].pos = D3DXVECTOR3(m_size.x, 0.0f, -m_size.z);
+	switch (nPolygonType)
+	{
+	case TYPE_FIELD:
+		pVtx[0].pos = D3DXVECTOR3(-m_size.x, 0.0f, m_size.z);
+		pVtx[1].pos = D3DXVECTOR3(m_size.x, 0.0f, m_size.z);
+		pVtx[2].pos = D3DXVECTOR3(-m_size.x, 0.0f, -m_size.z);
+		pVtx[3].pos = D3DXVECTOR3(m_size.x, 0.0f, -m_size.z);
+		break;
+
+	case TYPE_WALL:
+		pVtx[0].pos = D3DXVECTOR3(-m_size.x, m_size.y, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(m_size.x, m_size.y, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(-m_size.x, -m_size.y, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(m_size.x, -m_size.y, 0.0f);
+		break;
+
+	}
 
 	pVtx[0].tex = D3DXVECTOR2(0.0, 0.0);
 	pVtx[1].tex = D3DXVECTOR2(1.0, 0.0);

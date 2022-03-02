@@ -15,7 +15,7 @@ CCol_Area_Bg::CCol_Area_Bg(OBJTYPE nPriority) : CScene(nPriority)
 	m_rot = { 0.0f,0.0f,0.0f };
 	m_size = { 0.0f,0.0f,0.0f };
 	m_fValue = 0.0f;
-	m_col = { 1.0,1.0,1.0,1.0 };
+	m_col = { 1.0,0.0,0.0,1.0 };
 }
 
 //=============================================================================
@@ -96,15 +96,20 @@ void CCol_Area_Bg::Uninit(void)
 //=============================================================================
 void CCol_Area_Bg::Update(void)
 {
+	//ŠÔ‚ğ”‚¦‚é
 	m_fValue += 1.0f;
+	//Œˆ‚ß‚ç‚ê‚½Å‘å‚ÌŠÔ‚É‚È‚Á‚½‚ç
 	if (m_fValue >= m_fValueMax)
 	{
+		//ŠÔ‚ğÅ‘å‚ÌŠÔ‚É‡‚í‚¹‚é
 		m_fValue = m_fValueMax;
+		//Á‹”»’è‚ğƒIƒ“‚É‚·‚é
 		m_bUninit = true;
 	}
-
+	//Á‹”»’è‚ªƒIƒ“‚¾‚Á‚½‚ç
 	if (m_bUninit)
 	{
+		//I—¹ˆ—‚ğŒÄ‚Ô
 		Uninit();
 	}
 

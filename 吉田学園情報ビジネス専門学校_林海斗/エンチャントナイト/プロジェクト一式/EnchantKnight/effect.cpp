@@ -1,9 +1,14 @@
+//=============================================================================
+// エフェクトの処理
+//=============================================================================
 #include "main.h"
 #include "effect.h"
 #include "manager.h"
 #include "renderer.h"
 #include "Scene3D.h"
-
+//=============================================================================
+// コンストラクタ
+//=============================================================================
 CEffect::CEffect(OBJTYPE nPriority) : CScene(nPriority)
 {
 	m_col = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
@@ -17,7 +22,9 @@ CEffect::CEffect(OBJTYPE nPriority) : CScene(nPriority)
 	m_bDefScale = false;
 	m_bScaleX = false;
 }
-
+//=============================================================================
+// デストラクタ
+//=============================================================================
 CEffect::~CEffect()
 {
 
@@ -58,12 +65,6 @@ CEffect * CEffect::Create(D3DXVECTOR3 pos, D3DXVECTOR3 m_move, D3DXVECTOR3 size,
 //----------------------------------------------------
 //初期化処理
 //-----------------------------------------------------
-HRESULT CEffect::Init(CTexture::Type type)
-{
-	m_fRand = float(rand() %314/100.0f) - float(rand() % 314 + 314/100.0f);//z軸ランダム移動用
-	return S_OK;
-}
-
 HRESULT CEffect::Init()
 {
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();//デバイスのポインタ
@@ -122,10 +123,14 @@ void CEffect::Uninit()
 	}
 	Release();
 }
-
+//---------------------------------------------------------
+//更新処理
+//---------------------------------------------------------
 void CEffect::Update()
 {
+	//色情報の更新
 	SetCol_E(m_col);
+	//X軸側が大きくなる判定なら
 	if (m_bScaleX)
 	{
 		//フレーム回ルごとにサイズを大きくなる
@@ -137,6 +142,7 @@ void CEffect::Update()
 		}
 
 	}
+	//サイズが大きくなる判定なら
 	if (m_bScale==true)
 	{
 		//フレーム回ルごとにサイズを大きくなる
@@ -149,7 +155,7 @@ void CEffect::Update()
 			m_bScale = false;
 		}
 	}
-	//縮小
+	//縮小判定なら
 	if (m_bDefScale)
 	{
 		m_size.x -= m_fScaleSpeed*1.2f;
@@ -163,7 +169,8 @@ void CEffect::Update()
 			m_size.x = 0.0f;
 		}
 	}
-	Setpos(m_pos, m_size);//頂点情報の設定
+	//頂点情報の設定
+	Setpos(m_pos, m_size);
 
 	//移動処理
 	m_pos += m_move;
@@ -175,35 +182,38 @@ void CEffect::Update()
 
 	//明るさを下げる
 	m_col.a -= m_fDefSpeedA;
-	//m_col.g += 0.005;
-	if (m_pos.y < 0.0f)
-	{
-		//m_move.y *= -1;
-		//m_move.y /= 1.2f;
-	}
+
+	//重力判定がオンなら
 	if (m_bGravity == true)
 	{
+		//エフェクトに重力を掛ける
 		m_move.y -= m_fGravity;
 	}
 	//α値が0以下になったら消える
 	if (m_col.a <= 0.0)
 	{
+		//消去判定をオンにする
 		m_bUninit = true;
 	}
+	//消去判定がオンなら
 	if (m_bUninit == true)
 	{
+		//終了処理を呼び出す
 		Uninit();
 
 	}
 }
-
+//---------------------------------------------------------
+//更新処理
+//---------------------------------------------------------
 void CEffect::Draw()
 {
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	D3DXMATRIX mtxTrans, mtxRot;				//位置計算用マトリックス
 	D3DXMATRIX mtxScale;				//スケール計算用マトリックス
-										//ライト無効
+
+	//ライト無効
 	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 	//上から書き込むことをしないようにする
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
@@ -234,27 +244,17 @@ void CEffect::Draw()
 		m_mtxWorld._21 = m_mtxView._12;
 		m_mtxWorld._22 = m_mtxView._22;
 		m_mtxWorld._23 = m_mtxView._32;
-		//m_mtxWorld._31 = m_mtxView._13;
-		//m_mtxWorld._32 = m_mtxView._23;
-		//m_mtxWorld._33 = m_mtxView._33;
 
 	}
 	else
 	{
-		//m_mtxWorld._11 = m_size.x;
-		//m_mtxWorld._22 = m_size.y;
-
-
 		D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
 		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
-
 	}
-
 
 	//位置を反映
 	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
-
 
 	//ワールドマトリックスの設定
 	pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
@@ -262,17 +262,21 @@ void CEffect::Draw()
 	//頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_3D));
 
-	pDevice->SetFVF(FVF_VERTEX_3D);			//頂点フォーマットの設定
+	//頂点フォーマットの設定
+	pDevice->SetFVF(FVF_VERTEX_3D);
 
-	pDevice->SetTexture(0, m_pTexture);	//テクスチャの設定
+	//テクスチャの設定
+	pDevice->SetTexture(0, m_pTexture);
 
-										//ポリゴンの描画
+	//ポリゴンの描画
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,	//プリミティブの種類
 		0,					//開始する頂点のインデックス
 		2);					//描画するプリミティブ数
+	//カリングする判定なら
 	if (m_bCulling == true)
 	{
-		pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);				// カリングを行わない
+		// カリングをする
+		pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 	}
 	//αテスト
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
@@ -283,14 +287,16 @@ void CEffect::Draw()
 	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
 	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-
+	//ライトの設定を戻す
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 	//元に戻す
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
 
 }
-
+//---------------------------------------------------------
+//色の設定
+//---------------------------------------------------------
 void CEffect::SetCol_E(D3DXCOLOR col)
 {
 	VERTEX_3D *pVtx;
@@ -304,10 +310,14 @@ void CEffect::SetCol_E(D3DXCOLOR col)
 	m_pVtxBuff->Unlock();
 
 }
-
+//---------------------------------------------------------
+//頂点座標の更新
+//---------------------------------------------------------
 void CEffect::Setpos(D3DXVECTOR3 pos, D3DXVECTOR3 scale)
 {
+	//サイズを反映
 	m_size = scale;
+
 	D3DXVECTOR3 posOrigin[4];
 	D3DXVECTOR3 Rotatepos[4];
 
@@ -334,6 +344,7 @@ void CEffect::Setpos(D3DXVECTOR3 pos, D3DXVECTOR3 scale)
 	Rotatepos[3].y = (posOrigin[3].x * sinf(m_fAng)) - (posOrigin[3].y * cosf(m_fAng));
 
 	VERTEX_3D *pVtx;
+
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 	//バッファの生成
 	pVtx[0].pos = D3DXVECTOR3(Rotatepos[0].x, Rotatepos[0].y, 0.0f);
@@ -344,15 +355,23 @@ void CEffect::Setpos(D3DXVECTOR3 pos, D3DXVECTOR3 scale)
 	m_pVtxBuff->Unlock();
 
 }
+//---------------------------------------------------------
 //出現時に不透明になっていく処理
+//---------------------------------------------------------
 void CEffect::AddColA()
 {
+	//出現時に不透明になっていく処理
 	m_fAddA += 0.1f;
+
+	//α値が1.0fになったら
 	if (m_fAddA >= 1.0f)
 	{
 		m_fAddA = 1.0f;
+		//不透明処理をしないようにする
 		m_bAddColA = false;
 	}
+
+	//色情報の更新
 	SetCol_E({ m_col.r,m_col.g,m_col.b,m_fAddA });
 }
 

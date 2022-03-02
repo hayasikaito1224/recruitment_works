@@ -24,7 +24,7 @@
 #define MAGIC_SKILL02_MAZIC_AREA_X (30.0f)//当たり判定のエリア
 #define MAGIC_SKILL02_MAZIC_AREA_Z (800.0f)//当たり判定のエリア
 
-#define MAGIC_SKILL02_POWER (1)//魔法の攻撃力
+#define MAGIC_SKILL02_POWER (3)//魔法の攻撃力
 #define MAGIC_SKILL02_ATTACK_INTERVALTIME (80)//魔法のクールタイム
 
 //========================================---

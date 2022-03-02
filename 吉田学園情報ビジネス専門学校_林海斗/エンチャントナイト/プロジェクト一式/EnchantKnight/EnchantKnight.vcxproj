@@ -180,6 +180,7 @@
     <ClInclude Include="field.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gauge.h" />
+    <ClInclude Include="gimmick_wall.h" />
     <ClInclude Include="goal.h" />
     <ClInclude Include="HierarchyData.h" />
     <ClInclude Include="input.h" />
@@ -256,6 +257,7 @@
     <ClCompile Include="field.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gauge.cpp" />
+    <ClCompile Include="gimmick_wall.cpp" />
     <ClCompile Include="goal.cpp" />
     <ClCompile Include="HirarchData.cpp" />
     <ClCompile Include="input.cpp" />

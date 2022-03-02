@@ -465,7 +465,9 @@ void CMotion::PlayMotion(const int nNumParts, CModel **apModel, int& motionType,
 		}
 	}
 }
-
+//------------------------------------
+// ループしないモーション
+//------------------------------------
 void CMotion::NoLoopPlayMotion(const int nNumParts, CModel ** apModel, int & motionType,
 	int & motionTypeLast, bool & bStop)
 {
@@ -787,7 +789,9 @@ void CMotion::MotionLoad(const char *sMotionFileName)
 	}
 
 }
-
+//------------------------------------
+// デバッグ文字の処理
+//------------------------------------
 void CMotion::Drawtext()
 {
 	RECT rect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
@@ -797,9 +801,6 @@ void CMotion::Drawtext()
 	nNum = sprintf(&str[0], "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n モーション情報 \n");
 	nNum += sprintf(&str[nNum], " [NumKey] %d \n", m_NumKey);
 	nNum += sprintf(&str[nNum], " [m_motionCounter] %.2f \n", m_motionCounter);
-
-
-	//nNum += sprintf(&str[nNum], " 左スティックY %d  \n", GamePad.lY);
 
 	LPD3DXFONT pFont = CManager::GetRenderer()->GetFont();
 	// テキスト描画

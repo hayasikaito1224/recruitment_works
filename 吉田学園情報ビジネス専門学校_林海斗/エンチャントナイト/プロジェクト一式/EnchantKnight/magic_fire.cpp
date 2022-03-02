@@ -21,7 +21,7 @@
 #define FIRE_SPEEDLIMIT (10.0)//魔法の発射スピード
 
 #define FIRE_DELETE_TIME (90)//魔法の自動消滅時間
-#define FIRE_POWER (4)//攻撃力
+#define FIRE_POWER (6)//攻撃力
 #define FIRE_ROT_SPEED (0.2)
 #define FIRE_MAZIC_SIRCLE_RADIUS (20.0)
 

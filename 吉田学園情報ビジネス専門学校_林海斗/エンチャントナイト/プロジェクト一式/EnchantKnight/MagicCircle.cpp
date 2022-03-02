@@ -1,3 +1,6 @@
+//=========================================
+//魔法陣の処理
+//=========================================
 #include "main.h"
 #include "MagicCircle.h"
 #include "manager.h"
@@ -6,6 +9,9 @@
 #include "Particle.h"
 #include "shadow.h"
 #define MAX_ERASE_TIME (60)
+//=============================================================================
+// コンストラクタ
+//=============================================================================
 CMagicCircle::CMagicCircle(OBJTYPE nPriority) : CEffect(nPriority)
 {
 	m_col = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
@@ -16,13 +22,14 @@ CMagicCircle::CMagicCircle(OBJTYPE nPriority) : CEffect(nPriority)
 	m_fScaleSpeed = 1.5f;
 	m_bErase = false;
 	m_pParticle = nullptr;
-	m_bEffect = false;
 	m_bSizeAdd = false;
 	m_bSizeDef = false;
 	m_rot = { D3DXToRadian(90.0f),0.0f,0.0f };
 	pShadow = nullptr;
 }
-
+//=============================================================================
+// デストラクタ
+//=============================================================================
 CMagicCircle::~CMagicCircle()
 {
 
@@ -91,7 +98,9 @@ void CMagicCircle::Uninit()
 	}
 	Release();
 }
-
+//---------------------------------------------------------
+//更新処理
+//---------------------------------------------------------
 void CMagicCircle::Update()
 {
 	Setpos(m_pos, m_size);//頂点情報の設定
@@ -122,13 +131,7 @@ void CMagicCircle::Update()
 			m_bEraseSizeStart = true;
 		}
 	}
-	//エフェクトを出す
-	if (m_bEffect == true)
-	{
 
-		//m_pParticle->PlayCircleParticle(false, m_size.x, m_col);
-
-	}
 	//サイズが大きくなる処理
 	if (m_bSizeAdd == true)
 	{
@@ -146,11 +149,11 @@ void CMagicCircle::Update()
 	{
 		ColSizeAdd();
 	}
+	//色の値を小さくする判定がオンなら
 	if (m_bColDef == true)
 	{
 		//明るさを下げる
-		m_col.a -= 0.03;
-
+		m_col.a -= 0.03f;
 	}
 	
 	//α値が0以下になったら消える
@@ -158,37 +161,47 @@ void CMagicCircle::Update()
 	{
 		m_bUninit = true;
 	}
+	//終了判定がオンなら
 	if (m_bUninit == true)
 	{
+		//終了処理を呼ぶ
 		Uninit();
 	}
 
 }
-
+//---------------------------------------------------------
+//描画処理
+//---------------------------------------------------------
 void CMagicCircle::Draw()
 {
 	CEffect::Draw();
 }
 
+//---------------------------------------------------------
 //サイズが大きくなる処理
+//---------------------------------------------------------
 void CMagicCircle::SizeAdd()
 {
+	//サイズを増やす
 	m_size.x += m_fScaleSpeed;
 	m_size.y += m_fScaleSpeed;
 	if (m_size.x >= m_fMaxSize)
 	{
 		m_size.x = m_fMaxSize;
 		m_size.y = m_fMaxSize;
+		//サイズが大きくなる処理を停止
 		m_bSizeAdd = false;
-		//エフェクトが出るようにする
-		m_bEffect = true;
+		//消去処理実行の判定がオンだっだら
 		if (m_bErase == true)
 		{
+			//消去処理の実行
 			m_bEraseStart = true;
 		}
 	}
 }
+//---------------------------------------------------------
 //サイズが小さくなる処理
+//---------------------------------------------------------
 void CMagicCircle::SizeDef()
 {
 	m_size.x -= m_fScaleSpeed;
@@ -198,17 +211,20 @@ void CMagicCircle::SizeDef()
 		m_size.x = 0.0f;
 		m_size.y = 0.0f;
 		m_bSizeDef = false;
-		m_bEffect = false;
 	}
 }
-
+//---------------------------------------------------------
+//サイズが大きくするだけの処理
+//---------------------------------------------------------
 void CMagicCircle::ColSizeAdd()
 {
 	m_size.x += m_fScaleSpeed;
 	m_size.y += m_fScaleSpeed;
 
 }
-
+//---------------------------------------------------------
+//サイズを設定
+//---------------------------------------------------------
 void CMagicCircle::SetSize()
 {
 

@@ -37,6 +37,7 @@
 #include "enemyspawner.h"
 #include "circlegauge.h"
 #include "directinput.h"
+#include "gimmick_wall.h"
 //------------------------------------
 //マクロ定義
 //------------------------------------
@@ -48,11 +49,12 @@
 #define SWORDEFFECT_LONG (16)
 #define PLAYER_RANGE (700.0)		//プレイヤーと敵の近さを図る範囲
 #define PLAYER_ROCKON_SIZE (5.0)	//ロックオン画像のサイズ
-#define PLAYER_POWER (10)			//攻撃力
+#define PLAYER_POWER (5)			//攻撃力
 #define PLAYER_HIT_MAXTIME (50)		//無敵判定の時間
 #define PLAYER_DODGE_TIME (20.0f)		//回避の時間
 #define PLAYER_DODGE_SPEED (12.0f)		//回避の速度
 #define PLAYER_ATTACK_SPEED (15.0f)		//攻撃の移動速度
+#define PLAYER_ADDCP (7)		//増加するCP
 
 //--------------------------
 //コンストラクト
@@ -122,6 +124,7 @@ HRESULT CPlayer::Init()
 	int nCntCollision = 0;
 	int nParent = 0;
 	m_bNearEnemy = false;
+	//当たり判定用モデルの読み込み
 	if (pFile != NULL)
 	{
 		while (true)
@@ -423,9 +426,9 @@ void CPlayer::Update()
 					pEnemy->SetHit(bhit);
 					if (bhit == true)
 					{
-						CManager::GetGame()->GetMPGauge()->SetGauge(-1);
+						CManager::GetGame()->GetMPGauge()->SetGauge(-2);
 						//CPを増やす
-						CManager::GetGame()->GetCPGauge()->SetGauge(-5);
+						CManager::GetGame()->GetCPGauge()->SetGauge(-PLAYER_ADDCP);
 						pEnemy->SetbDamage(true);
 						pEnemy->AddLife(-PLAYER_POWER);
 
@@ -436,11 +439,18 @@ void CPlayer::Update()
 						std::uniform_real_distribution<> randAng(-D3DX_PI, D3DX_PI);
 						D3DXVECTOR3 EnemyVec = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 						EnemyVec = pEnemy->GetEnemyPos() - m_pos;			//敵と弾のベクトル
+						D3DXVECTOR3 EnemyPosBody = {};
+						D3DXVECTOR3 EnemyPosHead = {};
+						if (pEnemy->GetModel(0) != nullptr)
+						{
+							EnemyPosBody = pEnemy->GetModel(0)->GetMaxPos();
+							EnemyPosHead = pEnemy->GetModel(1)->GetMaxPos();
+						}
 						float fEnemyAng = atan2(EnemyVec.x, EnemyVec.z)+ D3DX_PI;
 						D3DXVECTOR3 Addmove = D3DXVECTOR3(
-							sinf(fEnemyAng)*pEnemy->GetModel(0)->GetMaxPos().x,
-							pEnemy->GetModel(1)->GetMaxPos().y / 2.0f,
-							cosf(fEnemyAng)*pEnemy->GetModel(0)->GetMaxPos().x);
+							sinf(fEnemyAng)*EnemyPosBody.x,
+							EnemyPosHead.y / 2.0f,
+							cosf(fEnemyAng)*EnemyPosBody.x);
 
 						float fAng = randAng(mt);
 						CEffect::Create(Addmove + pEnemy->GetEnemyPos(), { 0.0f,0.0f,0.0f }, { 1.0f,1.0f,0.0f },
@@ -468,6 +478,17 @@ void CPlayer::Update()
 			//当たり判定
 			bool bHit = pWall->TestCollision(&m_pos, &m_lastpos, 50.0f);
 			pScene_Wall = pNext_Wall;
+
+		}
+
+		CScene *pScene_GW = CScene::GetScene(OBJTYPE_GIMMICKWALL);
+		while (pScene_GW != nullptr)
+		{
+			CGimmickWall *pGimmickWall = (CGimmickWall*)pScene_GW;
+			CScene *pNext_Wall = CScene::GetSceneNext(pScene_GW);
+			//当たり判定
+			bool bHit = pGimmickWall->TestCollision(&m_pos, &m_lastpos, 50.0f);
+			pScene_GW = pNext_Wall;
 
 		}
 
@@ -542,16 +563,22 @@ void CPlayer::Update()
 
 
 }
-
+//-------------------------------------------
+//描画処理
+//-------------------------------------------
 void CPlayer::Draw()
 {
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();//デバイスのポインタ
+
 	D3DXMATRIX mtxRotModel, mtxTransModel;//計算用マトリックス
+
 	//各パーツのワールドマトリックスの初期化gtryg
 	D3DXMatrixIdentity(&m_mtxWorld);      
 	D3DXMatrixRotationYawPitchRoll(&mtxRotModel, m_rot.y, m_rot.x, m_rot.z);
+
 	//向きを反映
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRotModel);
+
 	//位置を反映
 	D3DXMatrixTranslation(&mtxTransModel, m_pos.x, m_pos.y, m_pos.z);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTransModel);
@@ -586,10 +613,6 @@ void CPlayer::Draw()
 		m_LastSwordpos[nCnt] = D3DXVECTOR3(m_pSwordEffect[nCnt]->GetMtxWorld().m[3][0], m_pSwordEffect[nCnt]->GetMtxWorld().m[3][1], m_pSwordEffect[nCnt]->GetMtxWorld().m[3][2]);
 	}
 
-	//m_pMotion[m_nWeaponType]->Drawtext();
-	//プレイヤーの移動処理
-	//m_pController->Drawtext();
-	//Drawtext();
 	//前回の位置情報の保存
 	m_lastpos = m_pos;
 
@@ -602,33 +625,8 @@ void CPlayer::Drawtext()
 
 	nNum = sprintf(&str[0], "\n\n 壁情報 \n");
 
-		nNum += sprintf(&str[nNum], " [modelPos] X%.2f,Y%.2f,Z%.2f \n", m_pos.x, m_pos.y, m_pos.z);
-		nNum += sprintf(&str[nNum], " [modelPos] X%.2f,Y%.2f,Z%.2f \n", m_lastpos.x, m_lastpos.y, m_lastpos.z);
-
-	//CScene *pScene_Wall = CScene::GetScene(OBJTYPE_WALL);
-	//for (int nCnt = 0; nCnt < MAX_PLAYER_PARTS; nCnt++)
-	//{
-	//	nNum += sprintf(&str[nNum], " [modelPos] X%.2f,Y%.2f,Z%.2f \n", m_pModel[nCnt]->GetPos().x, m_pModel[nCnt]->GetPos().y, m_pModel[nCnt]->GetPos().z);
-	//	nNum += sprintf(&str[nNum], " [modelPos] X%.2f,Y%.2f,Z%.2f \n", m_pModel[nCnt]->GetLayerPos().x, m_pModel[nCnt]->GetLayerPos().y, m_pModel[nCnt]->GetLayerPos().z);
-
-	//}
-
-	//nNum += sprintf(&str[nNum], " [nMotionType] %d \n", m_nMotionType[m_nWeaponType]);
-	//nNum += sprintf(&str[nNum], " [bAttack] %d \n", m_bAttack);
-	//nNum += sprintf(&str[nNum], " [bAttackNext] %d \n", m_bAttackNext);
-	//nNum += sprintf(&str[nNum], " [nAttackType] %d \n", m_nAttackType[0]);
-	//nNum += sprintf(&str[nNum], " [bMotionStop] %d \n", m_bMotionStop);
-	//nNum += sprintf(&str[nNum], " [bDelay] %d \n", m_bDelay);
-	//nNum += sprintf(&str[nNum], " [nDelayTimer] %d \n", m_nDelayTimer);
-	//nNum += sprintf(&str[nNum], " [ColliPos] X%.2f,Y%.2f,Z%.2f \n", m_pCollision->GetPos().x, m_pCollision->GetPos().y, m_pCollision->GetPos().z);
-	//nNum += sprintf(&str[nNum], " [m_Magic.m_bMagic] %d \n", m_Magic.m_bMagic);
-	//for (int nCnt = 0; nCnt < 2; nCnt++)
-	//{
-	//	nNum += sprintf(&str[nNum], " [SwordEffectStartPos] X%.2f,Y%.2f,Z%.2f \n", m_pSwordLocus->GetStartPos().x, m_pSwordLocus->GetStartPos().y, m_pSwordLocus->GetStartPos().z);
-	//	nNum += sprintf(&str[nNum], " [SwordEffectEndPos] X%.2f,Y%.2f,Z%.2f \n", m_pSwordLocus->GetEndPos().x, m_pSwordLocus->GetEndPos().y, m_pSwordLocus->GetEndPos().z);
-	//}
-
-
+	nNum += sprintf(&str[nNum], " [modelPos] X%.2f,Y%.2f,Z%.2f \n", m_pos.x, m_pos.y, m_pos.z);
+	nNum += sprintf(&str[nNum], " [modelPos] X%.2f,Y%.2f,Z%.2f \n", m_lastpos.x, m_lastpos.y, m_lastpos.z);
 
 	LPD3DXFONT pFont = CManager::GetRenderer()->GetFont();
 	// テキスト描画
@@ -637,6 +635,7 @@ void CPlayer::Drawtext()
 }
 //--------------------------------------
 //回避の処理
+//--------------------------------------
 void CPlayer::Dodge()
 {
 	//DirectInputのゲームパッドの取得
@@ -811,14 +810,14 @@ void CPlayer::PlayerAttack()
 		{
 		case CPlayer_Controller::COMBO_2:
 			m_nMotionType[m_nWeaponType] = N_ATTACK_2;
-			m_pos.x -= sinf(m_rot.y)*PLAYER_ATTACK_SPEED*0.1f;
-			m_pos.z -= cosf(m_rot.y)*PLAYER_ATTACK_SPEED*0.1f;
+			m_pos.x -= sinf(m_rot.y)*PLAYER_ATTACK_SPEED*0.3f;
+			m_pos.z -= cosf(m_rot.y)*PLAYER_ATTACK_SPEED*0.3f;
 
 			break;
 		case CPlayer_Controller::COMBO_3:
 			m_nMotionType[m_nWeaponType] = N_ATTACK_3;
-			m_pos.x -= sinf(m_rot.y)*PLAYER_ATTACK_SPEED*0.1f;
-			m_pos.z -= cosf(m_rot.y)*PLAYER_ATTACK_SPEED*0.1f;
+			m_pos.x -= sinf(m_rot.y)*PLAYER_ATTACK_SPEED*0.3f;
+			m_pos.z -= cosf(m_rot.y)*PLAYER_ATTACK_SPEED*0.3f;
 
 			break;
 		}

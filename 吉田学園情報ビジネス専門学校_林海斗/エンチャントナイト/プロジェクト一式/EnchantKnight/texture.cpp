@@ -101,6 +101,14 @@ void CTexture::Init(void)
 	D3DXCreateTextureFromFile(pDevice,
 		"data/TEXTURE/GaugeBer.png",//ゲージ
 		&m_pTexture[GAUGEBER]);
+	//テクスチャの読み込み
+	D3DXCreateTextureFromFile(pDevice,
+		"data/TEXTURE/GaugeBG000.png",//ゲージの枠
+		&m_pTexture[GAUGEFRAME]);
+	//テクスチャの読み込み
+	D3DXCreateTextureFromFile(pDevice,
+		"data/TEXTURE/BG000.png",//ゲージの枠
+		&m_pTexture[COL_AREA]);
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,

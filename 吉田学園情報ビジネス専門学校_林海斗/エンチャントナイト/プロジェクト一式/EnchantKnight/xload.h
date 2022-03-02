@@ -1,5 +1,5 @@
 //----------------------------------
-//モデルの処理
+//使用するすべてのモデルの情報を読み込む処理
 //作成者：林　海斗
 //----------------------------------
 #ifndef _XLOAD_H
@@ -52,7 +52,6 @@ private:
 	static vector<ModelData>		m_Enemy02ModelData;//モデル情報の構造体フレイムウィッチ
 	static vector<ModelData>		m_Enemy03ModelData;//モデル情報の構造体クリスタルウィッチ
 	static vector<ModelData>		m_Enemy04ModelData;//モデル情報の構造体クリスタルウィッチ
-
 	static vector<ModelData>		m_ObjectModelData;//モデル情報の構造体
 
 };

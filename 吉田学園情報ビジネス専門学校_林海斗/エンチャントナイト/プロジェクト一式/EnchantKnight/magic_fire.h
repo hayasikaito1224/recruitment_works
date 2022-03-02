@@ -4,7 +4,7 @@
 #ifndef _MAGIC_FIRE_H_
 #define _MAGIC_FIRE_H_
 #include "magic.h"
-#define FIRE_MP (5)//MPÁ”ï—Ê
+#define FIRE_MP (20)//MPÁ”ï—Ê
 
 //‘O•ûéŒ¾
 class CModel;

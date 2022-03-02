@@ -17,8 +17,8 @@ CCol_Area::CCol_Area(OBJTYPE nPriority) : CScene(nPriority)
 	m_pos = { 0.0f,0.0f,0.0f };
 	m_rot = { 0.0f,0.0f,0.0f };
 	m_size = { 0.0f,0.0f,0.0f };
-	m_fValue = 0.0f;
-	m_col = { 1.0,1.0,1.0,1.0 };
+	m_fTime = 0.0f;
+	m_col = { 0.7f,0.0,0.0,1.0 };
 }
 
 //=============================================================================
@@ -170,7 +170,7 @@ CCol_Area * CCol_Area::Create(const D3DXVECTOR3 pos, const float fRotY, const fl
 		pCol_Area->m_Tex = texture;
 		pCol_Area->m_rot.y = fRotY;
 		pCol_Area->m_fMaxGauge = MaxGauge;
-		pCol_Area->m_fValueMax = nValueMax;
+		pCol_Area->m_fTimeMax = nValueMax;
 		pCol_Area->Init();
 	}
 	return pCol_Area;
@@ -180,17 +180,21 @@ CCol_Area * CCol_Area::Create(const D3DXVECTOR3 pos, const float fRotY, const fl
 //---------------------------------------------------------------
 void CCol_Area::MoveVtx()
 {
-	m_fValue += 1.0f;
-
-	float fAdd = (m_fMaxGauge * 1.0f) / m_fValueMax;
+	m_fTime += 1.0f;
+	//頂点を移動する量を計算
+	float fAdd = (m_fMaxGauge * 1.0f) / m_fTimeMax;
 	m_size.z += fAdd;
-
-	if (m_fValue >= m_fValueMax)
+	//決められた時間になったら
+	if (m_fTime >= m_fTimeMax)
 	{
-		m_fValue = m_fValueMax;
+		//時間を最大の時間に合わせる
+		m_fTime = m_fTimeMax;
+		//Z軸に向かう頂点の最大数を合わせる
 		m_size.z = m_fMaxGauge;
+		//消去判定をオンにする
 		m_bUninit = true;
 	}
+	//頂点情報の更新
 	VERTEX_3D *pVtx;
 
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
@@ -199,6 +203,7 @@ void CCol_Area::MoveVtx()
 	pVtx[1].pos = D3DXVECTOR3(m_size.x, 0.0f, 0.0f);
 	pVtx[2].pos = D3DXVECTOR3(-m_size.x, 0.0f, -m_size.z);
 	pVtx[3].pos = D3DXVECTOR3(m_size.x, 0.0f, -m_size.z);
+
 	pVtx[0].col = m_col;
 	pVtx[1].col = m_col;
 	pVtx[2].col = m_col;

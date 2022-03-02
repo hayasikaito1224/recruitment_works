@@ -309,6 +309,9 @@
     <ClInclude Include="col_area_bg.h">
       <Filter>エフェクト</Filter>
     </ClInclude>
+    <ClInclude Include="gimmick_wall.h">
+      <Filter>ソース ファイル\壁・床</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="deleteItem.cpp">
@@ -532,6 +535,9 @@
     </ClCompile>
     <ClCompile Include="col_area_bg.cpp">
       <Filter>エフェクト</Filter>
+    </ClCompile>
+    <ClCompile Include="gimmick_wall.cpp">
+      <Filter>ソース ファイル\壁・床</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -16,6 +16,7 @@ public:
 		OBJTYPE_BG,
 		OBJTYPE_FIELD,				//è∞
 		OBJTYPE_WALL,				//ï«
+		OBJTYPE_GIMMICKWALL,				//ï«
 		OBJTYPE_SKY,				//è∞
 		OBJTYPE_MODEL,				//ÉÇÉfÉã
 		OBJTYPE_BLOCK,				//ÉÇÉfÉã

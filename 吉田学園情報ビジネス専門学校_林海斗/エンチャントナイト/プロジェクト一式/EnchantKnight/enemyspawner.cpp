@@ -13,6 +13,7 @@ CEnemy_Spawner::CEnemy_Spawner(OBJTYPE nPriority):CScene(nPriority)
 	m_pos = { 0.0f,0.0f,0.0f };
 	m_pEnemy.clear();
 	m_nNumEnemy = 0;
+	m_nEnemyType = 0;
 	m_fAreaX = 0.0f;
 	m_fAreaZ = 0.0f;
 	m_bGimmickLock = true;
@@ -39,18 +40,21 @@ HRESULT CEnemy_Spawner::Init()
 		std::uniform_real_distribution<> randAreaZ(-m_fAreaZ, m_fAreaZ);
 		float fAreaX = (float)randAreaX(mt);
 		float fAreaZ = (float)randAreaZ(mt);
-		if(nCnt % 3 == 0)
+		switch (m_nEnemyType)
 		{
+		case TYPE_FRAME:
 			m_pEnemy[nCnt] = CEnemy_Frame::Create({ m_pos.x + fAreaX,m_pos.y,m_pos.z + fAreaZ }, { 0.0f,0.0f,0.0f });
-		}
-		else if (nCnt % 4 == 0)
-		{
+
+			break;
+		case TYPE_CRYSTAL:
 			m_pEnemy[nCnt] = CEnemy_Crystal::Create({ m_pos.x + fAreaX,m_pos.y,m_pos.z + fAreaZ }, { 0.0f,0.0f,0.0f });
 
-		}
-		else
-		{
+			break;
+		case TYPE_POYO:
 			m_pEnemy[nCnt] = CEnemy_Poyo::Create({ m_pos.x + fAreaX,m_pos.y,m_pos.z + fAreaZ }, { 0.0f,0.0f,0.0f });
+
+			break;
+
 		}
 
 	}
@@ -112,7 +116,7 @@ void CEnemy_Spawner::Draw()
 //=======================================
 //インスタンス生成
 //=======================================
-CEnemy_Spawner * CEnemy_Spawner::Create(D3DXVECTOR3 pos, float fAreaX, float fAreaZ, int nMaxEnemy)
+CEnemy_Spawner * CEnemy_Spawner::Create(D3DXVECTOR3 pos, float fAreaX, float fAreaZ, int nType, int nMaxEnemy)
 {
 	CEnemy_Spawner *pEnemySpawner = NULL;
 	pEnemySpawner = new CEnemy_Spawner(OBJTYPE_SKY);
@@ -120,6 +124,7 @@ CEnemy_Spawner * CEnemy_Spawner::Create(D3DXVECTOR3 pos, float fAreaX, float fAr
 	pEnemySpawner->m_fAreaX = fAreaX;
 	pEnemySpawner->m_fAreaZ = fAreaZ;
 	pEnemySpawner->m_nNumEnemy = nMaxEnemy;
+	pEnemySpawner->m_nEnemyType = nType;
 	pEnemySpawner->Init();
 	return pEnemySpawner;
 }

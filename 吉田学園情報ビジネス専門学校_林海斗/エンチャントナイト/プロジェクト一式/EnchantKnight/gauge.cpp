@@ -7,7 +7,7 @@
 #include "renderer.h"
 #include "gauge.h"
 #include "fade.h"
-
+#include "Polygon.h"
 CGauge::CGauge(OBJTYPE nPriority) : CScene2D(nPriority)
 {
 	m_pos = { 0.0f,0.0f,0.0f };
@@ -15,6 +15,7 @@ CGauge::CGauge(OBJTYPE nPriority) : CScene2D(nPriority)
 	m_col = { 1.0,1.0,1.0,1.0 };
 	m_fMaxGauge = 395.0f;
 	m_AddType = L_ADD;
+	m_pFrame = nullptr;
 }
 
 CGauge::~CGauge()
@@ -34,7 +35,6 @@ CGauge *CGauge::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 scale, const D3D
 	pGauge->BindTexture(CTexture::GAUGEBER);
 	pGauge->m_fValueMax = nValue;
 	pGauge->m_fValue = nValue;
-
 	pGauge->m_AddType = type;
 	return pGauge;
 }
@@ -42,13 +42,22 @@ CGauge *CGauge::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 scale, const D3D
 HRESULT CGauge::Init(void)
 {
 	CScene2D::Init();
-
+	//ƒQ[ƒW‚Ì˜g‚Ì¶¬
+	if (m_pFrame == nullptr)
+	{
+		m_pFrame = CPolygon::Create({ m_pos.x + (m_fMaxGauge / 2.0f),m_pos.y,0.0f }, { m_Scale.x / 1.97f ,m_Scale.y*1.1f,0.0f }, CTexture::GAUGEFRAME);
+	}
 	return S_OK;
 }
 
 void CGauge::Uninit()
 {
 	CScene2D::Uninit();
+	if (m_pFrame != nullptr)
+	{
+		m_pFrame->Uninit();
+		m_pFrame = nullptr;
+	}
 }
 
 void CGauge::Update()
